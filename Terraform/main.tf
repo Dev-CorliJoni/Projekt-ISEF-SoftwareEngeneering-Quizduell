@@ -19,12 +19,18 @@ data "azurerm_subscription" "current" {}
 variable "sqlfirewallrule" {
   type = string
   description = "(Public) for DB Update/Backup or (Azure) for productive use"
+  default = "Azure" 
+}
+
+variable "github_auth_token" {
+  type        = string
+  description = "Github Auth Token from Github > Developer Settings > Personal Access Tokens > Tokens Classic (needs to have repo permission)"
 }
 
 variable "AppName" {
   type = string
   description = "The Name of the App"
-  default = "quixme"
+  default = "quizzzme"
 }
 
 
@@ -145,14 +151,6 @@ resource "azurerm_windows_web_app" "FrontWebapp" {
   }
 }
 
-resource "azurerm_storage_account" "SqlStorage" {
-  name                     = "${var.AppName}sqlstorageaccount"
-  resource_group_name      = azurerm_resource_group.ResourceGroup.name
-  location                 = azurerm_resource_group.ResourceGroup.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-}
-
 resource "azurerm_mssql_server" "SqlServer" {
   name                         = "${var.AppName}sqlserver"
   resource_group_name          = azurerm_resource_group.ResourceGroup.name
@@ -174,10 +172,23 @@ resource "azurerm_mssql_database" "SqlServerDB" {
   server_id    = azurerm_mssql_server.SqlServer.id
   collation    = "SQL_Latin1_General_CP1_CI_AS"
   license_type = "LicenseIncluded"
-  max_size_gb  = 4
   sku_name     = "S0"
 
 }
+
+resource "azurerm_app_service_source_control" "source_control" {
+  app_id                 = azurerm_windows_web_app.FrontWebapp.id
+  repo_url               = "https://github.com/Dev-CorliJoni/Projekt-ISEF-SoftwareEngeneering-Quizduell"
+  branch                 = "main"
+  use_manual_integration = true
+}
+
+resource "azurerm_source_control_token" "source_control_token" {
+  type         = "GitHub"
+  token        = var.github_auth_token
+  token_secret = var.github_auth_token
+}
+
 
 
 output "AzureSQLConnectionString" {
