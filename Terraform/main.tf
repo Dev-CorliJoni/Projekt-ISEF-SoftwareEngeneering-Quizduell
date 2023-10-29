@@ -140,7 +140,7 @@ resource "azurerm_windows_web_app" "FrontWebapp" {
     always_on = false
     application_stack {
       current_stack  = "dotnet"
-      dotnet_version = "6.0.x"
+      dotnet_version = "v6.0"
 
     }
   }
