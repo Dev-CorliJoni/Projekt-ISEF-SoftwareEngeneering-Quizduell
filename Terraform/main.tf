@@ -140,7 +140,7 @@ resource "azurerm_windows_web_app" "FrontWebapp" {
     always_on = false
     application_stack {
       current_stack  = "dotnet"
-      dotnet_version = "v6.0"
+      dotnet_version = "6.0.x"
 
     }
   }
@@ -180,7 +180,15 @@ resource "azurerm_app_service_source_control" "source_control" {
   app_id                 = azurerm_windows_web_app.FrontWebapp.id
   repo_url               = "https://github.com/Dev-CorliJoni/Projekt-ISEF-SoftwareEngeneering-Quizduell"
   branch                 = "main"
-  use_manual_integration = true
+
+  github_action_configuration{
+    code_configuration {
+      runtime_stack = "dotnetcore"
+      runtime_version = "v6.0"
+    }
+    generate_workflow_file = true
+  }
+
 }
 
 resource "azurerm_source_control_token" "source_control_token" {
@@ -195,3 +203,5 @@ output "AzureSQLConnectionString" {
   value = azurerm_windows_web_app.FrontWebapp.connection_string
   sensitive = true
 }
+
+

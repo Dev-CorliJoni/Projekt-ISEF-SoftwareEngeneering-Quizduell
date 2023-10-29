@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quixduell.Blazor", "Quixduell.Blazor\Quixduell.Blazor.csproj", "{E4C50471-F0A8-4F7B-991E-607D409AF0C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quixduell.Blazor", "Quixduell\Quixduell.Blazor\Quixduell.Blazor.csproj", "{E4C50471-F0A8-4F7B-991E-607D409AF0C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quixduell.ServiceLayer", "Quixduell.ServiceLayer\Quixduell.ServiceLayer.csproj", "{0703D35F-A8FE-411B-B48A-32A768DE5DB3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quixduell.ServiceLayer", "Quixduell\Quixduell.ServiceLayer\Quixduell.ServiceLayer.csproj", "{0703D35F-A8FE-411B-B48A-32A768DE5DB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
