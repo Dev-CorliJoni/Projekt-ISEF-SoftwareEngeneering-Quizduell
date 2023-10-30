@@ -14,18 +14,22 @@ provider "azurerm" {
   features {}
 }
 
+#needed to create Budget Alert
 data "azurerm_subscription" "current" {}
 
+#Change to set Database Open 
 variable "sqlfirewallrule" {
   type = string
   description = "(Public) for DB Update/Backup or (Azure) for productive use"
   default = "Azure" 
 }
 
+#Required for Continous Deployment via Github
 variable "github_auth_token" {
   type        = string
   description = "Github Auth Token from Github > Developer Settings > Personal Access Tokens > Tokens Classic (needs to have repo permission)"
 }
+
 
 variable "AppName" {
   type = string
@@ -40,6 +44,7 @@ resource "random_password" "password" {
   override_special = "!#$%&*()-+[]{}<>:?"
 }
 
+#Resource Group, Container for all Azure Resources
 resource "azurerm_resource_group" "ResourceGroup" {
   name     = "${var.AppName}resourcegroup"
   location = "East Us"
@@ -48,6 +53,7 @@ resource "azurerm_resource_group" "ResourceGroup" {
   }
 }
 
+#Alert if App cost some money 
 resource "azurerm_consumption_budget_subscription" "SubscriptionBudget" {
 
   subscription_id = data.azurerm_subscription.current.id
@@ -122,6 +128,7 @@ resource "azurerm_consumption_budget_subscription" "SubscriptionBudget" {
 
 }
 
+#Use Free Tier for Web App, and Windows OS
 resource "azurerm_service_plan" "AppServiceplan" {
   name                = "${var.AppName}serviceplan"
   resource_group_name = azurerm_resource_group.ResourceGroup.name
@@ -130,6 +137,7 @@ resource "azurerm_service_plan" "AppServiceplan" {
   sku_name            = "F1"
 }
 
+#Create Web App for Frontend, use dotnet 6, set Connection String for Azure DB
 resource "azurerm_windows_web_app" "FrontWebapp" {
   name                = "${var.AppName}webapp"
   resource_group_name = azurerm_resource_group.ResourceGroup.name
@@ -146,10 +154,11 @@ resource "azurerm_windows_web_app" "FrontWebapp" {
   connection_string {
     name  = "SQL"
     type  = "SQLAzure"
-    value = "Server=tcp:${azurerm_mssql_server.SqlServer.name}.database.windows.net,1433;Persist Security Info=False;User ID=${azurerm_mssql_server.SqlServer.administrator_login};Password=${azurerm_mssql_server.SqlServer.administrator_login_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
+    value = "Server=tcp:${azurerm_mssql_server.SqlServer.name}.database.windows.net,1433;Database=${azurerm_mssql_database.SqlServerDB.name};Persist Security Info=False;User ID=${azurerm_mssql_server.SqlServer.administrator_login};Password=${azurerm_mssql_server.SqlServer.administrator_login_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
   }
 }
 
+#Create Azure SQL with random SQL PW 
 resource "azurerm_mssql_server" "SqlServer" {
   name                         = "${var.AppName}sqlserver"
   resource_group_name          = azurerm_resource_group.ResourceGroup.name
