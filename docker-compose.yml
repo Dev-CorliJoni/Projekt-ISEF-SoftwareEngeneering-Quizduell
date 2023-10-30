@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  quixduell.blazor:
+    image: ${DOCKER_REGISTRY-}quixduellblazor
+    build:
+      context: .
+      dockerfile: Quixduell/Quixduell.Blazor/Dockerfile
+
+
+  quixduell.server:
+    container_name: azuresql
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    environment:
+     - ACCEPT_EULA=YES
+     - MSSQL_PID=Developer 
