@@ -34,6 +34,6 @@ jobs:
       with:
         app-name: quizzzmewebapp
         slot-name: Production
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FB79108ACF4349E887652F27ED09DB9A }}
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_61CEF47A49A54F9B880A171DB0725CC4 }}
         package: ${{env.DOTNET_ROOT}}/myapp
 
