@@ -141,7 +141,6 @@ resource "azurerm_windows_web_app" "FrontWebapp" {
     application_stack {
       current_stack  = "dotnet"
       dotnet_version = "v6.0"
-
     }
   }
   connection_string {
@@ -186,7 +185,7 @@ resource "azurerm_app_service_source_control" "source_control" {
       runtime_stack = "dotnetcore"
       runtime_version = "v6.0"
     }
-    generate_workflow_file = true
+    generate_workflow_file = false
   }
 
 }
