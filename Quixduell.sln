@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quixduell.Blazor", "Quixdue
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quixduell.ServiceLayer", "Quixduell\Quixduell.ServiceLayer\Quixduell.ServiceLayer.csproj", "{0703D35F-A8FE-411B-B48A-32A768DE5DB3}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{DBB75216-423F-4D59-B5C5-3361B42F1448}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "Quixduell\Docker-Compose\docker-compose.dcproj", "{DBB75216-423F-4D59-B5C5-3361B42F1448}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
