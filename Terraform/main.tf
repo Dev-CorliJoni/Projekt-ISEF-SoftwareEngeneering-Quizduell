@@ -34,7 +34,7 @@ variable "github_auth_token" {
 variable "AppName" {
   type = string
   description = "The Name of the App"
-  default = "quizzzme"
+  default = "quixduell"
 }
 
 
@@ -179,14 +179,23 @@ resource "azurerm_mssql_database" "SqlServerDB" {
   name         = "${var.AppName}sqlserverdb"
   server_id    = azurerm_mssql_server.SqlServer.id
   collation    = "SQL_Latin1_General_CP1_CI_AS"
-  license_type = "LicenseIncluded"
-  sku_name     = "S0"
+  
+    auto_pause_delay_in_minutes = 60
+    max_size_gb                 = 6
+    min_capacity                = 0.5
+    read_replica_count          = 0
+    read_scale                  = false
+    geo_backup_enabled          = false
+    sku_name                    = "GP_S_Gen5_1"
+    zone_redundant              = false
+    storage_account_type        = "Local"  
+    
 
 }
 
 resource "azurerm_app_service_source_control" "source_control" {
   app_id                 = azurerm_windows_web_app.FrontWebapp.id
-  repo_url               = "https://github.com/Dev-CorliJoni/Projekt-ISEF-SoftwareEngeneering-Quizduell"
+  repo_url               = "https://github.com/hansefred/CLONE-Projekt-ISEF-SoftwareEngeneering-Quizduell"
   branch                 = "main"
 
   github_action_configuration{
