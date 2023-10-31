@@ -183,12 +183,12 @@ resource "azurerm_mssql_database" "SqlServerDB" {
   collation = "SQL_Latin1_General_CP1_CI_AS"
 
   auto_pause_delay_in_minutes = 60
-  max_size_gb                 = 6
+  max_size_gb                 = 32
   min_capacity                = 0.5
   read_replica_count          = 0
   read_scale                  = false
-  geo_backup_enabled          = false
-  sku_name                    = "GP_S_Gen5_1"
+  geo_backup_enabled          = true
+  sku_name                    = "GP_S_Gen5_2"
   zone_redundant              = false
   storage_account_type        = "Local"
 
