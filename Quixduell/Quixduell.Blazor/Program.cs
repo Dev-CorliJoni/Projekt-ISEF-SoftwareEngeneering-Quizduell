@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.EntityFrameworkCore;
 using Quixduell.Blazor.Areas.Identity;
 using Quixduell.Blazor.Data;
 using Quixduell.ServiceLayer;
+using Quixduell.ServiceLayer.Helper;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +36,11 @@ var app = builder.Build();
 //Init Database
 using (var serviceScopce = app.Services.CreateScope())
 {
+
+
+    //Wait for DB start
+    DBHelper.WaitForSQLDB(connectionString,app.Logger);
+
     var Stopwatch = new Stopwatch();
     Stopwatch.Start();
     var AppDBContext = serviceScopce.ServiceProvider.GetRequiredService<ApplicationDbContext>();
