@@ -1,13 +1,22 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.AzureAppServices;
 using Quixduell.Blazor.Areas.Identity;
 using Quixduell.Blazor.Data;
 using Quixduell.ServiceLayer;
-using Quixduell.ServiceLayer.Helper;
-using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+//Logging for Azure App Service
+builder.Logging.AddAzureWebAppDiagnostics();
+builder.Services.Configure<AzureFileLoggerOptions>(options =>
+{
+    options.FileName = "azure-diagnostics-";
+    options.FileSizeLimit = 50 * 1024;
+    options.RetainedFileCountLimit = 5;
+});
 
 //Get Connection String
 var connectionString = builder.Configuration.GetConnectionString("SQL");
@@ -32,22 +41,6 @@ builder.Services.AddQuixServiceLayer();
 
 
 var app = builder.Build();
-
-////Init Database
-//using (var serviceScopce = app.Services.CreateScope())
-//{
-
-
-//Wait for DB start
-//DBHelper.WaitForSQLDB(connectionString,app.Logger);
-
-//    var Stopwatch = new Stopwatch();
-//    Stopwatch.Start();
-//    var AppDBContext = serviceScopce.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-//    await AppDBContext.Database.MigrateAsync();
-//    app.Logger.LogInformation("Migration take: {Database Migration Time}", Stopwatch.Elapsed.ToString());
-
-//}
 
 
 // Configure the HTTP request pipeline.
