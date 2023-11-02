@@ -39,7 +39,7 @@ var app = builder.Build();
 
 
 //Wait for DB start
-DBHelper.WaitForSQLDB(connectionString,app.Logger);
+//DBHelper.WaitForSQLDB(connectionString,app.Logger);
 
 //    var Stopwatch = new Stopwatch();
 //    Stopwatch.Start();
