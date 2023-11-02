@@ -33,21 +33,21 @@ builder.Services.AddQuixServiceLayer();
 
 var app = builder.Build();
 
-//Init Database
-using (var serviceScopce = app.Services.CreateScope())
-{
+////Init Database
+//using (var serviceScopce = app.Services.CreateScope())
+//{
 
 
-    //Wait for DB start
-    DBHelper.WaitForSQLDB(connectionString,app.Logger);
+//Wait for DB start
+DBHelper.WaitForSQLDB(connectionString,app.Logger);
 
-    var Stopwatch = new Stopwatch();
-    Stopwatch.Start();
-    var AppDBContext = serviceScopce.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    await AppDBContext.Database.MigrateAsync();
-    app.Logger.LogInformation("Migration take: {Database Migration Time}", Stopwatch.Elapsed.ToString());
+//    var Stopwatch = new Stopwatch();
+//    Stopwatch.Start();
+//    var AppDBContext = serviceScopce.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//    await AppDBContext.Database.MigrateAsync();
+//    app.Logger.LogInformation("Migration take: {Database Migration Time}", Stopwatch.Elapsed.ToString());
 
-}
+//}
 
 
 // Configure the HTTP request pipeline.
