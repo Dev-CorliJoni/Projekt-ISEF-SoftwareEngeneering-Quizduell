@@ -147,6 +147,7 @@ resource "azurerm_windows_web_app" "FrontWebapp" {
 
   site_config {
     always_on = false
+    http2_enabled = true
 
     application_stack {
       current_stack  = "dotnet"
