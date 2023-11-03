@@ -172,7 +172,7 @@ resource "azurerm_windows_web_app" "FrontWebapp" {
   connection_string {
     name  = "SQL"
     type  = "SQLAzure"
-    value = "Server=tcp:${azurerm_mssql_server.SqlServer.name}.database.windows.net,1433;Database=${azurerm_mssql_database.SqlServerDB.name};Persist Security Info=False;User ID=${azurerm_mssql_server.SqlServer.administrator_login};Password=${azurerm_mssql_server.SqlServer.administrator_login_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
+    value = "Server=tcp:${azurerm_mssql_server.SqlServer.name}.database.windows.net,1433;Database=${azurerm_mssql_database.SqlServerDB.name};Persist Security Info=False;User ID=${azurerm_mssql_server.SqlServer.administrator_login};Password=${azurerm_mssql_server.SqlServer.administrator_login_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=180;"
   }
 }
 
