@@ -21,7 +21,7 @@ builder.Services.Configure<AzureFileLoggerOptions>(options =>
 //Get Connection String
 var connectionString = builder.Configuration.GetConnectionString("SQL");
 
-//Configure Entity Framework 
+//Configure Entity Framework for Identity
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -36,6 +36,11 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 
+//AddDataLayer
+builder.Services.AddQuixDataLayer(option =>
+{
+    option.ConnectionString = connectionString;
+});
 //Add Service Layer
 builder.Services.AddQuixServiceLayer();
 
