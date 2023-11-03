@@ -3,7 +3,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.0.2"
+      version = "3.70.0"
     }
   }
 
@@ -13,6 +13,16 @@ terraform {
 provider "azurerm" {
   features {}
 }
+
+terraform {
+  cloud {
+    organization = "ISEF01"
+    workspaces {
+      name = "CLONE-Projekt-ISEF-SoftwareEngeneering-Quizduell"
+    }
+  }
+}
+
 
 #needed to create Budget Alert
 data "azurerm_subscription" "current" {}
@@ -152,6 +162,11 @@ resource "azurerm_windows_web_app" "FrontWebapp" {
     application_stack {
       current_stack  = "dotnet"
       dotnet_version = "v6.0"
+    }
+  }
+  logs {
+    application_logs {
+      file_system_level = "Error"
     }
   }
   connection_string {
