@@ -2,17 +2,20 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Threading;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer
 {
     /// <summary>
     /// Service try to connect to Database, helps to speed up cold start on Azure Server less SQL 
     /// </summary>
-    internal class DBStarter : IHostedService
+    internal class DBStarter : IHostedService, IDisposable
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<DBStarter> _logger;
-
+        private Timer? _timer = null;
+        private int _executionCount = 0;
+        private bool _sqlAlive = false;
 
         public DBStarter(ILogger<DBStarter> logger, IServiceProvider serviceProvider)
         {
@@ -20,41 +23,66 @@ namespace Quixduell.ServiceLayer.DataAccessLayer
             _serviceProvider = serviceProvider;
         }
 
-
-        public async Task StartAsync(CancellationToken cancellationToken)
+        private void DoWork(object? state)
         {
-            bool sqlAlive = false;
-            int checkCounter = 0;
-            using (var scope = _serviceProvider.CreateScope())
-            {
-                var databaseContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                while (!cancellationToken.IsCancellationRequested && !sqlAlive)
-                {
-                    try
-                    {
-                        var result = await databaseContext.Database.ExecuteSqlRawAsync("Select 1", cancellationToken);
-                        sqlAlive = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogInformation("Database not on-line, check {CheckCounter}", checkCounter);
-                        checkCounter++;
-                        await Task.Delay(TimeSpan.FromSeconds(5));
-                        if (checkCounter > 50)
-                        {
-                            _logger.LogError("Max Check (50) reached, cannot start DB");
-                            return;
-                        }
-                    }
-                }
+            var count = Interlocked.Increment(ref _executionCount);
 
+            if (count > 50)
+            {
+                _logger.LogError("DB starter reached max connection attempts");
+                _timer?.Change(Timeout.Infinite, 0);
             }
 
+            if (_sqlAlive)
+            {
+                _logger.LogInformation("DB starter successfully start DB");
+                _timer?.Change(Timeout.Infinite, 0);
+            }
+
+            _logger.LogInformation(
+                "DB starter Hosted Service is working. Count: {Count}", count);
+
+            _ = DoAsyncWork();
+        }
+
+        private async Task DoAsyncWork()
+        {
+
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                try
+                {
+                    var databaseContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+
+                    if (await databaseContext.Database.CanConnectAsync())
+                    {
+                        var result = await databaseContext.Database.ExecuteSqlRawAsync("Select 1");
+                        _sqlAlive = true;
+                    }
+                    _logger.LogInformation("Database not on-line");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogInformation("Database not on-line: {Exception}", ex);
+                }
+            }
+        }
+
+
+        public Task StartAsync(CancellationToken cancellationToken)
+        {
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
+            return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
+            _timer?.Change(Timeout.Infinite, 0);
             return Task.CompletedTask;
+        }
+        public void Dispose()
+        {
+            _timer?.Dispose();
         }
     }
 }

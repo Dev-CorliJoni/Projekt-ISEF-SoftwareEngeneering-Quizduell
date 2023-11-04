@@ -1,5 +1,10 @@
 version: '3.4'
 
+
+volumes:
+  SQLData:
+    driver: local
+
 services:
   quixduell.blazor:
     image: ${DOCKER_REGISTRY-}quixduellblazor
@@ -14,4 +19,6 @@ services:
     environment:
      - ACCEPT_EULA=YES
      - MSSQL_PID=Developer 
+    volumes:
+      - SQLData:/var/opt/mssql
 
