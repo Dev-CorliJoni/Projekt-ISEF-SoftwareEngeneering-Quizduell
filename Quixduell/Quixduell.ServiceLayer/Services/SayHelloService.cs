@@ -4,7 +4,7 @@
     {
         public string SayHello()
         {
-            return "Hello World";
+            return "Hello from Azure CI";
         }
 
     }
