@@ -213,7 +213,7 @@ resource "azurerm_mssql_database" "SqlServerDB" {
 
 resource "azurerm_app_service_source_control" "source_control" {
   app_id   = azurerm_windows_web_app.FrontWebapp.id
-  repo_url = "https://github.com/hansefred/CLONE-Projekt-ISEF-SoftwareEngeneering-Quizduell"
+  repo_url = "https://github.com/Dev-CorliJoni/Projekt-ISEF-SoftwareEngeneering-Quizduell"
   branch   = "main"
 
   github_action_configuration {
