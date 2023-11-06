@@ -1,5 +1,10 @@
 version: '3.4'
 
+
+volumes:
+  SQLData:
+    driver: local
+
 services:
   quixduell.blazor:
     image: ${DOCKER_REGISTRY-}quixduellblazor
@@ -8,11 +13,12 @@ services:
       dockerfile: Quixduell/Quixduell.Blazor/Dockerfile
 
 
-  quixduell.server:
+  quixduell.SQLServer:
     container_name: azuresql
-    image: mcr.microsoft.com/azure-sql-edge:latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
      - ACCEPT_EULA=YES
      - MSSQL_PID=Developer 
-    ports:
-     - "1433:4500" 
+    volumes:
+      - SQLData:/var/opt/mssql
+
