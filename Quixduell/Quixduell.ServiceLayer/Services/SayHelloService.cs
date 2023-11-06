@@ -4,7 +4,7 @@
     {
         public string SayHello()
         {
-            return "Hello from Azure CI";
+            return "Hello from Github to Azure CI";
         }
 
     }
