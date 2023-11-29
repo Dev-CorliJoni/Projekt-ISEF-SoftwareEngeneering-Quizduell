@@ -2,7 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System.Threading;
+using Quixduell.Blazor.Data;
+using Quixduell.ServiceLayer.DataAccessLayer.Model;
+using Quixduell.ServiceLayer.DataAccessLayer.Repository;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer
 {
@@ -52,12 +54,13 @@ namespace Quixduell.ServiceLayer.DataAccessLayer
             {
                 try
                 {
-                    var databaseContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+                    var databaseContext = scope.ServiceProvider.GetRequiredService<AppDatabaseContext<AppUser>>();
 
                     if (await databaseContext.Database.CanConnectAsync())
                     {
                         var result = await databaseContext.Database.ExecuteSqlRawAsync("Select 1");
                         _sqlAlive = true;
+
                     }
                     _logger.LogInformation("Database not on-line");
                 }

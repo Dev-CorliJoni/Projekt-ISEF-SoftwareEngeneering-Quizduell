@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging.AzureAppServices;
 using Quixduell.Blazor.Areas.Identity;
 using Quixduell.Blazor.Data;
 using Quixduell.ServiceLayer;
+using Quixduell.ServiceLayer.DataAccessLayer.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,19 +23,19 @@ builder.Services.Configure<AzureFileLoggerOptions>(options =>
 var connectionString = builder.Configuration.GetConnectionString("SQL");
 
 //Configure Entity Framework for Identity
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<AppDatabaseContext<AppUser>>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 //Configure Identity Provider
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<AppDatabaseContext<AppUser>>();
 
 
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<AppUser>>();
 
 //AddDataLayer
 builder.Services.AddQuixDataLayer(option =>
