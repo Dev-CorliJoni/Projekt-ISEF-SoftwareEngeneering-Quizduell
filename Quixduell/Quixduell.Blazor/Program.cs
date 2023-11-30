@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.AzureAppServices;
 using Quixduell.Blazor.Areas.Identity;

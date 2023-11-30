@@ -2,11 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Quixduell.Blazor.Data;
-using Quixduell.ServiceLayer.DataAccessLayer;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Options;
-using Quixduell.ServiceLayer.DataAccessLayer.Repository;
-using Quixduell.ServiceLayer.Services;
+using Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation;
+using Quixduell.ServiceLayer.DataAccessLayer.Repository.Interface;
+using Quixduell.ServiceLayer.Services.HostedServices;
 
 
 namespace Quixduell.ServiceLayer
@@ -16,7 +16,6 @@ namespace Quixduell.ServiceLayer
         public static IServiceCollection AddQuixServiceLayer(this IServiceCollection services)
         {
             services.AddHostedService<DBStarter>();
-            services.AddSingleton<SayHelloService>();
             return services;
         }
 
@@ -40,6 +39,7 @@ namespace Quixduell.ServiceLayer
             }
 
             services.AddScoped<ILernsetRepository,LernsetRepository>();
+            services.AddScoped<ILernsetCategoryRepository, LernsetCategoryRepository>();
 
             return services;
         }

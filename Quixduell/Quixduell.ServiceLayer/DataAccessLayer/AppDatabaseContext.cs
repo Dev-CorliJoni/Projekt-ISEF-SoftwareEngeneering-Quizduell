@@ -15,6 +15,7 @@ namespace Quixduell.Blazor.Data
         }
 
         public DbSet<Lernset> Lernsets { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

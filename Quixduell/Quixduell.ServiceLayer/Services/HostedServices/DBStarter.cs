@@ -6,7 +6,7 @@ using Quixduell.Blazor.Data;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository;
 
-namespace Quixduell.ServiceLayer.DataAccessLayer
+namespace Quixduell.ServiceLayer.Services.HostedServices
 {
     /// <summary>
     /// Service try to connect to Database, helps to speed up cold start on Azure Server less SQL 
