@@ -30,16 +30,11 @@ namespace Quixduell.ServiceLayer
                 services.AddDbContext<AppDatabaseContext<AppUser>>(option =>
                 {
                     option.UseSqlServer(bBOptions.Value.ConnectionString);
-                });
-
-                services.AddDbContext<AppDatabaseContext<AppUser>>(option =>
-                {
-                    option.UseSqlServer(bBOptions.Value.ConnectionString);
                 }, ServiceLifetime.Transient);
             }
 
-            services.AddScoped<ILernsetRepository,LernsetRepository>();
-            services.AddScoped<ILernsetCategoryRepository, LernsetCategoryRepository>();
+            services.AddTransient<ILernsetRepository,LernsetRepository>();
+            services.AddTransient<ILernsetCategoryRepository, LernsetCategoryRepository>();
 
             return services;
         }

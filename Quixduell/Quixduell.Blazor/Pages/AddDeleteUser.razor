@@ -1,0 +1,74 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject IServiceProvider ServiceProvider
+
+
+@code{
+    /*
+     * Component can be used to Add or Remove Users to a List, works with Events for the Parent Component
+     */
+}
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Nutzer</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <Virtualize Items="@_appUsers" Context="User" ItemSize="10" OverscanCount="5">
+                <tr>
+                    <th scope="row"></th>
+                    <td>@User.Email</td>
+                    <td><button @onclick="() => AddUser(User)" class="btn-primary">Mitwirkender hinzufügen</button></td>
+                    <td><button @onclick="() => DeleteUser(User)" class="btn-danger">Mitwirkender entfernen</button></td>
+                </tr>
+            </Virtualize>
+        </tbody>
+    </table>
+</div>
+
+
+
+
+@code
+{
+    [Parameter]
+    public EventCallback<AppUser> UserDeleted { get; set; }
+    [Parameter]
+    public EventCallback<AppUser> UserAdded { get; set; }
+
+
+    private List<AppUser>? _appUsers;
+
+
+    protected override void OnInitialized()
+    {
+        //Load User Manager from DI Container, because it not support concurrency 
+        //read more here https://stackoverflow.com/questions/59747983/blazor-concurrency-problem-using-entity-framework-core
+        using (var scope = ServiceProvider.CreateScope())
+        {
+            var userManager = scope.ServiceProvider.GetService<UserManager<AppUser>>();
+            _appUsers = userManager!.Users.ToList();
+        }
+
+        base.OnInitialized();
+    }
+
+ 
+    
+
+
+    private async Task DeleteUser(AppUser appUser)
+    {
+        await UserDeleted.InvokeAsync(appUser);
+    }
+
+    private async Task AddUser(AppUser appUser)
+    {
+        await UserAdded.InvokeAsync(appUser);
+    }
+}
