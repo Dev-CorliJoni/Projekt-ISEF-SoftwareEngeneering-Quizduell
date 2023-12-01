@@ -1,0 +1,87 @@
+﻿@using Quixduell.Blazor.Model.QuestionModel
+
+@code{
+    /*
+     * Edit Component for a Question
+     */
+}
+
+@if (Model is not null)
+{
+    <div class="container">
+        <EditForm OnValidSubmit="OnUpdatedChild" Model="@Model">
+            <label for="CreateEditQuestion">Fragestellung</label>
+            <InputTextArea id="Question" @bind-Value="Model.QuestionText"></InputTextArea>
+
+            <label for="QuestionType">Fragenart</label>
+            <InputSelect @bind-Value="@Model.Question_Type">
+                @foreach (var type in Enum.GetValues(typeof(Question_Type)))
+                {
+                    <option value="@type">@type</option>
+                }
+            </InputSelect>
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Frage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <Virtualize Items="@Model.Answers" Context="Answer" ItemSize="10" OverscanCount="5">
+                            <tr>
+                                <th>@Answer.Text</th>
+                                <th>@Answer.IsTrue</th>
+                            </tr>
+                        </Virtualize>
+                    </tbody>
+                </table>
+                <button @onclick="AddAnswer">Antwort hinzufügen</button>
+            </div>
+
+
+            <button type="submit" class="btn-primary">OK</button>
+        </EditForm>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public Question? Question { get; set; }
+
+    [Parameter]
+    public EventCallback OnStateHasChanged { get; set; }
+
+    public EditQuestion? Model { get; set; }
+
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        if (Question is not null)
+        {
+            Model = new EditQuestion(Question);
+        }
+        return base.OnParametersSetAsync();
+    }
+
+
+    private void AddAnswer()
+    {
+        Model.Answers.Add(new Answer());
+    }
+
+    private async Task OnUpdatedChild()
+    {
+        Question.QuestionText = Model.QuestionText;
+        Question.Question_Type = Model.Question_Type;
+        Question.Answer = Model.Answers;
+        await OnStateHasChanged.InvokeAsync();
+    }
+}

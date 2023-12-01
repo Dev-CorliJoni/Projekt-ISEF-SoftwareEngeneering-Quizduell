@@ -1,0 +1,105 @@
+﻿@page "/LernsetPages/Create"
+@using Microsoft.AspNetCore.Identity
+@using Quixduell.Blazor.Model.LernsetPagesModel
+@using Quixduell.Blazor.Pages.Question
+@inject ILernsetRepository LernsetRepository
+@inject UserManager<AppUser> UserManager
+<PageTitle>Create Lernset</PageTitle>
+
+
+@code{
+    /*Page for Adding a new Lernset
+     * Contains a Component for choosing a Category, Add or Delete AppUsers from the Contributor List
+     * Possible to Create new Questions and Edit them in the same Page 
+    * */
+
+}
+
+@if (CreateLernset is not null)
+{
+    <EditForm Model="CreateLernset">
+        <div class="container">
+            <div class="container">
+                <label for="Category" class="form-label">Kategorie</label>
+                <label>@CreateLernset?.Category?.Name</label>
+                <AddSelectCategory CategorySelected="(category) => {CreateLernset.Category = category;StateHasChanged();}"></AddSelectCategory>
+                <div>
+                    <div>
+                        <label for="Contributors" class="form-label">Mitwirkende</label>
+                        <label class="form-control" id="Contributors">@CreateLernset.GetContributortoString</label>
+                        <div>
+                            <AddDeleteUser UserAdded="(appUser) => {CreateLernset.Contributor.Add(appUser);StateHasChanged();}"
+                                UserDeleted="(appUser) => {CreateLernset.Contributor.Remove(appUser);StateHasChanged();}"></AddDeleteUser>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Frage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <Virtualize Items="@CreateLernset.Questions" Context="Question" ItemSize="10" OverscanCount="5">
+                            <tr @onclick="() => {SelectedQuestion = Question;StateHasChanged();}">
+                                <th scope="row"></th>
+                                <td>@Question.QuestionText</td>
+                            </tr>
+                        </Virtualize>
+                    </tbody>
+                </table>
+                <button @onclick="AddQuestion">Frage hinzufügen</button>
+                @if (SelectedQuestion is not null)
+                {
+                    <EditQuestionComponent Question="@SelectedQuestion" OnStateHasChanged="() => {SelectedQuestion = null;StateHasChanged();}"></EditQuestionComponent>
+                }
+            </div>
+        </div>
+
+    </EditForm>
+}
+
+
+
+@code {
+
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? _authenticationState { get; set; }
+
+    public CreateLernset? CreateLernset { get; set; }
+    public Question? SelectedQuestion { get; set; }
+
+
+    override protected async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var user = (await _authenticationState!).User;
+
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+        {
+            var currentUser = await UserManager.GetUserAsync(user);
+
+            if (currentUser is not null)
+            {
+                CreateLernset = new CreateLernset(currentUser);
+                StateHasChanged();
+            }
+        }
+    }
+
+
+
+    public void AddQuestion ()
+    {
+        CreateLernset!.Questions.Add(new Question());
+    }
+
+
+
+}
+

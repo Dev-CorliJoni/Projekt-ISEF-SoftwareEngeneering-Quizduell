@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject ILernsetCategoryRepository LernsetCategoryRepository
+
+
+@code {
+     /*
+     * Component can be used to choose a Category, works with Events for the Parent Component
+    */
+}
+
+<div class="container" style="height:20vh;overflow-y:scroll">
+    @if (Categories is not null)
+    {
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Kategorie</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+            <tbody>
+            <Virtualize Items="Categories" Context="Category" ItemSize="10" OverscanCount="5">
+                <tr @onclick="() => CategorySelect(Category)">
+                    <th scope="row"></th>
+                    <td>@Category.Name</td>
+                </tr>
+            </Virtualize>
+        </tbody>
+    </table>
+    }
+</div>
+
+
+
+
+@code
+{
+    [Parameter]
+    public EventCallback<Category> CategorySelected { get; set; }
+
+
+    public List<Category>? Categories { get; set; }
+
+    protected override async  Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        Categories = new List<Category>(await LernsetCategoryRepository.GetCategoriesAsync());
+    }
+
+    private async Task CategorySelect(Category category)
+    {
+        await CategorySelected.InvokeAsync(category);
+    }
+
+
+}
