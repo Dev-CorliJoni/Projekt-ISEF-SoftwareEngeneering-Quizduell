@@ -7,14 +7,12 @@
 
 
 @code {
-     /*
-     * Edit Component for a Question
-     * Displays as Pop up, use Bootstrap Modal
-     * https://getbootstrap.com/docs/5.0/components/modal/
-     * Has to Events OnQuestionHasChanged for Success Change
-     * OnQuestionHasNoChange for abort
-     * 
-     * TODO: Validation does not work
+    /*
+    * Edit Component for a Question
+    * Displays as Pop up, use Bootstrap Modal
+    * https://getbootstrap.com/docs/5.0/components/modal/
+    * Has to Events OnQuestionHasChanged for Success Change
+    * OnQuestionHasNoChange for abort
     */
 }
 
@@ -30,7 +28,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="OnCloseChild"></button>
                 </div>
                 <div class="modal-body form-group">
-                    <EditForm OnValidSubmit="OnUpdatedChild" Model="@_model">
+                    <EditForm OnValidSubmit="ComplexValidation" EditContext="_editContext">
                         <DataAnnotationsValidator />
                         <label class="form-label" for="Question">Fragestellung</label>
                         <InputTextArea class="form-control" id="Question" @bind-Value="_model.QuestionText"></InputTextArea>
@@ -52,7 +50,7 @@
                                 </thead>
                                 <tbody>
                                     <Virtualize Items="@_model.Answers" Context="Answer" ItemSize="10" OverscanCount="5">
-                                        <tr @onclick="() => {_selectedAnswer = Answer; StateHasChanged();}">
+                                        <tr @onclick="() => {_selectedAnswer = Answer;_messageStore.Clear(); ;StateHasChanged();}">
                                             <th>@Answer.Text</th>
                                             <th>@Answer.IsTrue</th>
                                         </tr>
@@ -65,9 +63,10 @@
                             }
                             <button class="btn btn-secondary" type="button" @onclick="AddAnswer">Antwort hinzufügen</button>
                         </div>
-                        <ValidationSummary />
+
                         <button type="button" @onclick="OnCloseChild" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" @onclick="OnUpdatedChild" class="btn-primary">OK</button>
+                        <button type="submit" class="btn-primary">OK</button>
+                        <ValidationSummary />
                     </EditForm>
                 </div>
             </div>
@@ -87,6 +86,8 @@
     public EventCallback OnQuestionHasNoChange { get; set; }
 
     private EditQuestion? _model = null;
+    private EditContext? _editContext = null;
+    private ValidationMessageStore? _messageStore = null;
 
     private Answer? _selectedAnswer = null;
 
@@ -101,6 +102,8 @@
         if (Question is not null)
         {
             _model = new EditQuestion(Question);
+            _editContext = new EditContext(_model);
+            _messageStore = new ValidationMessageStore(_editContext);
         }
         return base.OnParametersSetAsync();
     }
@@ -123,4 +126,32 @@
     {
         await OnQuestionHasNoChange.InvokeAsync(Question);
     }
+
+    //Add some complex Validarion for Answers
+    //Validation Message Store has to be cleared manualy
+    //Will be cleared if Answer is selected
+    private async Task ComplexValidation()
+    {
+        if (!(_model.Answers.Any(o => o.IsTrue == true)))
+        {
+            var fi = new FieldIdentifier(_model, "Answers");
+            _messageStore.Add(fi, "One Answer has to be true");
+            _editContext.NotifyValidationStateChanged();
+            return;
+        }
+        foreach (var Answers in _model.Answers)
+        {
+
+            if (Answers.Text.Length < 5)
+            {
+                var fi = new FieldIdentifier(_model, "Answers");
+                _messageStore.Add(fi, "The field Answer from all Answers must be a string or array type with a minimum length of '5'.");
+                _editContext.NotifyValidationStateChanged();
+                return;
+            }
+        }
+
+        await OnUpdatedChild();
+    }
+
 }

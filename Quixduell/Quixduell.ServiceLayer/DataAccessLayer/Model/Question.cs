@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+
 namespace Quixduell.ServiceLayer.DataAccessLayer.Model
 {
     public class Question

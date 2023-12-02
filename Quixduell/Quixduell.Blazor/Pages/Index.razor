@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Identity
 @inject ILernsetRepository LernsetRepository
 @inject UserManager<AppUser> UserManager
+@inject NavigationManager NavigationManager
 <PageTitle>Index</PageTitle>
 
 <AuthorizeView>
@@ -14,6 +15,7 @@
                 <thead>
                     <tr>
                         <th scope="col"></th>
+                        <th scope="col">Name</th>
                         <th scope="col">Kategorie</th>
                         <th scope="col">Ersteller</th>
                         <th scope="col"></th>
@@ -23,6 +25,7 @@
                     <Virtualize Items="@Lernsets" Context="Lernset" ItemSize="10" OverscanCount="5">
                         <tr>
                             <th scope="row"></th>
+                            <td>@Lernset.Name</td>
                             <td>@Lernset.Category.Name</td>
                             <td>@Lernset.Creator.Email</td>
                             <td><a href="\lernset\edit\@Lernset.ID">Edit</a></td>

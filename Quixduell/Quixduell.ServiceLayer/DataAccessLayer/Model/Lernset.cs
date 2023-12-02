@@ -8,6 +8,10 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
         public Guid ID { get; set; }
 
         [Required]
+        [StringLength(50)]
+        public string Name { get; set; }
+
+        [Required]
         public Category? Category { get; set; }
         public List<Question> Questions { get; set; } = new List<Question>();
 

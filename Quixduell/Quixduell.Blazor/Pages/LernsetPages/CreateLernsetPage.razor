@@ -2,6 +2,7 @@
 @attribute [Authorize]
 @inject ILernsetRepository LernsetRepository
 @inject UserManager<AppUser> UserManager
+@inject NavigationManager NavigationManager
 
 @using Quixduell.Blazor.BlazorComponents.Answer
 @using Quixduell.Blazor.BlazorComponents.Category
@@ -11,10 +12,11 @@
 <PageTitle>Create Lernset</PageTitle>
 
 
-@code{
+@code {
     /*Page for Adding a new Lernset
      * Contains a Component for choosing a Category, Add or Delete AppUsers from the Contributor List
-     * Possible to Create new Questions and Edit them in the same Page 
+     * Possible to Create new Questions and Edit them in the same Page
+     * //TODO Complex Type Validation
     * */
 
 }
@@ -29,51 +31,71 @@
         @if (_createLernset is not null)
         {
             <EditForm Model="_createLernset" Context="Model" OnValidSubmit="SaveLernset">
-                <DataAnnotationsValidator/>
-                <div class="form-group">
-                    <div class="container">
-                        <div class="m-3">
-                            <label for="Category" class="form-label">Kategorie</label>
-                            <label id="Category" class="form-control">@_createLernset?.Category?.Name</label>
-                        </div>
-                        <SelectCategoryComponent CategorySelected="(category) => {_createLernset!.Category = category;StateHasChanged();}"></SelectCategoryComponent>
-                        <div>
-                            <div>
-                                <label for="Contributors" class="form-label">Mitwirkende</label>
-                                <label class="form-control" id="Contributors">@_createLernset!.GetContributortoString</label>
-                                <div>
-                                    <SelectUnselectUserComponent UserAdded="(appUser) => {_createLernset.Contributor.Add(appUser);StateHasChanged();}"
-                                                                 UserDeleted="(appUser) => {_createLernset.Contributor.Remove(appUser);StateHasChanged();}"></SelectUnselectUserComponent>
-                                </div>
+                <DataAnnotationsValidator />
+                <div class="container">
+                    <div class="card p-1 mb-2">
+                        <h5 class="card-title">Allgemein</h5>
+                        <label for="LernsetName" class="form-label">Name</label>
+                        <InputText id="LernsetName" class="form-control" @bind-Value=_createLernset.Name></InputText>
+                    </div>
+                    <div class="card p-1 mb-2">
+                        <div class="card-body">
+                            <h5 class="card-title">Kategorie</h5>
+                            <input id="Category" class="form-control" placeholder="@_createLernset?.Category?.Name" readonly>
+                            <button class="btn btn-primary" type="button" @onclick="() => {_toggleCategorySelect = !_toggleCategorySelect; StateHasChanged();}">
+                                Kategorie ändern
+                            </button>
+                            <div class="m-3">
+                                @if (_toggleCategorySelect)
+                                {
+                                    <SelectCategoryComponent CategorySelected="(category) => {_toggleCategorySelect = false;_createLernset!.Category = category;StateHasChanged();}"></SelectCategoryComponent>
+                                }
                             </div>
                         </div>
                     </div>
-                    <div class="container">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Frage</th>
-                                    <th scope="col">Fragenart</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <Virtualize Items="@_createLernset.Questions" Context="Question" ItemSize="10" OverscanCount="5">
-                                    <tr @onclick="() => {_selectedQuestion = Question;StateHasChanged();}">
-                                        <td>@Question.QuestionText</td>
-                                        <td>@Question.Question_Type</td>
+                    <div class="card p-1 mb-2">
+                        <div class="card-body">
+                            <h5 class="card-title">Mitwirkende</h5>
+                            <input id="Contributors" class="form-control" placeholder="@_createLernset.GetContributortoString" readonly>
+                            <button class="btn btn-primary" type="button" @onclick="() => {_toggleUserSelect = !_toggleUserSelect; StateHasChanged();}">
+                                Mitwirkende hinzufügen/entfernen
+                            </button>
+                            @if (_toggleUserSelect)
+                            {
+                                <SelectUnselectUserComponent UserAdded="(appUser) => {_createLernset.Contributor.Add(appUser);StateHasChanged();}"
+                                                             UserDeleted="(appUser) => {_createLernset.Contributor.Remove(appUser);StateHasChanged();}"></SelectUnselectUserComponent>
+                            }
+                        </div>
+                    </div>
+                    <div class="card p-1 mb-2">
+                        <div class="card-body">
+                            <h5 class="card-title">Fragen</h5>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Frage</th>
+                                        <th scope="col">Fragenart</th>
                                     </tr>
-                                </Virtualize>
-                            </tbody>
-                        </table>
-                        <button type="button" class="btn btn-primary" @onclick="AddQuestion">Frage hinzufügen</button>
-                        @if (_selectedQuestion is not null)
-                        {
-                            <EditQuestionComponent Question="@_selectedQuestion" OnQuestionHasNoChange="() => {_selectedQuestion = null;StateHasChanged();}" OnQuestionHasChanged="() => {_selectedQuestion = null;StateHasChanged();}"></EditQuestionComponent>
-                        }
+                                </thead>
+                                <tbody>
+                                    <Virtualize Items="@_createLernset.Questions" Context="Question" ItemSize="10" OverscanCount="5">
+                                        <tr @onclick="() => {_selectedQuestion = Question;StateHasChanged();}">
+                                            <td>@Question.QuestionText</td>
+                                            <td>@Question.Question_Type</td>
+                                        </tr>
+                                    </Virtualize>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn btn-primary" @onclick="AddQuestion">Frage hinzufügen</button>
+                            @if (_selectedQuestion is not null)
+                            {
+                                <EditQuestionComponent Question="@_selectedQuestion" OnQuestionHasNoChange="() => {_selectedQuestion = null;StateHasChanged();}" OnQuestionHasChanged="() => {_selectedQuestion = null;StateHasChanged();}"></EditQuestionComponent>
+                            }
+                        </div>
                     </div>
                 </div>
                 <div>
-                    <ValidationSummary/>
+                    <ValidationSummary />
                     <button class="btn btn-primary" type="submit">Speichern</button>
                 </div>
             </EditForm>
@@ -97,6 +119,8 @@
 
     private CreateLernset? _createLernset;
     private Question? _selectedQuestion { get; set; }
+    private bool _toggleUserSelect = false;
+    private bool _toggleCategorySelect = false;
 
 
     override protected async Task OnInitializedAsync()
@@ -119,7 +143,7 @@
 
 
 
-    private void AddQuestion ()
+    private void AddQuestion()
     {
         var question = new Question();
         _createLernset!.Questions.Add(question);
@@ -127,12 +151,14 @@
 
     }
 
-    private async Task SaveLernset ()
+    private async Task SaveLernset()
     {
         var lernset = new Lernset(_createLernset!.Creator, _createLernset!.Category!);
         lernset.Questions = _createLernset.Questions;
         lernset.Contributors = _createLernset.Contributor;
+        lernset.Name = _createLernset.Name;
         await LernsetRepository.CreateLernsetAsync(lernset);
+        NavigationManager.NavigateTo("/");
     }
 
 

@@ -15,7 +15,10 @@ namespace Quixduell.Blazor.Model.QuestionModel
         public Question_Type Question_Type { get; set; }
 
 
-        [StringLength(1000, MinimumLength = 10)]
+
+
+        [MinLength(5)]
+        [MaxLength(1000)]
         public string QuestionText { get; set; } = string.Empty;
 
         [MinLength(1)]

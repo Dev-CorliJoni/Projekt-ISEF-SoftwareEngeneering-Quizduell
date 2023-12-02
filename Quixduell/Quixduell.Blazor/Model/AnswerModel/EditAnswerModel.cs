@@ -7,8 +7,9 @@ namespace Quixduell.Blazor.Model.AnswerModel
     {
         public bool IsTrue { get; set; }
 
-        [StringLength(150, MinimumLength =10)]
-        public string Text { get; set; }
+        [MinLength(7)]
+        [MaxLength(150)]
+        public string Text { get; set; } = "Answer";
 
 
         public EditAnswerModel(Answer answer)
