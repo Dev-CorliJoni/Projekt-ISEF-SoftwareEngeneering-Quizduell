@@ -20,7 +20,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
 
         public List<Answer> Answer { get; set; } = new List<Answer>();
 
-        public Lernset Lernset { get; set; }
+        public Lernset? Lernset { get; set; }
 
     }
 }

@@ -12,8 +12,10 @@ namespace Quixduell.Blazor.Model.LernsetPagesModel
         public Category? Category { get; set; }
         public List<AppUser> Contributor { get; set; } = new List<AppUser>();
 
+        [MinLength(1)]
         public List<Question> Questions { get; set; } = new List<Question>();
 
+        [Required]
         public AppUser Creator { get;}
 
 

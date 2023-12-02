@@ -1,0 +1,126 @@
+﻿@namespace Quixduell.Blazor.BlazorComponents.Question
+
+@using Quixduell.Blazor.Model.QuestionModel
+@using Quixduell.Blazor.BlazorComponents.Answer
+
+
+
+
+@code {
+     /*
+     * Edit Component for a Question
+     * Displays as Pop up, use Bootstrap Modal
+     * https://getbootstrap.com/docs/5.0/components/modal/
+     * Has to Events OnQuestionHasChanged for Success Change
+     * OnQuestionHasNoChange for abort
+     * 
+     * TODO: Validation does not work
+    */
+}
+
+
+
+@if (_model is not null)
+{
+    <div class="modal" tabindex="-1" style="display:block">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Frage bearbeiten</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="OnCloseChild"></button>
+                </div>
+                <div class="modal-body form-group">
+                    <EditForm OnValidSubmit="OnUpdatedChild" Model="@_model">
+                        <DataAnnotationsValidator />
+                        <label class="form-label" for="Question">Fragestellung</label>
+                        <InputTextArea class="form-control" id="Question" @bind-Value="_model.QuestionText"></InputTextArea>
+
+                        <label class="form-label" for="QuestionType">Fragenart</label>
+                        <InputSelect id="QuestionType" class="form-control" @bind-Value="@_model.Question_Type">
+                            @foreach (var type in Enum.GetValues(typeof(Question_Type)))
+                            {
+                                <option value="@type">@type</option>
+                            }
+                        </InputSelect>
+                        <div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col">Frage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <Virtualize Items="@_model.Answers" Context="Answer" ItemSize="10" OverscanCount="5">
+                                        <tr @onclick="() => {_selectedAnswer = Answer; StateHasChanged();}">
+                                            <th>@Answer.Text</th>
+                                            <th>@Answer.IsTrue</th>
+                                        </tr>
+                                    </Virtualize>
+                                </tbody>
+                            </table>
+                            @if (_selectedAnswer is not null)
+                            {
+                                <EditAnswerComponent Answer="_selectedAnswer" OnAnswerChanged="() => {_selectedAnswer = null;StateHasChanged();}"></EditAnswerComponent>
+                            }
+                            <button class="btn btn-secondary" type="button" @onclick="AddAnswer">Antwort hinzufügen</button>
+                        </div>
+                        <ValidationSummary />
+                        <button type="button" @onclick="OnCloseChild" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" @onclick="OnUpdatedChild" class="btn-primary">OK</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public Question? Question { get; set; }
+
+    [Parameter]
+    public EventCallback<Question> OnQuestionHasChanged { get; set; }
+
+    [Parameter]
+    public EventCallback OnQuestionHasNoChange { get; set; }
+
+    private EditQuestion? _model = null;
+
+    private Answer? _selectedAnswer = null;
+
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        if (Question is not null)
+        {
+            _model = new EditQuestion(Question);
+        }
+        return base.OnParametersSetAsync();
+    }
+
+
+    private void AddAnswer()
+    {
+        _model!.Answers.Add(new Answer());
+    }
+
+    private async Task OnUpdatedChild()
+    {
+        Question!.QuestionText = _model!.QuestionText;
+        Question!.Question_Type = _model.Question_Type;
+        Question!.Answer = _model.Answers;
+        await OnQuestionHasChanged.InvokeAsync(Question);
+    }
+
+    private async Task OnCloseChild()
+    {
+        await OnQuestionHasNoChange.InvokeAsync(Question);
+    }
+}

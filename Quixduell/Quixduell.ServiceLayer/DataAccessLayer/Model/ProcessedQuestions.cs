@@ -11,6 +11,6 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
         public Question_Progress Question_Progress { get; set; }
 
         [Required]
-        public Question Question { get; set; }
+        public Question? Question { get; set; } 
     }
 }

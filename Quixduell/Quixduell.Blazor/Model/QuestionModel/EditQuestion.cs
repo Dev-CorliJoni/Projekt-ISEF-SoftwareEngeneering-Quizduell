@@ -8,17 +8,17 @@ namespace Quixduell.Blazor.Model.QuestionModel
     /// </summary>
     public class EditQuestion
     {
-        [Required]
+
         public string Name { get; set; } = string.Empty;
 
         [Required]
         public Question_Type Question_Type { get; set; }
 
-        [Required]
-        [StringLength(1000)]
+
+        [StringLength(1000, MinimumLength = 10)]
         public string QuestionText { get; set; } = string.Empty;
 
-        [Required]
+        [MinLength(1)]
         public List<Answer> Answers { get; set; }
 
 

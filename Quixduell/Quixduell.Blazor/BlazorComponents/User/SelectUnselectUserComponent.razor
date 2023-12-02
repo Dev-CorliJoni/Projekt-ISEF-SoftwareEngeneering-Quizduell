@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@namespace Quixduell.Blazor.BlazorComponents.User
+@using Microsoft.AspNetCore.Identity
 @inject IServiceProvider ServiceProvider
 
 
@@ -23,8 +24,8 @@
                 <tr>
                     <th scope="row"></th>
                     <td>@User.Email</td>
-                    <td><button @onclick="() => AddUser(User)" class="btn-primary">Mitwirkender hinzufügen</button></td>
-                    <td><button @onclick="() => DeleteUser(User)" class="btn-danger">Mitwirkender entfernen</button></td>
+                    <td><button @onclick="() => AddUser(User)" class=" btn btn-primary">Mitwirkender hinzufügen</button></td>
+                    <td><button @onclick="() => DeleteUser(User)" class="btn btn-danger">Mitwirkender entfernen</button></td>
                 </tr>
             </Virtualize>
         </tbody>

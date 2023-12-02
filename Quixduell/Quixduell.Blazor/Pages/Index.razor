@@ -4,48 +4,48 @@
 @inject UserManager<AppUser> UserManager
 <PageTitle>Index</PageTitle>
 
+<AuthorizeView>
+    <Authorized>
+        @if (Lernsets is not null)
+        {
+            //https://getbootstrap.com/docs/5.0/content/tables/
 
-@if(Lernsets is not null)
-{
-    //https://getbootstrap.com/docs/5.0/content/tables/
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Kategorie</th>
+                        <th scope="col">Ersteller</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <Virtualize Items="@Lernsets" Context="Lernset" ItemSize="10" OverscanCount="5">
+                        <tr>
+                            <th scope="row"></th>
+                            <td>@Lernset.Category.Name</td>
+                            <td>@Lernset.Creator.Email</td>
+                            <td><a href="\lernset\edit\@Lernset.ID">Edit</a></td>
+                        </tr>
+                    </Virtualize>
+                </tbody>
+            </table>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p>You're not authorized.</p>
+        <a href="/Identity/Account/Login">Please Login</a>
+    </NotAuthorized>
+</AuthorizeView>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col"></th>
-                <th scope="col">Kategorie</th>
-                <th scope="col">Ersteller</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <Virtualize Items="@Lernsets" Context="Lernset" ItemSize="10" OverscanCount="5" >
-                <tr>
-                    <th scope="row"></th>
-                    <td>@Lernset.Category.Name</td>
-                    <td>@Lernset.Creator.Email</td>
-                    <td><a href="\lernset\edit\@Lernset.ID">Edit</a></td>
-                </tr>
-                </Virtualize>
-        </tbody>
-    </table>
 
-
-    <button class="btn" @onclick="InitSampleData">Init Sample Data</button>
-    <p class="text-danger">@ErrorMessage</p>
-    
-}
 
 
 @code{
 
 
-    [CascadingParameter]
-    private Task<AuthenticationState> _authenticationState { get; set; }
 
     List<Lernset>? Lernsets = null;
-
-    string ErrorMessage = "";
 
     override protected async Task OnInitializedAsync()
     {
@@ -55,32 +55,5 @@
         Lernsets = new List<Lernset>(await LernsetRepository.GetLernsetsAsync());
     }
 
-
-    private async Task InitSampleData ()
-    {
-        var user = (await _authenticationState).User;
-
-        if(user.Identity.IsAuthenticated)
-        {
-            var currentUser = await UserManager.GetUserAsync(user);
-
-
-            var category = new Category();
-            category.Name = "Test Cat";
-
-            var Lernset = new Lernset(currentUser, category);
-
-            await LernsetRepository.CreateLernsetAsync(Lernset);
-            Lernsets = new List<Lernset>(await LernsetRepository.GetLernsetsAsync());
-        }
-        else
-        {
-            ErrorMessage = "Not Logged In";
-        }
-
-
-
-
-    }
 }
 
