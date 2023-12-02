@@ -20,6 +20,10 @@ builder.Services.Configure<AzureFileLoggerOptions>(options =>
 
 //Get Connection String
 var connectionString = builder.Configuration.GetConnectionString("SQL");
+if (connectionString is null)
+{
+    throw new ArgumentNullException(nameof(connectionString));
+}
 
 //Configure Entity Framework for Identity
 builder.Services.AddDbContext<AppDatabaseContext<User>>(options =>

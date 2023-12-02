@@ -1,0 +1,141 @@
+﻿@page "/Lernset/Create"
+@attribute [Authorize]
+@inject ILernsetRepository LernsetRepository
+@inject UserManager<AppUser> UserManager
+
+@using Quixduell.Blazor.BlazorComponents.Answer
+@using Quixduell.Blazor.BlazorComponents.Category
+@using Quixduell.Blazor.BlazorComponents.Question
+@using Quixduell.Blazor.BlazorComponents.User
+
+<PageTitle>Create Lernset</PageTitle>
+
+
+@code{
+    /*Page for Adding a new Lernset
+     * Contains a Component for choosing a Category, Add or Delete AppUsers from the Contributor List
+     * Possible to Create new Questions and Edit them in the same Page 
+    * */
+
+}
+
+
+
+
+
+<AuthorizeView>
+    <Authorized>
+        <p>Hello, @context.User.Identity?.Name!</p>
+        @if (_createLernset is not null)
+        {
+            <EditForm Model="_createLernset" Context="Model" OnValidSubmit="SaveLernset">
+                <DataAnnotationsValidator/>
+                <div class="form-group">
+                    <div class="container">
+                        <div class="m-3">
+                            <label for="Category" class="form-label">Kategorie</label>
+                            <label id="Category" class="form-control">@_createLernset?.Category?.Name</label>
+                        </div>
+                        <SelectCategoryComponent CategorySelected="(category) => {_createLernset!.Category = category;StateHasChanged();}"></SelectCategoryComponent>
+                        <div>
+                            <div>
+                                <label for="Contributors" class="form-label">Mitwirkende</label>
+                                <label class="form-control" id="Contributors">@_createLernset!.GetContributortoString</label>
+                                <div>
+                                    <SelectUnselectUserComponent UserAdded="(appUser) => {_createLernset.Contributor.Add(appUser);StateHasChanged();}"
+                                                                 UserDeleted="(appUser) => {_createLernset.Contributor.Remove(appUser);StateHasChanged();}"></SelectUnselectUserComponent>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Frage</th>
+                                    <th scope="col">Fragenart</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <Virtualize Items="@_createLernset.Questions" Context="Question" ItemSize="10" OverscanCount="5">
+                                    <tr @onclick="() => {_selectedQuestion = Question;StateHasChanged();}">
+                                        <td>@Question.QuestionText</td>
+                                        <td>@Question.Question_Type</td>
+                                    </tr>
+                                </Virtualize>
+                            </tbody>
+                        </table>
+                        <button type="button" class="btn btn-primary" @onclick="AddQuestion">Frage hinzufügen</button>
+                        @if (_selectedQuestion is not null)
+                        {
+                            <EditQuestionComponent Question="@_selectedQuestion" OnQuestionHasNoChange="() => {_selectedQuestion = null;StateHasChanged();}" OnQuestionHasChanged="() => {_selectedQuestion = null;StateHasChanged();}"></EditQuestionComponent>
+                        }
+                    </div>
+                </div>
+                <div>
+                    <ValidationSummary/>
+                    <button class="btn btn-primary" type="submit">Speichern</button>
+                </div>
+            </EditForm>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p>You're not authorized.</p>
+        <a href="">Please Login</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+
+@code {
+
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? _authenticationState { get; set; }
+
+    private CreateLernset? _createLernset;
+    private Question? _selectedQuestion { get; set; }
+
+
+    override protected async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var user = (await _authenticationState!).User;
+
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+        {
+            var currentUser = await UserManager.GetUserAsync(user);
+
+            if (currentUser is not null)
+            {
+                _createLernset = new CreateLernset(currentUser);
+                StateHasChanged();
+            }
+        }
+    }
+
+
+
+    private void AddQuestion ()
+    {
+        var question = new Question();
+        _createLernset!.Questions.Add(question);
+        _selectedQuestion = question;
+
+    }
+
+    private async Task SaveLernset ()
+    {
+        var lernset = new Lernset(_createLernset!.Creator, _createLernset!.Category!);
+        lernset.Questions = _createLernset.Questions;
+        lernset.Contributors = _createLernset.Contributor;
+        await LernsetRepository.CreateLernsetAsync(lernset);
+    }
+
+
+
+}
+

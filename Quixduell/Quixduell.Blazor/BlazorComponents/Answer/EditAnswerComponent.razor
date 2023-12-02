@@ -1,0 +1,59 @@
+﻿@namespace Quixduell.Blazor.BlazorComponents.Answer
+@using Quixduell.Blazor.Model.AnswerModel
+
+
+@if (_editAnswerModel is not null)
+{
+    <div class="form-group m-3">
+        <EditForm OnValidSubmit="OnValidSubmit" Model="@_editAnswerModel">
+            <DataAnnotationsValidator />
+            <div class="m-3">
+                <div>
+                    <label class="form-label" for="AnswerText">Antwort</label>
+                    <InputTextArea class="form-control" id="AnswerText" @bind-Value=@_editAnswerModel.Text></InputTextArea>
+                </div>
+                <div>
+                    <InputCheckbox class="form-check-input" id="isTrue" @bind-Value=@_editAnswerModel.IsTrue></InputCheckbox>
+                    <label class="form-check-label" for="isTrue">Antwort richtig</label>
+                </div>
+            </div>
+            <ValidationSummary/>
+            <button class="btn btn-primary" type="submit">OK</button>
+        </EditForm>
+    </div>
+}
+
+
+
+@code {
+
+    [Parameter]
+    public Answer? Answer { get; set; }
+
+    [Parameter]
+    public EventCallback<Answer> OnAnswerChanged { get; set; }
+
+
+    private EditAnswerModel? _editAnswerModel = null;
+
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (Answer is not null)
+        {
+            _editAnswerModel = new EditAnswerModel(Answer);
+        }
+    }
+
+    private async Task OnValidSubmit ()
+    {
+        if (_editAnswerModel is not null)
+        {
+            Answer!.Text = _editAnswerModel.Text;
+            Answer!.IsTrue = _editAnswerModel.IsTrue;
+            await OnAnswerChanged.InvokeAsync(Answer);
+        }
+    }
+
+}
