@@ -1,6 +1,7 @@
 ﻿@namespace Quixduell.Blazor.BlazorComponents.User
 @using Microsoft.AspNetCore.Identity
 @inject IServiceProvider ServiceProvider
+@inject UserManager<AppUser> UserManager
 
 
 @code{
@@ -9,7 +10,14 @@
      */
 }
 
-<div class="container">
+<div>
+    <div class="input-group">
+        <InputText class="form-control" @bind-Value=_searchString @bind-Value:after="SearchCategories"></InputText>
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button">Suche</button>
+        </div>
+    </div>
+<div class="container" style="height:20vh;overflow-y:scroll">
     <table class="table">
         <thead>
             <tr>
@@ -24,12 +32,13 @@
                 <tr>
                     <th scope="row"></th>
                     <td>@User.Email</td>
-                    <td><button @onclick="() => AddUser(User)" class=" btn btn-primary">Mitwirkender hinzufügen</button></td>
-                    <td><button @onclick="() => DeleteUser(User)" class="btn btn-danger">Mitwirkender entfernen</button></td>
+                    <td><button type="button" @onclick="() => AddUser(User)" class=" btn btn-primary">Mitwirkender hinzufügen</button></td>
+                    <td><button type="button" @onclick="() => DeleteUser(User)" class="btn btn-danger">Mitwirkender entfernen</button></td>
                 </tr>
             </Virtualize>
         </tbody>
     </table>
+</div>
 </div>
 
 
@@ -42,8 +51,9 @@
     [Parameter]
     public EventCallback<AppUser> UserAdded { get; set; }
 
-
+    private List<AppUser>? _displayedAppUsers;
     private List<AppUser>? _appUsers;
+    private string _searchString = "";
 
 
     protected override void OnInitialized()
@@ -54,22 +64,31 @@
         {
             var userManager = scope.ServiceProvider.GetService<UserManager<AppUser>>();
             _appUsers = userManager!.Users.ToList();
+            SearchCategories();
         }
 
         base.OnInitialized();
     }
 
- 
-    
+
+
 
 
     private async Task DeleteUser(AppUser appUser)
     {
-        await UserDeleted.InvokeAsync(appUser);
+        var user = UserManager.Users.First(o => o.Id == appUser.Id);
+        await UserDeleted.InvokeAsync(user);
     }
 
     private async Task AddUser(AppUser appUser)
     {
-        await UserAdded.InvokeAsync(appUser);
+        var user = UserManager.Users.First(o => o.Id == appUser.Id);
+        await UserAdded.InvokeAsync(user);
+    }
+
+    private void SearchCategories()
+    {
+        _displayedAppUsers = _appUsers.FindAll(o => o.Email.Contains(_searchString));
+        StateHasChanged();
     }
 }

@@ -10,22 +10,31 @@
 }
 
 <div class="container" style="height:20vh;overflow-y:scroll">
-    @if (Categories is not null)
+    @if (_categories is not null)
     {
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Kategorie</th>
-            </tr>
-        </thead>
-            <tbody>
-            <Virtualize Items="Categories" Context="Category" ItemSize="10" OverscanCount="5">
-                <tr @onclick="() => CategorySelect(Category)">
-                    <td>@Category.Name</td>
+        <div class="form-group">
+            <div class="input-group">
+                <InputText class="form-control" @bind-Value=_searchString @bind-Value:after="SearchCategories"></InputText>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button">Suche</button>
+                </div>
+                </div> 
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Kategorie</th>
                 </tr>
-            </Virtualize>
-        </tbody>
-    </table>
+            </thead>
+                <tbody>
+                    <Virtualize Items="_displayedCategories" Context="Category" ItemSize="10" OverscanCount="5">
+                    <tr @onclick="() => CategorySelect(Category)">
+                        <td>@Category.Name</td>
+                    </tr>
+                </Virtualize>
+            </tbody>
+        </table>
+        </div>
+       
     }
 </div>
 
@@ -38,17 +47,26 @@
     public EventCallback<Category> CategorySelected { get; set; }
 
 
-    public List<Category>? Categories { get; set; }
+    private List<Category>? _categories;
+    private List<Category>? _displayedCategories;
+    private string _searchString = "";
 
     protected override async  Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        Categories = new List<Category>(await LernsetCategoryRepository.GetCategoriesAsync());
+        _categories = new List<Category>(await LernsetCategoryRepository.GetCategoriesAsync());
+        SearchCategories();
     }
 
     private async Task CategorySelect(Category category)
     {
         await CategorySelected.InvokeAsync(category);
+    }
+
+    private void SearchCategories ()
+    {
+        _displayedCategories = _categories.FindAll(o => o.Name.Contains(_searchString));
+        StateHasChanged();
     }
 
 
