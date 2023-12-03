@@ -1,11 +1,12 @@
 ﻿@namespace Quixduell.Blazor.BlazorComponents.Category
 @using Microsoft.AspNetCore.Identity
 @inject ILernsetCategoryRepository LernsetCategoryRepository
+@inject IJSRuntime JsRuntime
 
 
 @code {
-     /*
-     * Component can be used to choose a Category, works with Events for the Parent Component
+    /*
+    * Component can be used to choose a Category, works with Events for the Parent Component
     */
 }
 
@@ -18,25 +19,28 @@
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="button">Suche</button>
                 </div>
-                </div> 
+            </div>
             <table class="table">
                 <thead>
-                <tr>
-                    <th scope="col">Kategorie</th>
-                </tr>
-            </thead>
+                    <tr>
+                        <th scope="col">Kategorie</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <Virtualize Items="_displayedCategories" Context="Category" ItemSize="10" OverscanCount="5">
-                    <tr @onclick="() => CategorySelect(Category)">
-                        <td>@Category.Name</td>
-                    </tr>
-                </Virtualize>
-            </tbody>
-        </table>
+                        <tr @onclick="() => CategorySelect(Category)">
+                            <td>@Category.Name</td>
+                        </tr>
+                    </Virtualize>
+                </tbody>
+            </table>
         </div>
-       
     }
 </div>
+<div>
+    <button type="button" class="btn" @onclick="CreateCategory">Kategorie hinzufügen</button>
+</div>
+
 
 
 
@@ -51,7 +55,7 @@
     private List<Category>? _displayedCategories;
     private string _searchString = "";
 
-    protected override async  Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         _categories = new List<Category>(await LernsetCategoryRepository.GetCategoriesAsync());
@@ -63,10 +67,19 @@
         await CategorySelected.InvokeAsync(category);
     }
 
-    private void SearchCategories ()
+    private void SearchCategories()
     {
         _displayedCategories = _categories.FindAll(o => o.Name.Contains(_searchString));
         StateHasChanged();
+    }
+
+    private async Task CreateCategory()
+    {
+        string prompted = await JsRuntime.InvokeAsync<string>("prompt", "Kategorie:"); // Prompt
+        await LernsetCategoryRepository.CreateCategoryAsync(new Category() { Name = prompted });
+        _categories = new List<Category>(await LernsetCategoryRepository.GetCategoriesAsync());
+        SearchCategories();
+
     }
 
 
