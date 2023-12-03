@@ -1,0 +1,216 @@
+﻿@page "/Lernset/Create"
+@page "/Lernset/Edit/{Id}"
+@attribute [Authorize]
+@inject ILernsetRepository LernsetRepository
+@inject UserManager<AppUser> UserManager
+@inject NavigationManager NavigationManager
+
+@using Quixduell.Blazor.BlazorComponents.Answer
+@using Quixduell.Blazor.BlazorComponents.Category
+@using Quixduell.Blazor.BlazorComponents.Question
+@using Quixduell.Blazor.BlazorComponents.User
+
+<PageTitle>Create Lernset</PageTitle>
+
+
+@code {
+    /*Page for Adding or Edit a Lernset
+     * On Parameter Async check if a existing ID is present
+     * Checks Contributor and Creators on exiting Lernset
+     * On Save funktion checks inheritance if its a new Lernset or a existing
+     * Contains a Component for choosing a Category, Add or Delete AppUsers from the Contributor List
+     * Possible to Create new Questions and Edit them in the same Page
+    * */
+
+}
+
+
+
+
+
+
+        @if (_createLernset is not null)
+{
+    <EditForm Model="_createLernset" Context="Model" OnValidSubmit="SaveLernset">
+        <DataAnnotationsValidator />
+        <div class="container">
+            <div class="card p-1 mb-2">
+                <h5 class="card-title">Allgemein</h5>
+                <label for="LernsetName" class="form-label">Name</label>
+                <InputText id="LernsetName" class="form-control" @bind-Value=_createLernset.Name></InputText>
+            </div>
+            <div class="card p-1 mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">Kategorie</h5>
+                    <input id="Category" class="form-control" placeholder="@_createLernset?.Category?.Name" readonly>
+                    <button class="btn btn-primary" type="button" @onclick="() => {_toggleCategorySelect = !_toggleCategorySelect; StateHasChanged();}">
+                        Kategorie ändern
+                    </button>
+                    <div class="m-3">
+                        @if (_toggleCategorySelect)
+                        {
+                            <CreateSelectCategoryComponent CategorySelected="(category) => {_toggleCategorySelect = false;_createLernset!.Category = category;StateHasChanged();}"></CreateSelectCategoryComponent>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="card p-1 mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">Mitwirkende</h5>
+                    <input id="Contributors" class="form-control" placeholder="@_createLernset.GetContributortoString" readonly>
+                    <button class="btn btn-primary" type="button" @onclick="() => {_toggleUserSelect = !_toggleUserSelect; StateHasChanged();}">
+                        Mitwirkende hinzufügen/entfernen
+                    </button>
+                    @if (_toggleUserSelect)
+                    {
+                        <SelectUnselectUserComponent UserAdded="(appUser) => {_createLernset.Contributor.Add(appUser);StateHasChanged();}"
+                                                     UserDeleted="(appUser) => {_createLernset.Contributor.Remove(appUser);StateHasChanged();}"></SelectUnselectUserComponent>
+                    }
+                </div>
+            </div>
+            <div class="card p-1 mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">Fragen</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Frage</th>
+                                <th scope="col">Fragenart</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <Virtualize Items="@_createLernset.Questions" Context="Question" ItemSize="10" OverscanCount="5">
+                                <tr @onclick="() => {_selectedQuestion = Question;StateHasChanged();}">
+                                    <td>@Question.QuestionText</td>
+                                    <td>@Question.Question_Type</td>
+                                </tr>
+                            </Virtualize>
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-primary" @onclick="AddQuestion">Frage hinzufügen</button>
+                    @if (_selectedQuestion is not null)
+                    {
+                        <EditQuestionComponent Question="@_selectedQuestion" OnQuestionHasNoChange="() => {_selectedQuestion = null;StateHasChanged();}" OnQuestionHasChanged="() => {_selectedQuestion = null;StateHasChanged();}"></EditQuestionComponent>
+                    }
+                </div>
+            </div>
+        </div>
+        <div>
+            <ValidationSummary />
+            <button class="btn btn-primary" type="submit">Speichern</button>
+        </div>
+    </EditForm>
+}
+else
+{
+    <h1>You have no permission to change this Lernset</h1>
+}
+
+
+
+
+
+
+
+@code {
+
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? _authenticationState { get; set; }
+
+    [Parameter]
+    public String Id { get; set; }
+
+    private ChangeLernset? _createLernset;
+    private Question? _selectedQuestion { get; set; }
+    private bool _toggleUserSelect = false;
+    private bool _toggleCategorySelect = false;
+
+
+    override protected async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        AppUser? currentUser = null;
+        var user = (await _authenticationState!).User;
+        if (user.Identity is null)
+        {
+            return;
+        }
+        currentUser = await UserManager.GetUserAsync(user);
+        if (currentUser is null)
+        {
+            return;
+        }
+
+
+
+        if (Id is not null && Id != String.Empty)
+        {
+            var guid = Guid.Parse(Id);
+            var lernset = await LernsetRepository.GetLernsetByIDAsync(guid);
+            if (lernset is not null)
+            {
+                if ((!lernset.Contributors.Contains(currentUser)) && (lernset.Creator != currentUser))
+                {
+                    return;
+                }
+                _createLernset = new EditLernset(lernset);
+                StateHasChanged();
+                return;
+            }
+        }
+
+        _createLernset = new CreateLernset(currentUser);
+        StateHasChanged();
+
+
+
+
+
+
+
+
+        await base.OnParametersSetAsync();
+    }
+
+    private void AddQuestion()
+    {
+        var question = new Question();
+        _createLernset!.Questions.Add(question);
+        _selectedQuestion = question;
+
+    }
+
+    private async Task SaveLernset()
+    {
+        var edit = _createLernset as EditLernset;
+        if (edit is not null)
+        {
+            var editExistingLernset = await LernsetRepository.GetLernsetByIDAsync(edit.ExistingLernsetID);
+            editExistingLernset.Questions = _createLernset.Questions;
+            editExistingLernset.Contributors = _createLernset.Contributor;
+            editExistingLernset.Name = _createLernset.Name;
+            await LernsetRepository.UpdateLernsetAsync(editExistingLernset);
+            NavigationManager.NavigateTo("/");
+            return;
+        }
+
+
+
+        var CreateNewLernset = new Lernset(_createLernset!.Creator, _createLernset!.Category!);
+        CreateNewLernset.Questions = _createLernset.Questions;
+        CreateNewLernset.Contributors = _createLernset.Contributor;
+        CreateNewLernset.Name = _createLernset.Name;
+        await LernsetRepository.CreateLernsetAsync(CreateNewLernset);
+        NavigationManager.NavigateTo("/");
+    }
+
+
+
+}
+
