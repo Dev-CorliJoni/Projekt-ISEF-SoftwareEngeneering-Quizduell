@@ -6,7 +6,9 @@
 
 @code {
     /*
-    * Component can be used to choose a Category, works with Events for the Parent Component
+    * Component can be used to choose or create a new Category, 
+    * On Select Category will fire a Event
+    * Consits of a Searchfield, Table, and Button to Add new Users
     */
 }
 
@@ -15,10 +17,7 @@
     {
         <div class="form-group">
             <div class="input-group">
-                <InputText class="form-control" @bind-Value=_searchString @bind-Value:after="SearchCategories"></InputText>
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button">Suche</button>
-                </div>
+                <input class="form-control" placeholder="Suche..." @bind=_searchString @bind:event="oninput" @bind:after="SearchCategories">
             </div>
             <table class="table">
                 <thead>
@@ -55,6 +54,10 @@
     private List<Category>? _displayedCategories;
     private string _searchString = "";
 
+    /// <summary>
+    /// Load all Categories and execute Filter Methode <see cref="SearchCategories"/>
+    /// </summary>
+    /// <returns></returns>
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -62,23 +65,51 @@
         SearchCategories();
     }
 
+    /// <summary>
+    /// Execute <see cref="CategorySelected"/> for input param
+    /// </summary>
+    /// <param name="category"></param>
+    /// <returns></returns>
     private async Task CategorySelect(Category category)
     {
         await CategorySelected.InvokeAsync(category);
     }
 
+    /// <summary>
+    /// Filter all Categories from <see cref="_categories"/> with Searchstring <see cref="_searchString"/>
+    /// Save Result in <seealso cref="_displayedCategories"/>
+    /// </summary>
     private void SearchCategories()
     {
-        _displayedCategories = _categories.FindAll(o => o.Name.Contains(_searchString));
-        StateHasChanged();
+        if (_categories is not null)
+        {
+            _displayedCategories = _categories.FindAll(o => o.Name.ToLower().Contains(_searchString.ToLower()));
+            StateHasChanged();
+        }
     }
 
+    /// <summary>
+    /// Prompt for a new Category Name, Create one, if it does not exists
+    /// Show Error if exists already 
+    /// Execute <see cref="SearchCategories"/> after 
+    /// </summary>
+    /// <returns></returns>
     private async Task CreateCategory()
     {
         string prompted = await JsRuntime.InvokeAsync<string>("prompt", "Kategorie:"); // Prompt
-        await LernsetCategoryRepository.CreateCategoryAsync(new Category() { Name = prompted });
-        _categories = new List<Category>(await LernsetCategoryRepository.GetCategoriesAsync());
-        SearchCategories();
+        if (prompted is not null && !String.IsNullOrWhiteSpace(prompted))
+        {
+            var existingCategories = await LernsetCategoryRepository.GetCategoriesAsync();
+            if (existingCategories.Any(o => o.Name.ToLower() == prompted.ToLower()))
+            {
+                await JsRuntime.InvokeVoidAsync("alert", "Kategorie existiert bereits!");
+                return;
+            }
+            await LernsetCategoryRepository.CreateCategoryAsync(new Category() { Name = prompted });
+            _categories = new List<Category>(await LernsetCategoryRepository.GetCategoriesAsync());
+            SearchCategories();
+        }
+
 
     }
 

@@ -11,6 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Model\DataAnnotation\**" />
+    <Content Remove="Model\DataAnnotation\**" />
+    <EmbeddedResource Remove="Model\DataAnnotation\**" />
+    <None Remove="Model\DataAnnotation\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.10.4" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
@@ -34,10 +41,6 @@
 
   <ItemGroup>
     <None Include="C:\Users\i00109253\source\repos\CLONE-Projekt-ISEF-SoftwareEngeneering-Quizduell\Quixduell\Quixduell.Blazor\.editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Model\DataAnnotation\" />
   </ItemGroup>
 
 </Project>
