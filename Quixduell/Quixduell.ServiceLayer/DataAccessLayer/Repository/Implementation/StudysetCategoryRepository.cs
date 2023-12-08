@@ -7,13 +7,13 @@ using Quixduell.ServiceLayer.DataAccessLayer.Repository.RepositoryException;
 namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
 {
     /// <summary>
-    /// Repository for managing Lernset Categories in the database.
+    /// Repository for managing Studyset Categories in the database.
     /// </summary>
-    internal class LernsetCategoryRepository : ILernsetCategoryRepository
+    internal class StudysetCategoryRepository : IStudysetCategoryRepository
     {
         private readonly AppDatabaseContext<AppUser> _dbContext;
 
-        public LernsetCategoryRepository(AppDatabaseContext<AppUser> dbContext)
+        public StudysetCategoryRepository(AppDatabaseContext<AppUser> dbContext)
         {
             _dbContext = dbContext;
         }

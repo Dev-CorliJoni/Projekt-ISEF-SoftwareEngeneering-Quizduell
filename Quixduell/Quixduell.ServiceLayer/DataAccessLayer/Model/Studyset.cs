@@ -2,7 +2,7 @@
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Model
 {
-    public class Lernset
+    public class Studyset
     {
         [Key]
         public Guid ID { get; set; }
@@ -15,19 +15,16 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
 
         public List<AppUser> Contributors { get; set; } = new List<AppUser>();
 
-        private Lernset()
+        private Studyset()
         {
             
         }
 
-        public Lernset(AppUser creator, Category category)
+        public Studyset(AppUser creator, Category category)
         {
             Creator = creator;
             Category = category;
         }
     
     }
-
-
-
 }

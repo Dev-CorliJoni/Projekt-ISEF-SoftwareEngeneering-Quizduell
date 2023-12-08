@@ -6,28 +6,28 @@ using Quixduell.ServiceLayer.DataAccessLayer.Repository.RepositoryException;
 namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
 {
     /// <summary>
-    /// Implementation of the Lernset Repository interface that enables database operations for Lernsets.
+    /// Implementation of the Studyset Repository interface that enables database operations for Studysets.
     /// </summary>
-    internal class LernsetRepository : ILernsetRepository
+    internal class StudysetRepository : IStudysetRepository
     {
         private readonly AppDatabaseContext<AppUser> _appDatabaseContext; // Database context
 
         /// <summary>
-        /// Constructor for the Lernset Repository.
+        /// Constructor for the Studyset Repository.
         /// </summary>
         /// <param name="appDatabaseContext">The database context for the application.</param>
-        public LernsetRepository(AppDatabaseContext<AppUser> appDatabaseContext)
+        public StudysetRepository(AppDatabaseContext<AppUser> appDatabaseContext)
         {
             _appDatabaseContext = appDatabaseContext; // Initializing the database context
         }
 
         /// <summary>
-        /// Retrieves all existing Lernsets.
+        /// Retrieves all existing Studysets.
         /// </summary>
-        /// <returns>A list of all existing Lernsets.</returns>
-        public async Task<IEnumerable<Lernset>> GetLernsetsAsync()
+        /// <returns>A list of all existing Studysets.</returns>
+        public async Task<IEnumerable<Studyset>> GetStudysetsAsync()
         {
-            return await _appDatabaseContext.Lernsets
+            return await _appDatabaseContext.Studysets
                 .Include(o => o.Creator)
                 .Include(o => o.Contributors)
                 .Include(o => o.Category)
@@ -36,66 +36,66 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
         }
 
         /// <summary>
-        /// Searches for a Lernset by its ID.
+        /// Searches for a Studyset by its ID.
         /// </summary>
-        /// <param name="id">The ID of the Lernset to search for.</param>
-        /// <returns>The found Lernset or null if not found.</returns>
-        public async Task<Lernset?> GetLernsetByIDAsync(Guid id)
+        /// <param name="id">The ID of the Studyset to search for.</param>
+        /// <returns>The found Studyset or null if not found.</returns>
+        public async Task<Studyset?> GetStudysetByIDAsync(Guid id)
         {
-            var lernset = await _appDatabaseContext.Lernsets
+            var studySet = await _appDatabaseContext.Studysets
                 .Include(o => o.Creator)
                 .Include(o => o.Contributors)
                 .Include(o => o.Category)
                 .Include(o => o.Questions)
                 .FirstOrDefaultAsync(o => o.ID == id);
 
-            if (lernset is not null)
+            if (studySet is not null)
             {
-                return lernset;
+                return studySet;
             }
 
             return null;
         }
 
         /// <summary>
-        /// Creates a new Lernset.
+        /// Creates a new Studyset.
         /// </summary>
-        /// <param name="lernset">The Lernset to create.</param>
-        public async Task CreateLernsetAsync(Lernset lernset)
+        /// <param name="studyset">The Studyset to create.</param>
+        public async Task CreateStudysetAsync(Studyset studyset)
         {
-            await _appDatabaseContext.Lernsets.AddAsync(lernset);
+            await _appDatabaseContext.Studysets.AddAsync(studyset);
             await _appDatabaseContext.SaveChangesAsync();
         }
 
         /// <summary>
-        /// Updates an existing Lernset.
+        /// Updates an existing Studyset.
         /// </summary>
-        /// <param name="lernset">The Lernset to update.</param>
-        public async Task UpdateLernsetAsync(Lernset lernset)
+        /// <param name="studyset">The Studyset to update.</param>
+        public async Task UpdateStudysetAsync(Studyset studyset)
         {
-            var obj = await GetLernsetByIDAsync(lernset.ID);
+            var obj = await GetStudysetByIDAsync(studyset.ID);
 
             if (obj is null)
             {
-                throw new LernsetNotFoundException(lernset.ID);
+                throw new StudysetNotFoundException(studyset.ID);
             }
-            obj.Category = lernset.Category;
-            obj.Contributors = lernset.Contributors;
-            obj.Questions = lernset.Questions;
+            obj.Category = studyset.Category;
+            obj.Contributors = studyset.Contributors;
+            obj.Questions = studyset.Questions;
 
             await _appDatabaseContext.SaveChangesAsync();
         }
 
         /// <summary>
-        /// Deletes a Lernset by its ID.
+        /// Deletes a Studyset by its ID.
         /// </summary>
-        /// <param name="id">The ID of the Lernset to delete.</param>
-        public async Task DeleteLernsetAsync(Guid id)
+        /// <param name="id">The ID of the Studyset to delete.</param>
+        public async Task DeleteStudysetAsync(Guid id)
         {
-            Lernset? obj = null;
+            Studyset? obj = null;
             try
             {
-                obj = await GetLernsetByIDAsync(id);
+                obj = await GetStudysetByIDAsync(id);
             }
             catch
             {
@@ -104,7 +104,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
 
             if (obj is not null)
             {
-                _appDatabaseContext.Lernsets.Remove(obj);
+                _appDatabaseContext.Studysets.Remove(obj);
                 await _appDatabaseContext.SaveChangesAsync();
             }
         }

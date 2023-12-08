@@ -1,6 +1,6 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.Identity
-@inject ILernsetRepository LernsetRepository
+@inject IStudysetRepository LernsetRepository
 @inject UserManager<AppUser> UserManager
 <PageTitle>Index</PageTitle>
 
@@ -43,7 +43,7 @@
     [CascadingParameter]
     private Task<AuthenticationState> _authenticationState { get; set; }
 
-    List<Lernset>? Lernsets = null;
+    List<Studyset>? Lernsets = null;
 
     string ErrorMessage = "";
 
@@ -52,7 +52,7 @@
         await base.OnInitializedAsync();
 
 
-        Lernsets = new List<Lernset>(await LernsetRepository.GetLernsetsAsync());
+        Lernsets = new List<Studyset>(await LernsetRepository.GetStudysetsAsync());
     }
 
 
@@ -68,10 +68,10 @@
             var category = new Category();
             category.Name = "Test Cat";
 
-            var Lernset = new Lernset(currentUser, category);
+            var Lernset = new Studyset(currentUser, category);
 
-            await LernsetRepository.CreateLernsetAsync(Lernset);
-            Lernsets = new List<Lernset>(await LernsetRepository.GetLernsetsAsync());
+            await LernsetRepository.CreateStudysetAsync(Lernset);
+            Lernsets = new List<Studyset>(await LernsetRepository.GetStudysetsAsync());
         }
         else
         {
