@@ -4,9 +4,9 @@ using Quixduell.ServiceLayer.DataAccessLayer.Repository.RepositoryException;
 namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Interface
 {
     /// <summary>
-    /// Interface for managing Lernset Categories in the database.
+    /// Interface for managing Studyset Categories in the database.
     /// </summary>
-    public interface ILernsetCategoryRepository
+    public interface IStudysetCategoryRepository
     {
         /// <summary>
         /// Retrieves all categories asynchronously from the database.

@@ -38,8 +38,8 @@ namespace Quixduell.ServiceLayer
                 }, ServiceLifetime.Transient);
             }
 
-            services.AddScoped<ILernsetRepository,LernsetRepository>();
-            services.AddScoped<ILernsetCategoryRepository, LernsetCategoryRepository>();
+            services.AddScoped<IStudysetRepository,StudysetRepository>();
+            services.AddScoped<IStudysetCategoryRepository, StudysetCategoryRepository>();
 
             return services;
         }

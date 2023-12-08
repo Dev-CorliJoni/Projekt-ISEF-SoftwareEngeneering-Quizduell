@@ -12,7 +12,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
         public string Name { get; set; } = string.Empty;
 
         [Required]
-        public Question_Type Question_Type { get; set; }
+        public QuestionType Question_Type { get; set; }
 
         [Required]
         [StringLength(1000)]
@@ -20,7 +20,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
 
         public List<Answer> Answer { get; set; } = new List<Answer>();
 
-        public Lernset Lernset { get; set; }
+        public Studyset Lernset { get; set; }
 
     }
 }

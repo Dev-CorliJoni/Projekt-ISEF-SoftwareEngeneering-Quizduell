@@ -8,7 +8,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
         public Guid ID { get; set; }
 
         [Required]
-        public Question_Progress Question_Progress { get; set; }
+        public QuestionProgress QuestionProgress { get; set; }
 
         [Required]
         public Question Question { get; set; }

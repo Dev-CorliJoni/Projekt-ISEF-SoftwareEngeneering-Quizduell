@@ -1,6 +1,6 @@
 ﻿namespace Quixduell.ServiceLayer.DataAccessLayer.Model
 {
-    public enum Question_Progress
+    public enum QuestionProgress
     {
         Worse,Good,Best,Perfect
     }
