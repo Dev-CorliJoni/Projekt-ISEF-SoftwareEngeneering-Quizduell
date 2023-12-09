@@ -27,12 +27,12 @@ namespace Quixduell.ServiceLayer
             using (var scope = services.BuildServiceProvider())
             {
                 var bBOptions = scope.GetRequiredService<IOptions<DataAccessOptions>>();
-                services.AddDbContext<AppDatabaseContext<AppUser>>(option =>
+                services.AddDbContext<AppDatabaseContext<User>>(option =>
                 {
                     option.UseSqlServer(bBOptions.Value.ConnectionString);
                 });
 
-                services.AddDbContext<AppDatabaseContext<AppUser>>(option =>
+                services.AddDbContext<AppDatabaseContext<User>>(option =>
                 {
                     option.UseSqlServer(bBOptions.Value.ConnectionString);
                 }, ServiceLifetime.Transient);

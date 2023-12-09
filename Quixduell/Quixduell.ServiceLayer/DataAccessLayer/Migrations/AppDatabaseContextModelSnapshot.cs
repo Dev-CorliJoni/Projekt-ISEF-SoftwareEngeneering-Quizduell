@@ -8,7 +8,7 @@ using Quixduell.ServiceLayer.DataAccessLayer.Model;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Migrations
 {
-    [DbContext(typeof(AppDatabaseContext<AppUser>))]
+    [DbContext(typeof(AppDatabaseContext<User>))]
     partial class AppDatabaseContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

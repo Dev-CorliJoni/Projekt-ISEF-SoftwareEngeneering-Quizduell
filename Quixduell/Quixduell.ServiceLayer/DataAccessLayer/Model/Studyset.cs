@@ -1,29 +1,31 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Model
 {
-    public class Studyset
+    public class Studyset : IdModel
     {
-        [Key]
-        public Guid ID { get; set; }
-
         [Required]
         public Category Category { get; set; }
-        public List<Question> Questions { get; set; } = new List<Question>();
 
-        public AppUser Creator { get; set; }
+        [Required]
+        public User Creator { get; set; }
+        public List<User> Contributors { get; set; } = new List<User>();
 
-        public List<AppUser> Contributors { get; set; } = new List<AppUser>();
-
-        private Studyset()
+        [Required]
+        public List<BaseQuestion> Questions { get; set; } = new List<BaseQuestion>(); // Ist der initialwert nötig
+        public List<UserStudysetConnection> Connections { get; set; }
+        
+        private Studyset() //Brauch man den leeren Konstruktor
         {
             
         }
 
-        public Studyset(AppUser creator, Category category)
+        public Studyset(User creator, Category category, List<BaseQuestion> questions)
         {
             Creator = creator;
             Category = category;
+            Questions = questions;
         }
     
     }

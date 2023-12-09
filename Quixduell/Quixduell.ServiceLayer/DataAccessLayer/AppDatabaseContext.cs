@@ -7,9 +7,9 @@ namespace Quixduell.Blazor.Data
 {
     public class AppDatabaseContext<TUser> 
         : IdentityDbContext<TUser, IdentityRole, string>
-        where TUser : AppUser
+        where TUser : User
     {
-        public AppDatabaseContext(DbContextOptions<AppDatabaseContext<AppUser>> options)
+        public AppDatabaseContext(DbContextOptions<AppDatabaseContext<User>> options)
             : base(options)
         {
         }
@@ -22,18 +22,18 @@ namespace Quixduell.Blazor.Data
             base.OnModelCreating(builder);
 
 
-            builder.Entity<AppUser>()
+            builder.Entity<User>()
                 .HasMany(a => a.CreatedStudyset)
                 .WithOne(e => e.Creator)
                 .OnDelete(DeleteBehavior.NoAction);
 
 
-            builder.Entity<AppUser>()
+            builder.Entity<User>()
                 .HasMany(a => a.StudysetPermissions)
                 .WithMany(l => l.Contributors)
                 .UsingEntity<Dictionary<string, object>>("Relations_Contributors_LernsetPermissions",
                 x => x.HasOne<Studyset>().WithMany().OnDelete(DeleteBehavior.Cascade),
-                x => x.HasOne<AppUser>().WithMany().OnDelete(DeleteBehavior.Cascade));
+                x => x.HasOne<User>().WithMany().OnDelete(DeleteBehavior.Cascade));
         }
     }
 }

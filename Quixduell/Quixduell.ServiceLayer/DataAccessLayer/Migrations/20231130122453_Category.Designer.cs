@@ -9,7 +9,7 @@ using Quixduell.ServiceLayer.DataAccessLayer.Model;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Migrations
 {
-    [DbContext(typeof(AppDatabaseContext<AppUser>))]
+    [DbContext(typeof(AppDatabaseContext<User>))]
     [Migration("20231130122453_Category")]
     partial class Category
     {
