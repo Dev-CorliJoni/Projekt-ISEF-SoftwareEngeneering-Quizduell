@@ -27,19 +27,19 @@ namespace Quixduell.ServiceLayer
             using (var scope = services.BuildServiceProvider())
             {
                 var bBOptions = scope.GetRequiredService<IOptions<DataAccessOptions>>();
-                services.AddDbContext<AppDatabaseContext<AppUser>>(option =>
+                services.AddDbContext<AppDatabaseContext<User>>(option =>
                 {
                     option.UseSqlServer(bBOptions.Value.ConnectionString);
                 });
 
-                services.AddDbContext<AppDatabaseContext<AppUser>>(option =>
+                services.AddDbContext<AppDatabaseContext<User>>(option =>
                 {
                     option.UseSqlServer(bBOptions.Value.ConnectionString);
                 }, ServiceLifetime.Transient);
             }
 
-            services.AddScoped<ILernsetRepository,LernsetRepository>();
-            services.AddScoped<ILernsetCategoryRepository, LernsetCategoryRepository>();
+            services.AddScoped<IStudysetRepository,StudysetRepository>();
+            services.AddScoped<IStudysetCategoryRepository, StudysetCategoryRepository>();
 
             return services;
         }

@@ -22,19 +22,19 @@ builder.Services.Configure<AzureFileLoggerOptions>(options =>
 var connectionString = builder.Configuration.GetConnectionString("SQL");
 
 //Configure Entity Framework for Identity
-builder.Services.AddDbContext<AppDatabaseContext<AppUser>>(options =>
+builder.Services.AddDbContext<AppDatabaseContext<User>>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 //Configure Identity Provider
-builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<AppDatabaseContext<AppUser>>();
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<AppDatabaseContext<User>>();
 
 
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<AppUser>>();
+builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<User>>();
 
 //AddDataLayer
 builder.Services.AddQuixDataLayer(option =>

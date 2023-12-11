@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Model
 {
@@ -8,9 +9,9 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
         public Guid ID { get; set; }
 
         [Required]
-        public Question_Progress Question_Progress { get; set; }
+        public QuestionProgress QuestionProgress { get; set; }
 
         [Required]
-        public Question Question { get; set; }
+        public BaseQuestion Question { get; set; }
     }
 }

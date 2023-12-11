@@ -54,7 +54,7 @@ namespace Quixduell.ServiceLayer.Services.HostedServices
             {
                 try
                 {
-                    var databaseContext = scope.ServiceProvider.GetRequiredService<AppDatabaseContext<AppUser>>();
+                    var databaseContext = scope.ServiceProvider.GetRequiredService<AppDatabaseContext<User>>();
 
                     if (await databaseContext.Database.CanConnectAsync())
                     {

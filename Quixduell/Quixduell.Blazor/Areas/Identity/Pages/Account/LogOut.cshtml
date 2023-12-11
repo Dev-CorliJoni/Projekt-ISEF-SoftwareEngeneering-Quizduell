@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Quixduell.ServiceLayer.DataAccessLayer.Model
 @attribute [IgnoreAntiforgeryToken]
-@inject SignInManager<AppUser> SignInManager
+@inject SignInManager<User> SignInManager
 @functions {
     public async Task<IActionResult> OnPost()
     {

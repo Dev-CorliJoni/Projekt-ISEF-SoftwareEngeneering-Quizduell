@@ -1,7 +1,7 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.Identity
-@inject ILernsetRepository LernsetRepository
-@inject UserManager<AppUser> UserManager
+@inject IStudysetRepository LernsetRepository
+@inject UserManager<User> UserManager
 <PageTitle>Index</PageTitle>
 
 
@@ -24,7 +24,7 @@
                     <th scope="row"></th>
                     <td>@Lernset.Category.Name</td>
                     <td>@Lernset.Creator.Email</td>
-                    <td><a href="\lernset\edit\@Lernset.ID">Edit</a></td>
+                    <td><a href="\lernset\edit\@Lernset.Id">Edit</a></td>
                 </tr>
                 </Virtualize>
         </tbody>
@@ -43,7 +43,7 @@
     [CascadingParameter]
     private Task<AuthenticationState> _authenticationState { get; set; }
 
-    List<Lernset>? Lernsets = null;
+    List<Studyset>? Lernsets = null;
 
     string ErrorMessage = "";
 
@@ -52,7 +52,7 @@
         await base.OnInitializedAsync();
 
 
-        Lernsets = new List<Lernset>(await LernsetRepository.GetLernsetsAsync());
+        //Lernsets = new List<Studyset>(await LernsetRepository.GetStudysetsAsync());
     }
 
 
@@ -65,13 +65,13 @@
             var currentUser = await UserManager.GetUserAsync(user);
 
 
-            var category = new Category();
-            category.Name = "Test Cat";
+            //var category = new Category();
+            //category.Name = "Test Cat";
 
-            var Lernset = new Lernset(currentUser, category);
+            //var Lernset = new Studyset(currentUser, category);
 
-            await LernsetRepository.CreateLernsetAsync(Lernset);
-            Lernsets = new List<Lernset>(await LernsetRepository.GetLernsetsAsync());
+            //await LernsetRepository.CreateStudysetAsync(Lernset);
+            //Lernsets = new List<Studyset>(await LernsetRepository.GetStudysetsAsync());
         }
         else
         {
