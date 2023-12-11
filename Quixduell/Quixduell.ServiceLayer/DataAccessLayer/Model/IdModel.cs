@@ -12,11 +12,8 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
         [Key]
         public Guid Id { get; set; }
 
-        protected IdModel() { }
-
-        protected IdModel(Guid id)
+        protected IdModel()
         {
-            this.Id = id;
         }
     }
 }

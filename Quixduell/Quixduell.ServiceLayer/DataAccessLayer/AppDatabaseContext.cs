@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
+using Quixduell.ServiceLayer.DataAccessLayer.Model.Answers;
+using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 
 namespace Quixduell.Blazor.Data
 {
@@ -15,25 +17,20 @@ namespace Quixduell.Blazor.Data
         }
 
         public DbSet<Studyset> Studysets { get; set; }
-        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            
+            builder.Entity<Answer>()
+                .HasDiscriminator<string>("answer_type")
+                .HasValue<Answer>("a")
+                .HasValue<MultipleChoiceAnswer>("mca");
 
-
-            builder.Entity<User>()
-                .HasMany(a => a.CreatedStudyset)
-                .WithOne(e => e.Creator)
-                .OnDelete(DeleteBehavior.NoAction);
-
-
-            builder.Entity<User>()
-                .HasMany(a => a.StudysetPermissions)
-                .WithMany(l => l.Contributors)
-                .UsingEntity<Dictionary<string, object>>("Relations_Contributors_LernsetPermissions",
-                x => x.HasOne<Studyset>().WithMany().OnDelete(DeleteBehavior.Cascade),
-                x => x.HasOne<User>().WithMany().OnDelete(DeleteBehavior.Cascade));
+            builder.Entity<BaseQuestion>()
+                .HasDiscriminator<string>("question_type")
+                .HasValue<MultipleChoiceQuestion>("mcq")
+                .HasValue<OpenQuestion>("oq");
         }
     }
 }

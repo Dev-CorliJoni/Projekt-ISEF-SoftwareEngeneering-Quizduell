@@ -13,7 +13,9 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
         public float Value { get; set; }
         public string Description { get; set; }
 
-        public Rating(Guid id, float value, string description) : base(id)
+        private Rating() { }
+
+        public Rating(float value, string description) : base()
         {
             Value = value;
             Description = description;

@@ -10,7 +10,9 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Answers
     {
         public bool IsTrue {  get; set; }
 
-        public MultipleChoiceAnswer(Guid id, string text, bool isTrue) : base(id, text)
+        private MultipleChoiceAnswer() { }
+
+        public MultipleChoiceAnswer(string text, bool isTrue) : base(text)
         {
             IsTrue = isTrue;
         }

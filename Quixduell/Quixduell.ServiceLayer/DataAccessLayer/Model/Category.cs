@@ -8,7 +8,9 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
         [StringLength(50)]
         public string Name { get; set; } = string.Empty;
 
-        public Category(Guid id, string name) : base(id)
+        private Category() { }
+
+        public Category(string name) : base()
         { 
             Name = name;
         }

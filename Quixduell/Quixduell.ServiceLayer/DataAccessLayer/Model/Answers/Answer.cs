@@ -8,7 +8,9 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Answers
         [StringLength(150)]
         public string Text { get; set; } = string.Empty;
 
-        public Answer(Guid id, string text) : base(id)
+        protected Answer() { }
+
+        public Answer(string text) : base()
         { 
             Text = text;
         }

@@ -13,10 +13,11 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
         public Studyset Studyset { get; set; }
 
         public Rating Rating { get; set; }
-        [Range(0, 1)]
         public float Highscore { get; set; }
 
-        public UserStudysetConnection(Guid id, User user, Studyset studyset, Rating rating, float highscore) : base(id)
+        private UserStudysetConnection() { }
+
+        public UserStudysetConnection(User user, Studyset studyset, Rating rating, float highscore) : base()
         {
             User = user;
             Studyset = studyset;

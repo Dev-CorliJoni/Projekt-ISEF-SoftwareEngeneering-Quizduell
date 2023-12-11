@@ -12,7 +12,9 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Questions
         [StringLength(1000)]
         public string Hint { get; set; } = string.Empty;
 
-        protected BaseQuestion(Guid id, string text, string hint) : base(id) 
+        protected BaseQuestion() { }
+
+        protected BaseQuestion(string text, string hint) : base() 
         {
             Text = text;
             Hint = hint;

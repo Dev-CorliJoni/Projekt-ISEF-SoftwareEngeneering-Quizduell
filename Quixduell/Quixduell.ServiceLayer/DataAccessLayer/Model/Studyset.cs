@@ -6,6 +6,8 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
     public class Studyset : IdModel
     {
         [Required]
+        public string Name { get; set; }
+        [Required]
         public Category Category { get; set; }
 
         [Required]
@@ -16,7 +18,9 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
         public List<BaseQuestion> Questions { get; set; } = new List<BaseQuestion>(); 
         public List<UserStudysetConnection> Connections { get; set; }
 
-        public Studyset(Guid id, Category category, User creator, List<User> contributors, List<BaseQuestion> questions, List<UserStudysetConnection> connections) : base(id)
+        private Studyset(){}
+
+        public Studyset(Category category, User creator, List<User> contributors, List<BaseQuestion> questions, List<UserStudysetConnection> connections) : base()
         {
             Category = category;
             Creator = creator;
