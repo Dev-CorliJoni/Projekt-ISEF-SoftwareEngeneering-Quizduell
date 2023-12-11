@@ -2,13 +2,15 @@
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Model
 {
-    public class Category
+    public class Category : IdModel
     {
-        [Key]
-        public Guid CategoryID { get; set; }
-
         [Required]
         [StringLength(50)]
         public string Name { get; set; } = string.Empty;
+
+        public Category(Guid id, string name) : base(id)
+        { 
+            Name = name;
+        }
     }
 }

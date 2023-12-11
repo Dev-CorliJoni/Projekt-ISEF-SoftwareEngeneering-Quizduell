@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Model
 {
-    public class IdModel
+    public abstract class IdModel
     {
         [Key]
         public Guid Id { get; set; }
 
-        // Isd Constructor needed
-        //public BaseModel(Guid id) 
-        //{ 
-        //    this.Id = id;
-        //}
+        protected IdModel() { }
+
+        protected IdModel(Guid id)
+        {
+            this.Id = id;
+        }
     }
 }

@@ -10,5 +10,10 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Questions
     public class MultipleChoiceQuestion : BaseQuestion
     {
         public List<MultipleChoiceAnswer> Answers { get; set; }
+
+        public MultipleChoiceQuestion(Guid id, string text, string hint, List<MultipleChoiceAnswer> answers) : base(id, text, hint)
+        {
+            Answers = answers;
+        }
     }
 }

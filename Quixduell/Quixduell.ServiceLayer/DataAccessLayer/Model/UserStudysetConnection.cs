@@ -7,16 +7,21 @@ using System.Threading.Tasks;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Model
 {
-    public class UserStudysetConnection
+    public class UserStudysetConnection : IdModel
     {
-        [Key]
         public User User { get; set; }
-        [Key]
         public Studyset Studyset { get; set; }
 
-        [Range(0, 5)]
-        public float Rating { get; set; }
+        public Rating Rating { get; set; }
         [Range(0, 1)]
         public float Highscore { get; set; }
+
+        public UserStudysetConnection(Guid id, User user, Studyset studyset, Rating rating, float highscore) : base(id)
+        {
+            User = user;
+            Studyset = studyset;
+            Rating = rating;
+            Highscore = highscore;
+        }
     }
 }
