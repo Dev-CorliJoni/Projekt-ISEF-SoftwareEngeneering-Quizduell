@@ -10,13 +10,13 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
     /// </summary>
     internal class StudysetRepository : IStudysetRepository
     {
-        private readonly AppDatabaseContext<AppUser> _appDatabaseContext; // Database context
+        private readonly AppDatabaseContext<User> _appDatabaseContext; // Database context
 
         /// <summary>
         /// Constructor for the Studyset Repository.
         /// </summary>
         /// <param name="appDatabaseContext">The database context for the application.</param>
-        public StudysetRepository(AppDatabaseContext<AppUser> appDatabaseContext)
+        public StudysetRepository(AppDatabaseContext<User> appDatabaseContext)
         {
             _appDatabaseContext = appDatabaseContext; // Initializing the database context
         }
