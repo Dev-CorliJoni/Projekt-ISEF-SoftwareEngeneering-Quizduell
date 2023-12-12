@@ -8,7 +8,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
     /// <summary>
     /// Implementation of the Studyset Repository interface that enables database operations for Studysets.
     /// </summary>
-    internal class StudysetRepository : IStudysetRepository
+    internal class StudysetRepository 
     {
         //private readonly AppDatabaseContext<User> _appDatabaseContext; // Database context
 

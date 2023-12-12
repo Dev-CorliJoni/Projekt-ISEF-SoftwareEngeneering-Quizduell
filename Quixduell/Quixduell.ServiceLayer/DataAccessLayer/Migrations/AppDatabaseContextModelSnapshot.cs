@@ -267,6 +267,10 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -373,7 +377,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserStudysetConnections");
+                    b.ToTable("UserStudysetConnection");
                 });
 
             modelBuilder.Entity("Quixduell.ServiceLayer.DataAccessLayer.Model.Answers.MultipleChoiceAnswer", b =>
@@ -505,7 +509,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Migrations
                     b.HasOne("Quixduell.ServiceLayer.DataAccessLayer.Model.Studyset", "Studyset")
                         .WithMany("Connections")
                         .HasForeignKey("StudysetId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Quixduell.ServiceLayer.DataAccessLayer.Model.User", "User")

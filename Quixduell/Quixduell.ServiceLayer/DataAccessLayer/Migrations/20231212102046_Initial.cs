@@ -184,6 +184,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -232,7 +233,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserStudysetConnections",
+                name: "UserStudysetConnection",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -243,25 +244,24 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserStudysetConnections", x => x.Id);
+                    table.PrimaryKey("PK_UserStudysetConnection", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserStudysetConnections_AspNetUsers_UserId",
+                        name: "FK_UserStudysetConnection_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserStudysetConnections_Rating_RatingId",
+                        name: "FK_UserStudysetConnection_Rating_RatingId",
                         column: x => x.RatingId,
                         principalTable: "Rating",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserStudysetConnections_Studysets_StudysetId",
+                        name: "FK_UserStudysetConnection_Studysets_StudysetId",
                         column: x => x.StudysetId,
                         principalTable: "Studysets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -334,18 +334,18 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Migrations
                 column: "CreatorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserStudysetConnections_RatingId",
-                table: "UserStudysetConnections",
+                name: "IX_UserStudysetConnection_RatingId",
+                table: "UserStudysetConnection",
                 column: "RatingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserStudysetConnections_StudysetId",
-                table: "UserStudysetConnections",
+                name: "IX_UserStudysetConnection_StudysetId",
+                table: "UserStudysetConnection",
                 column: "StudysetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserStudysetConnections_UserId",
-                table: "UserStudysetConnections",
+                name: "IX_UserStudysetConnection_UserId",
+                table: "UserStudysetConnection",
                 column: "UserId");
 
             migrationBuilder.AddForeignKey(
@@ -414,7 +414,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "UserStudysetConnections");
+                name: "UserStudysetConnection");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
