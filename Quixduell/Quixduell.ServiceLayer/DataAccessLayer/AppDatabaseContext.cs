@@ -23,14 +23,28 @@ namespace Quixduell.Blazor.Data
         {
             base.OnModelCreating(builder);
             
-            builder.Entity<MultipleChoiceQuestion>();
+            builder.Entity<Answer>()
                 .HasDiscriminator<string>("answer_type")
                 .HasValue<Answer>("a")
                 .HasValue<MultipleChoiceAnswer>("mca");
 
             builder.Entity<BaseQuestion>()
                 .HasDiscriminator<string>("question_type")
+                .HasValue<MultipleChoiceQuestion>("mcq")
                 .HasValue<OpenQuestion>("oq");
+
+            builder.Entity<Studyset>()
+             .HasMany<UserStudysetConnection>(st => st.Connections)
+             .WithOne(usc => usc.Studyset)
+             .OnDelete(DeleteBehavior.NoAction);
+
+
+            builder.Entity<Answer>();
+            builder.Entity<MultipleChoiceAnswer>();
+
+            builder.Entity<MultipleChoiceQuestion>();
+            builder.Entity<OpenQuestion>();
+
         }
     }
 }
