@@ -1,62 +1,40 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.Identity
-@inject ILernsetRepository LernsetRepository
-@inject UserManager<AppUser> UserManager
-@inject NavigationManager NavigationManager
+@inject UserManager<User> UserManager
+@inject GlobalSearch GlobalSearch
 <PageTitle>Index</PageTitle>
 
-<AuthorizeView>
-    <Authorized>
-        @if (Lernsets is not null)
-        {
-            //https://getbootstrap.com/docs/5.0/content/tables/
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Kategorie</th>
-                        <th scope="col">Ersteller</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <Virtualize Items="@Lernsets" Context="Lernset" ItemSize="10" OverscanCount="5">
-                        <tr>
-                            <th scope="row"></th>
-                            <td>@Lernset.Name</td>
-                            <td>@Lernset.Category.Name</td>
-                            <td>@Lernset.Creator.Email</td>
-                            <td><a href="\lernset\edit\@Lernset.ID">Edit</a></td>
-                        </tr>
-                    </Virtualize>
-                </tbody>
-            </table>
-        }
-    </Authorized>
-    <NotAuthorized>
-        <p>You're not authorized.</p>
-        <a href="/Identity/Account/Login">Please Login</a>
-    </NotAuthorized>
-</AuthorizeView>
+@if(_lernsets is not null)
+{
+    //https://getbootstrap.com/docs/5.0/content/tables/
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Kategorie</th>
+                <th scope="col">Ersteller</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <Virtualize Items="@_lernsets" Context="Lernset" ItemSize="10" OverscanCount="5" >
+                <tr>
+                    <th scope="row"></th>
+                    <td>@Lernset.Category.Name</td>
+                    <td>@Lernset.Creator.Email</td>
+                    <td><a href="\lernset\edit\@Lernset.Id">Edit</a></td>
+                </tr>
+                </Virtualize>
+        </tbody>
+    </table>
 
 
-
-
-@code{
-
-
-
-    List<Lernset>? Lernsets = null;
-
-    override protected async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-
-        Lernsets = new List<Lernset>(await LernsetRepository.GetLernsetsAsync());
-    }
-
+    <button class="btn" @onclick="InitSampleData">Init Sample Data</button>
+    <p class="text-danger">@_errorMessage</p>
+    
 }
-
+            //var category = new Category();
+            //category.Name = "Test Cat";
+            //var Lernset = new Studyset(currentUser, category);

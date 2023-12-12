@@ -2,42 +2,49 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
+using Quixduell.ServiceLayer.DataAccessLayer.Model.Answers;
+using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 
 namespace Quixduell.Blazor.Data
 {
-    public class AppDatabaseContext<TUSer> 
-        : IdentityDbContext<TUSer, IdentityRole, string>
-        where TUSer : AppUser
+    public class AppDatabaseContext<TUser> 
+        : IdentityDbContext<TUser, IdentityRole, string>
+        where TUser : User
     {
-        public AppDatabaseContext(DbContextOptions<AppDatabaseContext<AppUser>> options)
+        public AppDatabaseContext(DbContextOptions<AppDatabaseContext<User>> options)
             : base(options)
         {
         }
 
-        public DbSet<Lernset> Lernsets { get; set; }
+        public DbSet<Studyset> Studysets { get; set; }
         public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            
+            builder.Entity<Answer>()
+                .HasDiscriminator<string>("answer_type")
+                .HasValue<Answer>("a")
+                .HasValue<MultipleChoiceAnswer>("mca");
+
+            builder.Entity<BaseQuestion>()
+                .HasDiscriminator<string>("question_type")
+                .HasValue<MultipleChoiceQuestion>("mcq")
+                .HasValue<OpenQuestion>("oq");
+
+            builder.Entity<Studyset>()
+             .HasMany<UserStudysetConnection>(st => st.Connections)
+             .WithOne(usc => usc.Studyset)
+             .OnDelete(DeleteBehavior.NoAction);
 
 
-            builder.Entity<AppUser>()
-                .HasMany(a => a.CreatedLernsets)
-                .WithOne(e => e.Creator)
-                .OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<Answer>();
+            builder.Entity<MultipleChoiceAnswer>();
 
+            builder.Entity<MultipleChoiceQuestion>();
+            builder.Entity<OpenQuestion>();
 
-            builder.Entity<AppUser>()
-                .HasMany(a => a.LernsetPermissions)
-                .WithMany(l => l.Contributors)
-                .UsingEntity<Dictionary<string, object>>("Relations_Contributors_LernsetPermissions",
-                x => x.HasOne<Lernset>().WithMany().OnDelete(DeleteBehavior.Cascade),
-                x => x.HasOne<AppUser>().WithMany().OnDelete(DeleteBehavior.Cascade));
         }
-
-       
-
-
     }
 }

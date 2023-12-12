@@ -1,7 +1,7 @@
 ﻿namespace Quixduell.ServiceLayer.DataAccessLayer.Model
 {
-    public enum Question_Type
+    public enum QuestionProgress
     {
-        MultipleChoice, OpenQuestion
+        Worse,Good,Best,Perfect
     }
 }

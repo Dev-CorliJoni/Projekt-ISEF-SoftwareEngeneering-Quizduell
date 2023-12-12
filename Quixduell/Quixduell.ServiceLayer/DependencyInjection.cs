@@ -6,6 +6,7 @@ using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Options;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.Interface;
+using Quixduell.ServiceLayer.ServiceLayer;
 using Quixduell.ServiceLayer.Services.HostedServices;
 
 
@@ -27,15 +28,20 @@ namespace Quixduell.ServiceLayer
             using (var scope = services.BuildServiceProvider())
             {
                 var bBOptions = scope.GetRequiredService<IOptions<DataAccessOptions>>();
-                services.AddDbContext<AppDatabaseContext<AppUser>>(option =>
+                services.AddDbContext<AppDatabaseContext<User>>(option =>
+                {
+                    option.UseSqlServer(bBOptions.Value.ConnectionString);
+                });
+
+                services.AddDbContext<AppDatabaseContext<User>>(option =>
                 {
                     option.UseSqlServer(bBOptions.Value.ConnectionString);
                 }, ServiceLifetime.Transient);
             }
 
-            services.AddTransient<ILernsetRepository,LernsetRepository>();
-            services.AddTransient<ILernsetCategoryRepository, LernsetCategoryRepository>();
-
+            services.AddScoped<StudysetRepository>();
+            services.AddScoped<CategoryDataAccess>();
+            services.AddScoped<GlobalSearch>();
             return services;
         }
     }

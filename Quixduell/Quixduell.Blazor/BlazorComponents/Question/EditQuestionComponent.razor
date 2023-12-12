@@ -50,7 +50,15 @@
                                 </thead>
                                 <tbody>
                                     <Virtualize Items="@_model.Answers" Context="Answer" ItemSize="10" OverscanCount="5">
-                                        <tr @onclick="() => {_selectedAnswer = Answer;_messageStore.Clear(); ;StateHasChanged();}">
+                                        <tr @onclick="() => 
+                                            {
+                                                _selectedAnswer = Answer;
+                                                if (_messageStore is not null)
+                                                {
+                                                    _messageStore.Clear();
+                                                }
+                                                StateHasChanged();
+                                            }">
                                             <th>@Answer.Text</th>
                                             <th>@Answer.IsTrue</th>
                                         </tr>
@@ -97,6 +105,12 @@
         return base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Triggert if Param <see cref="Question"/>see is filled by Parent 
+    /// Create a new Edit Question Object, and EditContext with ValidationMessage store for 
+    /// complex Validation
+    /// </summary>
+    /// <returns></returns>
     protected override Task OnParametersSetAsync()
     {
         if (Question is not null)
@@ -108,13 +122,19 @@
         return base.OnParametersSetAsync();
     }
 
-
+    /// <summary>
+    /// Add a new Instance from <see cref="Answer"/> to Answers
+    /// </summary>
     private void AddAnswer()
     {
         _model!.Answers.Add(new Answer());
     }
 
-    private async Task OnUpdatedChild()
+    /// <summary>
+    /// Triggert if Form submited after Validation, fire <see cref="OnQuestionHasChanged"/>
+    /// </summary>
+    /// <returns></returns>
+    private async Task OnQuestionSubmited()
     {
         Question!.QuestionText = _model!.QuestionText;
         Question!.Question_Type = _model.Question_Type;
@@ -122,36 +142,48 @@
         await OnQuestionHasChanged.InvokeAsync(Question);
     }
 
+    /// <summary>
+    /// Triggers if Form abort, fire <see cref="OnQuestionHasNoChange"/>
+    /// </summary>
+    /// <returns></returns>
     private async Task OnCloseChild()
     {
         await OnQuestionHasNoChange.InvokeAsync(Question);
     }
 
-    //Add some complex Validarion for Answers
-    //Validation Message Store has to be cleared manualy
-    //Will be cleared if Answer is selected
+
+    /// <summary>
+    /// Add some complex Validation for Answer
+    /// Validation Messages has to be cleared manually
+    /// Execute <see cref="OnQuestionSubmited"/>
+    /// </summary>
+    /// <returns></returns>
     private async Task ComplexValidation()
     {
-        if (!(_model.Answers.Any(o => o.IsTrue == true)))
+        if (_model is not null && _messageStore is not null && _editContext is not null)
         {
-            var fi = new FieldIdentifier(_model, "Answers");
-            _messageStore.Add(fi, "One Answer has to be true");
-            _editContext.NotifyValidationStateChanged();
-            return;
-        }
-        foreach (var Answers in _model.Answers)
-        {
-
-            if (Answers.Text.Length < 5)
+            
+            if (!(_model.Answers.Any(o => o.IsTrue == true)))
             {
                 var fi = new FieldIdentifier(_model, "Answers");
-                _messageStore.Add(fi, "The field Answer from all Answers must be a string or array type with a minimum length of '5'.");
+                _messageStore.Add(fi, "One Answer has to be true");
                 _editContext.NotifyValidationStateChanged();
                 return;
             }
-        }
+            foreach (var Answers in _model.Answers)
+            {
 
-        await OnUpdatedChild();
+                if (Answers.Text.Length < 5)
+                {
+                    var fi = new FieldIdentifier(_model, "Answers");
+                    _messageStore.Add(fi, "The field Answer from all Answers must be a string or array type with a minimum length of '5'.");
+                    _editContext.NotifyValidationStateChanged();
+                    return;
+                }
+            }
+
+            await OnQuestionSubmited();
+        }
     }
 
 }

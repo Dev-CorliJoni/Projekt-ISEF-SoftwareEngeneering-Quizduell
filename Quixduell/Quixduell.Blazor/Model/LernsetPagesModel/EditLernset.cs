@@ -2,6 +2,9 @@
 
 namespace Quixduell.Blazor.Model.LernsetPagesModel
 {
+    /// <summary>
+    /// Form Class for Updating existing Lernset
+    /// </summary>
     public class EditLernset : ChangeLernset
     {
         public Guid ExistingLernsetID { get; set; }

@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Quixduell.Blazor.Model.LernsetPagesModel
 {
+    /// <summary>
+    /// Base Class for all Lernset Forms 
+    /// </summary>
     public abstract class ChangeLernset
     {
         [Required]

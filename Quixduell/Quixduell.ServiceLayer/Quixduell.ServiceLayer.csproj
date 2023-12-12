@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="DataAccessLayer\Migrations\" />
-    <Folder Include="Services\Services\" />
   </ItemGroup>
 
   <ItemGroup>
