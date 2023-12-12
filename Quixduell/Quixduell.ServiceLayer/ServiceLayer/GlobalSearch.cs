@@ -13,22 +13,28 @@ namespace Quixduell.ServiceLayer.ServiceLayer
     public class GlobalSearch
     {
         private readonly StudysetDataAccess _studysetDataAccess;
+        private readonly User _user;
 
-        internal GlobalSearch(StudysetDataAccess studysetDataAccess)
+        internal GlobalSearch(StudysetDataAccess studysetDataAccess, User user)
         {
             _studysetDataAccess = studysetDataAccess;
+            _user = user;
         }
 
-        public  async Task<List<Studyset>> Search(string name)
+        public async Task<List<Studyset>> Search(string name)
         {
              return await (await _studysetDataAccess.LoadTopByNameAsync(name)).ToListAsync();
         }
 
-        //public static async Task Save(AppDatabaseContext<User> context, Studyset studyset)
-        //{
-        //    studyset.Connections.Add(new UserStudysetConnection(context))
-
-        //    return (await new StudysetDataAccess(context).LoadTopByNameAsync(name)).ToList();
-        //}
+        public async Task SaveStudyset(Studyset studyset)
+        {
+            if(_user.StudysetConnections.Any(sc => sc.Studyset.Name == studyset.Name) == false)
+            {
+                var studysetUserConnection = new UserStudysetConnection(_user, studyset);
+                _user.StudysetConnections.Add(studysetUserConnection);
+                studyset.Connections.Add(studysetUserConnection);
+                await _studysetDataAccess.UpdateAsync(studyset);
+            }
+        }
     }
 }
