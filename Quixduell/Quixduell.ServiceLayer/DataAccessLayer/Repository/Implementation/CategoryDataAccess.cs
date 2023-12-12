@@ -3,6 +3,7 @@ using Quixduell.Blazor.Data;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.Interface;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.RepositoryException;
+using System.Linq;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
 {
@@ -60,7 +61,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
         /// Retrieves a set of categories from the database.
         /// </summary>
         /// <returns>An enumerable collection of categories.</returns>
-        public override async Task<IEnumerable<Category>> LoadAsync(Func<Category, bool> where)
+        public override async Task<IEnumerable<Category>> LoadAsync(Func<Category, bool> where = null)
         {
             var results = await LoadQueryableAsync();
             if (where is not null)
@@ -68,7 +69,6 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
                 return results.Where(where);
             }
             return results;
-
         }
 
         public override async Task<IQueryable<Category>> LoadQueryableAsync()
