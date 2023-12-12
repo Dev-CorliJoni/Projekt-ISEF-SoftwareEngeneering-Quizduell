@@ -23,14 +23,13 @@ namespace Quixduell.Blazor.Data
         {
             base.OnModelCreating(builder);
             
-            builder.Entity<Answer>()
+            builder.Entity<MultipleChoiceQuestion>();
                 .HasDiscriminator<string>("answer_type")
                 .HasValue<Answer>("a")
                 .HasValue<MultipleChoiceAnswer>("mca");
 
             builder.Entity<BaseQuestion>()
                 .HasDiscriminator<string>("question_type")
-                .HasValue<MultipleChoiceQuestion>("mcq")
                 .HasValue<OpenQuestion>("oq");
         }
     }
