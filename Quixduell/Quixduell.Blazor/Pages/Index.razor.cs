@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
-using Quixduell.ServiceLayer.DataAccessLayer.Model;
+﻿using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.ServiceLayer;
-using Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation;
-using Microsoft.EntityFrameworkCore;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Identity;
-using Quixduell.Blazor.Helpers;
+using Quixduell.Blazor.Services;
 
 namespace Quixduell.Blazor.Pages
 {
@@ -15,24 +11,19 @@ namespace Quixduell.Blazor.Pages
         [Inject]
         private GlobalSearch GlobalSearch { get; set; }
 
-
         [Inject]
-        private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+        private UserService UserService { get; set; }
 
         [Inject]
         private NavigationManager NavigationManager { get; set; }
 
-        [Inject]
-        private UserManager<User> UserManager { get; set; }
+
 
 
         private List<Studyset>? _studysets = null;
 
 
-        public Index()
-        {
-                
-        }
+
 
         override protected async Task OnInitializedAsync()
         {
@@ -45,29 +36,34 @@ namespace Quixduell.Blazor.Pages
 
         private async Task InitSampleData()
         {
-            var user = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
 
-            if (user.Identity!.IsAuthenticated)
-            {
-                var currentUser = await UserManager.GetUserAsync(user);
-                if (currentUser is null)
-                {
-                    NavigationManager.NavigateTo(PageUri.LoginPage,true);
-                    return;
-                }
+            var currentUser = await UserService.GetAuthenticatedUserOrRedirect();
+            if (currentUser is null) { return; }
+
+            var Studyset = new Studyset(GenerateRandomString(10), new Category(GenerateRandomString(10)), currentUser, new List<User>(), new List<BaseQuestion>());
+
+            await GlobalSearch.SaveStudyset(Studyset, currentUser);
 
 
-                var Studyset = new Studyset("Test Study", new Category("Test Cat"), currentUser, new List<User>(), new List<BaseQuestion>());
+            _studysets = await GlobalSearch.Search("");
 
-                await GlobalSearch.SaveStudyset(Studyset, currentUser);
-
-
-                _studysets = await GlobalSearch.Search("");
-            }
-            else
-            {
-                NavigationManager.NavigateTo(PageUri.LoginPage,true);
-            }
         }
+
+
+        static Random _random = new Random();
+        static string GenerateRandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; // Zeichen, die im zufälligen String verwendet werden sollen
+            char[] stringChars = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                stringChars[i] = chars[_random.Next(chars.Length)];
+            }
+
+            return new string(stringChars);
+        }
+
+
     }
 }

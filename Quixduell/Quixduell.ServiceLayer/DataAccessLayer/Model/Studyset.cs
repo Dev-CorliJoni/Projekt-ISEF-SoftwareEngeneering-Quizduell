@@ -28,6 +28,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
             Creator = creator;
             Contributors = contributors;
             Questions = questions;
+            Connections = new List<UserStudysetConnection>();
 
         }
 

@@ -5,6 +5,11 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
     public class User : IdentityUser
     {
         public List<UserStudysetConnection> StudysetConnections { get; set; }
-        //public List<ProcessedQuestion> ProcessedQuestions { get; set; } = new List<ProcessedQuestion>();
+
+
+        public User()
+        {
+            StudysetConnections = new List<UserStudysetConnection>();
+        }
     }
 }
