@@ -5,7 +5,7 @@
 <PageTitle>Index</PageTitle>
 
 
-@if(Lernsets is not null)
+@if(_lernsets is not null)
 {
     //https://getbootstrap.com/docs/5.0/content/tables/
 
@@ -19,7 +19,7 @@
             </tr>
         </thead>
         <tbody>
-            <Virtualize Items="@Lernsets" Context="Lernset" ItemSize="10" OverscanCount="5" >
+            <Virtualize Items="@_lernsets" Context="Lernset" ItemSize="10" OverscanCount="5" >
                 <tr>
                     <th scope="row"></th>
                     <td>@Lernset.Category.Name</td>
@@ -32,55 +32,6 @@
 
 
     <button class="btn" @onclick="InitSampleData">Init Sample Data</button>
-    <p class="text-danger">@ErrorMessage</p>
+    <p class="text-danger">@_errorMessage</p>
     
 }
-
-
-@code{
-
-
-    [CascadingParameter]
-    private Task<AuthenticationState> _authenticationState { get; set; }
-
-    List<Studyset>? Lernsets = null;
-
-    string ErrorMessage = "";
-
-    override protected async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-
-        //Lernsets = new List<Studyset>(await LernsetRepository.GetStudysetsAsync());
-    }
-
-
-    private async Task InitSampleData ()
-    {
-        var user = (await _authenticationState).User;
-
-        if(user.Identity.IsAuthenticated)
-        {
-            var currentUser = await UserManager.GetUserAsync(user);
-
-
-            //var category = new Category();
-            //category.Name = "Test Cat";
-
-            //var Lernset = new Studyset(currentUser, category);
-
-            //await LernsetRepository.CreateStudysetAsync(Lernset);
-            //Lernsets = new List<Studyset>(await LernsetRepository.GetStudysetsAsync());
-        }
-        else
-        {
-            ErrorMessage = "Not Logged In";
-        }
-
-
-
-
-    }
-}
-
