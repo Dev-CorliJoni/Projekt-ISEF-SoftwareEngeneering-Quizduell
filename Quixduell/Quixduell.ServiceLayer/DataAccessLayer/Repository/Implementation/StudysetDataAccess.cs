@@ -2,11 +2,6 @@
 using Quixduell.Blazor.Data;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
 {
@@ -47,7 +42,31 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
                 .Include(o => o.Contributors)
                 .Take(amount);
 
+        }
 
+        public async Task<IQueryable<Studyset>> LoadTopByCreatorAsync(User creator, int amount = 50)
+        {
+            return (await LoadQueryableAsync())
+                .Where(s => s.Creator == creator)
+                .Include(o => o.Questions)
+                .Include(o => o.Creator)
+                .Include(o => o.Connections)
+                .Include(o => o.Category)
+                .Include(o => o.Contributors)
+                .Take(amount);
+
+        }
+
+        public async Task<IQueryable<Studyset>> LoadTopByContributorsAsync(User contributor, int amount = 50)
+        {
+            return (await LoadQueryableAsync())
+                .Where(s => s.Contributors.Contains(contributor))
+                .Include(o => o.Questions)
+                .Include(o => o.Creator)
+                .Include(o => o.Connections)
+                .Include(o => o.Category)
+                .Include(o => o.Contributors)
+                .Take(amount);
 
         }
 

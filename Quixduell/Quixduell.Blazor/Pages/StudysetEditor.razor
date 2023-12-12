@@ -1,5 +1,4 @@
-﻿@page "/"
-<PageTitle>Index</PageTitle>
+﻿@page "/studyset"
 
 
 @if (_studysets is not null)
@@ -23,14 +22,13 @@
                     <td>@Studyset.Name</td>
                     <td>@Studyset.Category.Name</td>
                     <td>@Studyset.Creator.Email</td>
-                    <td></td>
+                    <td><a href="\studyset\edit\@Studyset.Id">Edit</a></td>
                 </tr>
-                </Virtualize>
+            </Virtualize>
         </tbody>
     </table>
 
 
-    <button class="btn" @onclick="InitSampleData">Init Sample Data</button>
+  
 
-    
 }

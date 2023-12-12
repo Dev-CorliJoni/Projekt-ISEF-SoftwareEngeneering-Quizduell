@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.AzureAppServices;
 using Quixduell.Blazor.Areas.Identity;
 using Quixduell.Blazor.Data;
+using Quixduell.Blazor.Services;
 using Quixduell.ServiceLayer;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 
@@ -30,6 +31,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<AppDatabaseContext<User>>();
 
+//User Service
+builder.Services.AddScoped<UserService>();
 
 
 builder.Services.AddRazorPages();
