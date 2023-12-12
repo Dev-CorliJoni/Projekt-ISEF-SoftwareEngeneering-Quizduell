@@ -39,7 +39,7 @@ namespace Quixduell.ServiceLayer
             }
 
             services.AddScoped<IStudysetRepository,StudysetRepository>();
-            services.AddScoped<IStudysetCategoryRepository, StudysetCategoryRepository>();
+            services.AddScoped<ICategoryDataAccess, CategoryDataAccess>();
 
             return services;
         }
