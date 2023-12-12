@@ -6,6 +6,7 @@ using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Options;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.Interface;
+using Quixduell.ServiceLayer.ServiceLayer;
 using Quixduell.ServiceLayer.Services.HostedServices;
 
 
@@ -38,9 +39,9 @@ namespace Quixduell.ServiceLayer
                 }, ServiceLifetime.Transient);
             }
 
-            services.AddScoped<IStudysetRepository,StudysetRepository>();
-            services.AddScoped<ICategoryDataAccess, CategoryDataAccess>();
-
+            services.AddScoped<StudysetRepository>();
+            services.AddScoped<CategoryDataAccess>();
+            services.AddScoped<GlobalSearch>();
             return services;
         }
     }
