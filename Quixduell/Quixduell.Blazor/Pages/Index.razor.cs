@@ -1,47 +1,72 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
+using Quixduell.ServiceLayer.ServiceLayer;
+using Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation;
+using Microsoft.EntityFrameworkCore;
+using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
+using Quixduell.Blazor.Helpers;
 
 namespace Quixduell.Blazor.Pages
 {
     public partial class Index
     {
-        [CascadingParameter]
-        internal Task<AuthenticationState>? AuthenticationState { get; set; }
+        [Inject]
+        private GlobalSearch GlobalSearch { get; set; }
 
-        internal List<Studyset>? _lernsets = null;
 
-        internal string _errorMessage = "";
+        [Inject]
+        private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        private UserManager<User> UserManager { get; set; }
+
+
+        private List<Studyset>? _studysets = null;
+
+
+        public Index()
+        {
+                
+        }
 
         override protected async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
 
 
-            //Lernsets = new List<Studyset>(await LernsetRepository.GetStudysetsAsync());
+            _studysets = await GlobalSearch.Search("");
         }
 
 
         private async Task InitSampleData()
         {
-            var user = (await AuthenticationState).User;
+            var user = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
 
-            if (user.Identity.IsAuthenticated)
+            if (user.Identity!.IsAuthenticated)
             {
                 var currentUser = await UserManager.GetUserAsync(user);
+                if (currentUser is null)
+                {
+                    NavigationManager.NavigateTo(PageUri.LoginPage,true);
+                    return;
+                }
 
 
-                //var category = new Category();
-                //category.Name = "Test Cat";
+                var Studyset = new Studyset("Test Study", new Category("Test Cat"), currentUser, new List<User>(), new List<BaseQuestion>());
 
-                //var Lernset = new Studyset(currentUser, category);
+                await GlobalSearch.SaveStudyset(Studyset, currentUser);
 
-                //await LernsetRepository.CreateStudysetAsync(Lernset);
-                //Lernsets = new List<Studyset>(await LernsetRepository.GetStudysetsAsync());
+
+                _studysets = await GlobalSearch.Search("");
             }
             else
             {
-                _errorMessage = "Not Logged In";
+                NavigationManager.NavigateTo(PageUri.LoginPage,true);
             }
         }
     }

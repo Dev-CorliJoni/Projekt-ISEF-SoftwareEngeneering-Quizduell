@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
 {
-    internal class StudysetDataAccess : DataAccessBase<Studyset>
+    public class StudysetDataAccess : DataAccessBase<Studyset>
     {
         public StudysetDataAccess(AppDatabaseContext<User> dbContext) : base(dbContext) {  }
 
@@ -38,7 +38,17 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
 
         public async Task<IQueryable<Studyset>> LoadTopByNameAsync(string name, int amount = 50)
         {
-            return (await LoadQueryableAsync()).Where(s => EF.Functions.Like(s.Name, $"*{name}*")).Take(amount);
+            return (await LoadQueryableAsync())
+                .Where(s => EF.Functions.Like(s.Name, $"%{name}%"))
+                .Include(o => o.Questions)
+                .Include(o => o.Creator)
+                .Include(o => o.Connections)
+                .Include(o => o.Category)
+                .Include(o => o.Contributors)
+                .Take(amount);
+
+
+
         }
 
         public override async Task<IEnumerable<Studyset>> LoadAsync(Func<Studyset, bool> where = null)
@@ -47,7 +57,13 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
 
             if (where != null)
             {
-                return results.Where(where);
+                return results.Include(o => o.Questions)
+                .Include(o => o.Creator)
+                .Include(o => o.Connections)
+                .Include(o => o.Category)
+                .Include(o => o.Contributors)
+                .Where(where);
+
             }
             else 
             {   

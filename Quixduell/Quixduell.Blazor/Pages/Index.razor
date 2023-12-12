@@ -1,11 +1,8 @@
 ﻿@page "/"
-@using Microsoft.AspNetCore.Identity
-@inject UserManager<User> UserManager
-@inject GlobalSearch GlobalSearch
 <PageTitle>Index</PageTitle>
 
 
-@if(_lernsets is not null)
+@if (_studysets is not null)
 {
     //https://getbootstrap.com/docs/5.0/content/tables/
 
@@ -19,12 +16,12 @@
             </tr>
         </thead>
         <tbody>
-            <Virtualize Items="@_lernsets" Context="Lernset" ItemSize="10" OverscanCount="5" >
+            <Virtualize Items="@_studysets" Context="Studyset" ItemSize="10" OverscanCount="5">
                 <tr>
                     <th scope="row"></th>
-                    <td>@Lernset.Category.Name</td>
-                    <td>@Lernset.Creator.Email</td>
-                    <td><a href="\lernset\edit\@Lernset.Id">Edit</a></td>
+                    <td>@Studyset.Category.Name</td>
+                    <td>@Studyset.Creator.Email</td>
+                    <td><a href="\studyset\edit\@Studyset.Id">Edit</a></td>
                 </tr>
                 </Virtualize>
         </tbody>
@@ -32,6 +29,6 @@
 
 
     <button class="btn" @onclick="InitSampleData">Init Sample Data</button>
-    <p class="text-danger">@_errorMessage</p>
+
     
 }

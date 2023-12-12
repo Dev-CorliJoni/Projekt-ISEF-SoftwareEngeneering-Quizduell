@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Xml.Serialization;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Model
@@ -12,22 +13,23 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
 
         [Required]
         public User Creator { get; set; }
-        public List<User> Contributors { get; set; } = new List<User>();
+        public List<User> Contributors { get; set; } 
 
         [Required]
-        public List<BaseQuestion> Questions { get; set; } = new List<BaseQuestion>(); 
+        public List<BaseQuestion> Questions { get; set; }
         public List<UserStudysetConnection> Connections { get; set; }
 
         private Studyset(){}
 
-        public Studyset(Category category, User creator, List<User> contributors, List<BaseQuestion> questions, List<UserStudysetConnection> connections) : base()
+        public Studyset(string name, Category category, User creator, List<User> contributors, List<BaseQuestion> questions) : base()
         {
+            Name = name;
             Category = category;
             Creator = creator;
             Contributors = contributors;
             Questions = questions;
-            Connections = connections;
+
         }
-    
+
     }
 }

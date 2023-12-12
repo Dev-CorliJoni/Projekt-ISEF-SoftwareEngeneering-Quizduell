@@ -1,15 +1,9 @@
 ﻿using Quixduell.Blazor.Data;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
-using Quixduell.ServiceLayer.DataAccessLayer.Repository.RepositoryException;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Interface
 {
-    internal abstract class DataAccessBase<TModel>
+    public abstract class DataAccessBase<TModel>
     {
         protected readonly AppDatabaseContext<User> dbContext;
 

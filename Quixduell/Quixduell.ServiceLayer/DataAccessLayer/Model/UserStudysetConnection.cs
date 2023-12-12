@@ -6,15 +6,15 @@
         public Studyset Studyset { get; set; }
 
         public Rating Rating { get; set; }
-        public float? Highscore { get; set; } = null;
+        public float Highscore { get; set; }
 
         private UserStudysetConnection() { }
 
-        public UserStudysetConnection(User user, Studyset studyset) : this(user, studyset, new Rating(), null)
+        public UserStudysetConnection(User user, Studyset studyset) : this(user, studyset, new Rating(), 0)
         {
         }
 
-        public UserStudysetConnection(User user, Studyset studyset, Rating rating, float? highscore) : base()
+        public UserStudysetConnection(User user, Studyset studyset, Rating rating, float highscore) : base()
         {
             User = user;
             Studyset = studyset;
