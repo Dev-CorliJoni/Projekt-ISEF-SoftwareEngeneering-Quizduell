@@ -39,7 +39,7 @@ namespace Quixduell.ServiceLayer
                 }, ServiceLifetime.Transient);
             }
 
-            services.AddScoped<StudysetRepository>();
+            services.AddScoped<StudysetDataAccess>();
             services.AddScoped<CategoryDataAccess>();
             services.AddScoped<GlobalSearch>();
             return services;
