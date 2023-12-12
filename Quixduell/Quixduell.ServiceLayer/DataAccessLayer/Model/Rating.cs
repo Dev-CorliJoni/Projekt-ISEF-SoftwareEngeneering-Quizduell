@@ -10,10 +10,10 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
     public class Rating : IdModel
     {
         [Range(0, 5)]
-        public float Value { get; set; }
-        public string Description { get; set; }
+        public float? Value { get; set; } = null;
+        public string? Description { get; set; } = null;
 
-        private Rating() { }
+        public Rating() { }
 
         public Rating(float value, string description) : base()
         {
