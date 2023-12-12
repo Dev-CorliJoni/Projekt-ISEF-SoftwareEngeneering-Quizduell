@@ -10,7 +10,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
     /// <summary>
     /// Repository for managing Studyset Categories in the database.
     /// </summary>
-    internal class CategoryDataAccess : DataAccessBase<Category>, ICategoryDataAccess
+    internal class CategoryDataAccess : DataAccessBase<Category>
     {
 
 

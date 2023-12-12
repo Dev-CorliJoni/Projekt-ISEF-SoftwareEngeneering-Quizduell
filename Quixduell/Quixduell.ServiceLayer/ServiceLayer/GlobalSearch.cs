@@ -1,4 +1,5 @@
-﻿using Quixduell.Blazor.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Quixduell.Blazor.Data;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation;
 using System;
@@ -11,9 +12,16 @@ namespace Quixduell.ServiceLayer.ServiceLayer
 {
     public class GlobalSearch
     {
-        public static async Task<List<Studyset>> Search(AppDatabaseContext<User> context, string name)
+        private readonly StudysetDataAccess _studysetDataAccess;
+
+        internal GlobalSearch(StudysetDataAccess studysetDataAccess)
         {
-            return (await new StudysetDataAccess(context).LoadTopByNameAsync(name)).ToList();
+            _studysetDataAccess = studysetDataAccess;
+        }
+
+        public  async Task<List<Studyset>> Search(string name)
+        {
+             return await (await _studysetDataAccess.LoadTopByNameAsync(name)).ToListAsync();
         }
 
         //public static async Task Save(AppDatabaseContext<User> context, Studyset studyset)
