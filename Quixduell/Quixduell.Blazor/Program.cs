@@ -21,6 +21,10 @@ builder.Services.Configure<AzureFileLoggerOptions>(options =>
 
 //Get Connection String
 var connectionString = builder.Configuration.GetConnectionString("SQL");
+if (String.IsNullOrWhiteSpace(connectionString))
+{
+    throw new ArgumentNullException(nameof(connectionString));
+}
 
 //Configure Entity Framework for Identity
 builder.Services.AddDbContext<AppDatabaseContext<User>>(options =>
@@ -29,7 +33,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 //Configure Identity Provider
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<AppDatabaseContext<User>>();
+    .AddEntityFrameworkStores<AppDatabaseContext<User>>()
+     .AddUserValidator<CustomEmailValidator>();
 
 //User Service
 builder.Services.AddScoped<UserService>();
