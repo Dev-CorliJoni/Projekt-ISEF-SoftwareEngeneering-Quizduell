@@ -23,7 +23,7 @@ namespace Quixduell.Blazor.Pages
             var currentUser = await UserService.GetAuthenticatedUserOrRedirect();
             if (currentUser is null) { return; }
 
-            _studysets = await GlobalSearch.Search(currentUser);
+            _studysets = await GlobalSearch.SearchCreatorOrContributor(currentUser);
 
 
             await base.OnInitializedAsync();
