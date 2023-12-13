@@ -42,7 +42,7 @@ namespace Quixduell.Blazor.Pages
 
             var Studyset = new Studyset(GenerateRandomString(10), new Category(GenerateRandomString(10)), currentUser, new List<User>(), new List<BaseQuestion>());
 
-            await GlobalSearch.SaveStudyset(Studyset, currentUser);
+            await GlobalSearch.StoreStudyset(Studyset, currentUser);
 
 
             _studysets = await GlobalSearch.Search("");

@@ -5,19 +5,23 @@
         public User User { get; set; }
         public Studyset Studyset { get; set; }
 
+
+        public bool IsStored { get; set; }
         public Rating Rating { get; set; }
         public float Highscore { get; set; }
 
         private UserStudysetConnection() { }
 
-        public UserStudysetConnection(User user, Studyset studyset) : this(user, studyset, new Rating(), 0)
+        public UserStudysetConnection(User user, Studyset studyset, bool isStored) : this(user, studyset, isStored, new Rating(), 0)
         {
         }
 
-        public UserStudysetConnection(User user, Studyset studyset, Rating rating, float highscore) : base()
+        public UserStudysetConnection(User user, Studyset studyset, bool isStored, Rating rating, float highscore) : base()
         {
             User = user;
             Studyset = studyset;
+
+            IsStored = isStored;
             Rating = rating;
             Highscore = highscore;
         }
