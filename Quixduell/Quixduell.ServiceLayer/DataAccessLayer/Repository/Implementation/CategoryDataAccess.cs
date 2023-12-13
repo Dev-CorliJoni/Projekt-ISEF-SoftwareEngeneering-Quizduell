@@ -10,7 +10,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
     /// <summary>
     /// Repository for managing Studyset Categories in the database.
     /// </summary>
-    internal class CategoryDataAccess : DataAccessBase<Category>
+    public class CategoryDataAccess : DataAccessBase<Category>
     {
 
 
@@ -69,6 +69,17 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
                 return results.Where(where);
             }
             return results;
+        }
+
+        /// <summary>
+        /// Retrieves a set of categories compare with LIKE on param
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<IQueryable<Category>> LoadByNameAsync(string name, int amount = 50)
+        {
+            var results = await LoadQueryableAsync();
+            return results.Where(c => EF.Functions.Like(c.Name, $"%{name}%")).Take(amount);
         }
 
         public override async Task<IQueryable<Category>> LoadQueryableAsync()
