@@ -21,7 +21,11 @@ namespace Quixduell.Blazor.Pages
 
 
         private List<Studyset>? _studysets = null;
+        private List<Category> _categories = null;
 
+        private string SearchText { get; set; }
+        private Category SelectedCategory { get; set; }
+        private DateTime MinDate { get; set; }
 
 
 
@@ -29,7 +33,7 @@ namespace Quixduell.Blazor.Pages
         {
             await base.OnInitializedAsync();
 
-
+            _categories = await GlobalSearch.SearchCategory("");
             _studysets = await GlobalSearch.Search("");
         }
 
