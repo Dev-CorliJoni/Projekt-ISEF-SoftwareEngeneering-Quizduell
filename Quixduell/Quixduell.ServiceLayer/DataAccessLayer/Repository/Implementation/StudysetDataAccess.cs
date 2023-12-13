@@ -31,43 +31,17 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
             return await this.dbContext.Studysets.SingleAsync(s => s.Id == id);
         }
 
-        public async Task<IQueryable<Studyset>> LoadTopByNameAsync(string name, int amount = 50)
+        public async Task<IQueryable<Studyset>> LoadTopByParamsAsync(string? name, User? user, int amount = 50)
         {
+            List<Func<Studyset, bool>> conditions = new List<Func<Studyset, bool>> 
+            { 
+                (s) => name != null ? EF.Functions.Like(s.Name, $"%{name}%") : true,
+                (s) => user != null ? s.Creator == user || s.Contributors.Contains(user) : true
+            };
+
             return (await LoadQueryableAsync())
-                .Where(s => EF.Functions.Like(s.Name, $"%{name}%"))
-                .Include(o => o.Questions)
-                .Include(o => o.Creator)
-                .Include(o => o.Connections)
-                .Include(o => o.Category)
-                .Include(o => o.Contributors)
+                .Where(s => conditions.All(condition => condition(s)))
                 .Take(amount);
-
-        }
-
-        public async Task<IQueryable<Studyset>> LoadTopByCreatorAsync(User creator, int amount = 50)
-        {
-            return (await LoadQueryableAsync())
-                .Where(s => s.Creator == creator)
-                .Include(o => o.Questions)
-                .Include(o => o.Creator)
-                .Include(o => o.Connections)
-                .Include(o => o.Category)
-                .Include(o => o.Contributors)
-                .Take(amount);
-
-        }
-
-        public async Task<IQueryable<Studyset>> LoadTopByContributorsAsync(User contributor, int amount = 50)
-        {
-            return (await LoadQueryableAsync())
-                .Where(s => s.Contributors.Contains(contributor))
-                .Include(o => o.Questions)
-                .Include(o => o.Creator)
-                .Include(o => o.Connections)
-                .Include(o => o.Category)
-                .Include(o => o.Contributors)
-                .Take(amount);
-
         }
 
         public override async Task<IEnumerable<Studyset>> LoadAsync(Func<Studyset, bool> where = null)
@@ -76,13 +50,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
 
             if (where != null)
             {
-                return results.Include(o => o.Questions)
-                .Include(o => o.Creator)
-                .Include(o => o.Connections)
-                .Include(o => o.Category)
-                .Include(o => o.Contributors)
-                .Where(where);
-
+                return results.Include(o => o.Questions).Where(where);
             }
             else 
             {   
@@ -94,7 +62,12 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
         {
             return await Task.Run(() =>
             {
-                return dbContext.Studysets;
+                return dbContext.Studysets
+                .Include(o => o.Questions)
+                .Include(o => o.Creator)
+                .Include(o => o.Connections)
+                .Include(o => o.Category)
+                .Include(o => o.Contributors);
             });
         }
 

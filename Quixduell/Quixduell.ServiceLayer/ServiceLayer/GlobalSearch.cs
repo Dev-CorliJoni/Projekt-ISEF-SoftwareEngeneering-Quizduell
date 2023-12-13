@@ -13,17 +13,9 @@ namespace Quixduell.ServiceLayer.ServiceLayer
             _studysetDataAccess = studysetDataAccess;
         }
 
-        public async Task<List<Studyset>> Search(string name)
+        public async Task<List<Studyset>> Search(string? name, User? user=null)
         {
-             return await (await _studysetDataAccess.LoadTopByNameAsync(name)).ToListAsync();
-        }
-
-        public async Task<List<Studyset>> SearchCreatorOrContributor(User user)
-        {
-            var sets =  await (await _studysetDataAccess.LoadTopByCreatorAsync(user)).ToListAsync();
-            sets.Concat(await (await _studysetDataAccess.LoadTopByContributorsAsync(user)).ToListAsync());
-            sets.Distinct();
-            return sets;
+             return await (await _studysetDataAccess.LoadTopByParamsAsync(name, user)).ToListAsync();
         }
 
         public async Task StoreStudyset(Studyset studyset, User currentUser)
