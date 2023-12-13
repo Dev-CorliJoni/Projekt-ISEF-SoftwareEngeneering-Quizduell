@@ -5,7 +5,7 @@ using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Answers;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 
-namespace Quixduell.Blazor.Data
+namespace Quixduell.ServiceLayer.DataAccessLayer
 {
     public class AppDatabaseContext<TUser> 
         : IdentityDbContext<TUser, IdentityRole, string>

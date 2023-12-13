@@ -33,11 +33,11 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
 
         public async Task<IQueryable<Studyset>> LoadTopByParamsAsync(string? name, User? user, int amount = 50)
         {
-            List<Func<Studyset, bool>> conditions = new List<Func<Studyset, bool>> 
-            { 
-                (s) => name != null ? EF.Functions.Like(s.Name, $"%{name}%") : true,
-                (s) => user != null ? s.Creator == user || s.Contributors.Contains(user) : true
-            };
+            List<Func<Studyset, bool>> conditions =
+            [
+                (s) => name == null || EF.Functions.Like(s.Name, $"%{name}%"),
+                (s) => user == null || s.Creator == user || s.Contributors.Contains(user)
+            ];
 
             return (await LoadQueryableAsync())
                 .Where(s => conditions.All(condition => condition(s)))
