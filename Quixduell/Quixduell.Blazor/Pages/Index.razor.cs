@@ -34,7 +34,7 @@ namespace Quixduell.Blazor.Pages
             await base.OnInitializedAsync();
 
             _categories = await GlobalSearch.SearchCategory("");
-            _studysets = await GlobalSearch.Search("");
+            _studysets = await GlobalSearch.Search();
         }
 
 
@@ -49,7 +49,7 @@ namespace Quixduell.Blazor.Pages
             await GlobalSearch.StoreStudyset(Studyset, currentUser);
 
 
-            _studysets = await GlobalSearch.Search("");
+            _studysets = await GlobalSearch.Search();
 
         }
 

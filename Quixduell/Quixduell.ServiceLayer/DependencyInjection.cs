@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Quixduell.Blazor.Data;
+using Quixduell.ServiceLayer.DataAccessLayer;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Options;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation;
-using Quixduell.ServiceLayer.DataAccessLayer.Repository.Interface;
 using Quixduell.ServiceLayer.ServiceLayer;
 using Quixduell.ServiceLayer.Services.HostedServices;
 

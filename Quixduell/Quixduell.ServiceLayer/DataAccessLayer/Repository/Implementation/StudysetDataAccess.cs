@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Quixduell.Blazor.Data;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.Interface;
 

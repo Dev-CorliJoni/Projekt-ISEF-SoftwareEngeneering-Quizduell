@@ -2,9 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Quixduell.Blazor.Data;
+using Quixduell.ServiceLayer.DataAccessLayer;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
-using Quixduell.ServiceLayer.DataAccessLayer.Repository;
 
 namespace Quixduell.ServiceLayer.Services.HostedServices
 {

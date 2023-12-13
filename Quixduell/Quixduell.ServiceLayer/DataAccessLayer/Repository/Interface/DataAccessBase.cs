@@ -1,5 +1,4 @@
-﻿using Quixduell.Blazor.Data;
-using Quixduell.ServiceLayer.DataAccessLayer.Model;
+﻿using Quixduell.ServiceLayer.DataAccessLayer.Model;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Interface
 {

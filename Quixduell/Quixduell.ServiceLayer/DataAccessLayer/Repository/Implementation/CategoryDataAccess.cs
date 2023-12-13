@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Quixduell.Blazor.Data;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.Interface;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.RepositoryException;
-using System.Linq;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
 {
