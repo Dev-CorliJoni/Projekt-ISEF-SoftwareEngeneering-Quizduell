@@ -26,17 +26,24 @@ namespace Quixduell.ServiceLayer.ServiceLayer
             return sets;
         }
 
-
-
-        public async Task SaveStudyset(Studyset studyset, User currentUser)
+        public async Task StoreStudyset(Studyset studyset, User currentUser)
         {
-            if(currentUser.StudysetConnections.Any(sc => sc.Studyset.Name == studyset.Name) == false)
+            await Task.Run(() =>
             {
-                var studysetUserConnection = new UserStudysetConnection(currentUser, studyset);
-                currentUser.StudysetConnections.Add(studysetUserConnection);
-                studyset.Connections.Add(studysetUserConnection);
-                await _studysetDataAccess.UpdateAsync(studyset);
-            }
+                if (currentUser.StudysetConnections.Any(sc => sc.Studyset.Name == studyset.Name) == false)
+                {
+                    var studysetUserConnection = new UserStudysetConnection(currentUser, studyset, true);
+                    currentUser.StudysetConnections.Add(studysetUserConnection);
+                    studyset.Connections.Add(studysetUserConnection);
+                }
+                else
+                {
+                    var connection = studyset.Connections.Find(sc => sc.Studyset.Name == studyset.Name)!;
+                    connection.IsStored = true;
+                }
+            });
+            
+            await _studysetDataAccess.UpdateAsync(studyset);
         }
     }
 }
