@@ -30,18 +30,22 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
             return await this.dbContext.Studysets.SingleAsync(s => s.Id == id);
         }
 
-        public async Task<IQueryable<Studyset>> LoadTopByParamsAsync(string? name = null, User? user = null, int amount = 50)
+        public async Task<IQueryable<Studyset>> LoadTopByParamsAsync(string? name = null, User? user = null, string? categoryName = null, int amount = 50)
         {
             var result = await LoadQueryableAsync();
             if (name is not null)
             {
-                result.Where((s) => name == null || EF.Functions.Like(s.Name, $"%{name}%"));
+                result = result.Where((s) => name == null || EF.Functions.Like(s.Name, $"%{name}%"));
             }
             if (user is not null)
             {
-                result.Where((s) => user == null || s.Creator == user || s.Contributors.Contains(user));
+                result = result.Where((s) => user == null || s.Creator == user || s.Contributors.Contains(user));
             }
-            
+            if (categoryName is not null)
+            {
+                result = result.Where((s) => name == null || EF.Functions.Like(s.Category.Name, $"%{categoryName}%"));
+            }
+
 
             return result.Take(amount);
         }

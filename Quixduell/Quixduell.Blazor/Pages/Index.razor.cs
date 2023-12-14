@@ -3,29 +3,31 @@ using Quixduell.ServiceLayer.ServiceLayer;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 using Microsoft.AspNetCore.Components;
 using Quixduell.Blazor.Services;
+using System;
 
 namespace Quixduell.Blazor.Pages
 {
     public partial class Index
     {
         [Inject]
-        private GlobalSearch GlobalSearch { get; set; }
+        private GlobalSearch GlobalSearch { get; set; } = default!;
 
         [Inject]
-        private UserService UserService { get; set; }
+        private UserService UserService { get; set; } = default!;
 
         [Inject]
-        private NavigationManager NavigationManager { get; set; }
+        private NavigationManager NavigationManager { get; set; } = default!;
 
 
 
 
         private List<Studyset>? _studysets = null;
-        private List<Category> _categories = null;
+        private List<Category>? _categories = null;
 
-        private string SearchText { get; set; }
-        private Category SelectedCategory { get; set; }
-        private DateTime MinDate { get; set; }
+        private string SearchText { get; set; } = "";
+        private string SelectedCategoryName { get; set; } = "";
+        private DateTime MinDate { get; set; } = DateTime.Now;
+
 
 
 
@@ -34,7 +36,7 @@ namespace Quixduell.Blazor.Pages
             await base.OnInitializedAsync();
 
             _categories = await GlobalSearch.SearchCategory("");
-            _studysets = await GlobalSearch.Search();
+            await SearchForStudysets();
         }
 
 
@@ -49,9 +51,15 @@ namespace Quixduell.Blazor.Pages
             await GlobalSearch.StoreStudyset(Studyset, currentUser);
 
 
-            _studysets = await GlobalSearch.Search();
+            await SearchForStudysets();
 
         }
+
+        private async Task SearchForStudysets ()
+        {
+            _studysets = await GlobalSearch.Search(SearchText,null,SelectedCategoryName);
+        }
+
 
 
         static Random _random = new Random();
