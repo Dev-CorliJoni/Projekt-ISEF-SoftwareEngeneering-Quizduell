@@ -35,15 +35,15 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
             var result = await LoadQueryableAsync();
             if (name is not null)
             {
-                result = result.Where((s) => name == null || EF.Functions.Like(s.Name, $"%{name}%"));
+                result = result.Where((s) => EF.Functions.Like(s.Name, $"%{name}%"));
             }
             if (user is not null)
             {
-                result = result.Where((s) => user == null || s.Creator == user || s.Contributors.Contains(user));
+                result = result.Where((s) => s.Creator == user || s.Contributors.Contains(user));
             }
             if (categoryName is not null)
             {
-                result = result.Where((s) => categoryName == null || EF.Functions.Like(s.Category.Name, $"%{categoryName}%"));
+                result = result.Where((s) => EF.Functions.Like(s.Category.Name, $"%{categoryName}%"));
             }
 
 
