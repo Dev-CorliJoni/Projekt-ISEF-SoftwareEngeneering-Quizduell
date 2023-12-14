@@ -31,7 +31,7 @@ namespace Quixduell.ServiceLayer.ServiceLayer
             {
                 if (currentUser.StudysetConnections.Any(sc => sc.Studyset.Name == studyset.Name) == false)
                 {
-                    var studysetUserConnection = new UserStudysetConnection(currentUser, studyset, true);
+                    var studysetUserConnection = new UserStudysetConnection(currentUser, studyset, true, new Rating(),0);
                     currentUser.StudysetConnections.Add(studysetUserConnection);
                     studyset.Connections.Add(studysetUserConnection);
                 }

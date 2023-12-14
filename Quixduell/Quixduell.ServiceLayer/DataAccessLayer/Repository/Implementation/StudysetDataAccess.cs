@@ -30,20 +30,23 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
             return await this.dbContext.Studysets.SingleAsync(s => s.Id == id);
         }
 
-        public async Task<IQueryable<Studyset>> LoadTopByParamsAsync(string? name, User? user, int amount = 50)
+        public async Task<IQueryable<Studyset>> LoadTopByParamsAsync(string? name = null, User? user = null, int amount = 50)
         {
-            List<Func<Studyset, bool>> conditions =
-            [
-                (s) => name == null || EF.Functions.Like(s.Name, $"%{name}%"),
-                (s) => user == null || s.Creator == user || s.Contributors.Contains(user)
-            ];
+            var result = await LoadQueryableAsync();
+            if (name is not null)
+            {
+                result.Where((s) => name == null || EF.Functions.Like(s.Name, $"%{name}%"));
+            }
+            if (user is not null)
+            {
+                result.Where((s) => user == null || s.Creator == user || s.Contributors.Contains(user));
+            }
+            
 
-            return (await LoadQueryableAsync())
-                .Where(s => conditions.All(condition => condition(s)))
-                .Take(amount);
+            return result.Take(amount);
         }
 
-        public override async Task<IEnumerable<Studyset>> LoadAsync(Func<Studyset, bool> where = null)
+        public override async Task<IEnumerable<Studyset>> LoadAsync(Func<Studyset, bool>? where = null)
         {
             var results = await LoadQueryableAsync();
 
