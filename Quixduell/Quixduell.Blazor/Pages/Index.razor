@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col">
                     <label for="inputSearch" class="form-label"></label>
-                    <input @bind=@SearchText @bind:event="oninput" @bind:after=@SearchForStudysets id="inputSearch" class="form-control" />
+                    <input @bind=@SearchText @bind:after=@SearchForStudysets id="inputSearch" class="form-control" />
                 </div>
                 @if (_categories is not null)
                 {
