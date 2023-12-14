@@ -4,6 +4,8 @@ using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 using Microsoft.AspNetCore.Components;
 using Quixduell.Blazor.Services;
 using System;
+using Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Quixduell.Blazor.Pages
 {
@@ -18,7 +20,11 @@ namespace Quixduell.Blazor.Pages
         [Inject]
         private NavigationManager NavigationManager { get; set; } = default!;
 
+        [Inject]
+        private StudysetHandler StudysetHandler { get; set; } = default!;
 
+        [Inject]
+        private CategoryHandler CategoryHandler { get; set; } = default!;
 
 
         private List<Studyset>? _studysets = null;
@@ -26,30 +32,50 @@ namespace Quixduell.Blazor.Pages
 
         private string SearchText { get; set; } = "";
         private string SelectedCategoryName { get; set; } = "";
-        private DateTime MinDate { get; set; } = DateTime.Now;
+        private bool ShowConnected { get; set; } = true;
 
+        private User User { get; set; } = default!;
 
 
 
         override protected async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
+            var user = await UserService.GetAuthenticatedUserOrRedirect();
+            if (user is null) { return; }
+
+            User = user;
 
             _categories = await GlobalSearch.SearchCategory("");
             await SearchForStudysets();
         }
 
+        private bool CheckIfCurrentUserStored (Studyset studyset) 
+        {
+            var connection = studyset.Connections.FirstOrDefault(con => con.User == User);
+            if (connection is not null && connection.IsStored)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private async Task NoticeStudyset (Studyset studySet)
+        {
+            await GlobalSearch.NoticeStudyset(studySet, User);
+        }
+
+        private async Task UnNoticeStudyset(Studyset studySet)
+        {
+            await GlobalSearch.UnNoticeStudyset(studySet, User);
+        }
 
         private async Task InitSampleData()
         {
+            var cat = await CategoryHandler.AddCategoryAsync(GenerateRandomString(10));
+            var studySet = await StudysetHandler.AddStudysetAsync(GenerateRandomString(10), cat, User);
 
-            var currentUser = await UserService.GetAuthenticatedUserOrRedirect();
-            if (currentUser is null) { return; }
-
-            var Studyset = new Studyset(GenerateRandomString(10), new Category(GenerateRandomString(10)), currentUser, new List<User>(), new List<BaseQuestion>());
-
-            await GlobalSearch.StoreStudyset(Studyset, currentUser);
-
+            await NoticeStudyset(studySet);
 
             await SearchForStudysets();
 
@@ -57,7 +83,14 @@ namespace Quixduell.Blazor.Pages
 
         private async Task SearchForStudysets ()
         {
-            _studysets = await GlobalSearch.Search(SearchText,null,SelectedCategoryName);
+            if (ShowConnected)
+            {
+                _studysets = await GlobalSearch.Search(SearchText, User, SelectedCategoryName);
+            }
+            else
+            {
+                _studysets = await GlobalSearch.Search(SearchText, null, SelectedCategoryName);
+            }
         }
 
 

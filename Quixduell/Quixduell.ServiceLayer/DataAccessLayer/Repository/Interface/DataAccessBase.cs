@@ -15,7 +15,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Interface
         public abstract Task<IQueryable<TModel>> LoadQueryableAsync();
         public abstract Task<IEnumerable<TModel>> LoadAsync(Func<TModel, bool> where);
         public abstract Task<TModel> GetAsync(Guid id);
-        public abstract Task AddAsync(TModel model);
+        public abstract Task<TModel> AddAsync(TModel model);
         public abstract Task UpdateAsync(TModel model);
         public abstract Task DeleteAsync(TModel model);
     }

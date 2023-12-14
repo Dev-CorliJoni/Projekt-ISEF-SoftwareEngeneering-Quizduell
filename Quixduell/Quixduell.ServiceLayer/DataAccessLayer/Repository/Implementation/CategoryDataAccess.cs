@@ -20,10 +20,11 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
         /// Creates a new category asynchronously in the database.
         /// </summary>
         /// <param name="model">The category to create.</param>
-        public override async Task AddAsync(Category model)
+        public override async Task<Category> AddAsync(Category model)
         {
             await dbContext.Categories.AddAsync(model);
             await dbContext.SaveChangesAsync();
+            return model;
         }
 
         /// <summary>

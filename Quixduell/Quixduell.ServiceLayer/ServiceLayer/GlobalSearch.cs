@@ -15,9 +15,9 @@ namespace Quixduell.ServiceLayer.ServiceLayer
             _categoryDataAccess = categoryDataAccess;
         }
 
-        public async Task<List<Studyset>> Search(string? name = null, User? user=null, string? categoryName = null)
+        public async Task<List<Studyset>> Search(string? name = null, User? user = null, string? categoryName = null)
         {
-             return await (await _studysetDataAccess.LoadTopByParamsAsync(name, user, categoryName)).ToListAsync();
+            return await (await _studysetDataAccess.LoadTopByParamsAsync(name, user, user, categoryName)).ToListAsync();
         }
 
         public async Task<List<Category>> SearchCategory(string name)
@@ -25,24 +25,34 @@ namespace Quixduell.ServiceLayer.ServiceLayer
             return await (await _categoryDataAccess.LoadByNameAsync(name)).ToListAsync();
         }
 
-        public async Task StoreStudyset(Studyset studyset, User currentUser)
+        public async Task NoticeStudyset(Studyset studyset, User currentUser)
         {
-            await Task.Run(() =>
+
+            if (currentUser.StudysetConnections.Any(sc => sc.Studyset.Id == studyset.Id) == false)
             {
-                if (currentUser.StudysetConnections.Any(sc => sc.Studyset.Name == studyset.Name) == false)
-                {
-                    var studysetUserConnection = new UserStudysetConnection(currentUser, studyset, true, new Rating(),0);
-                    currentUser.StudysetConnections.Add(studysetUserConnection);
-                    studyset.Connections.Add(studysetUserConnection);
-                }
-                else
-                {
-                    var connection = studyset.Connections.Find(sc => sc.Studyset.Name == studyset.Name)!;
-                    connection.IsStored = true;
-                }
-            });
-            
+                var studysetUserConnection = new UserStudysetConnection(currentUser, studyset, true, new Rating(), 0);
+                currentUser.StudysetConnections.Add(studysetUserConnection);
+                studyset.Connections.Add(studysetUserConnection);
+            }
+            else
+            {
+                var connection = studyset.Connections.Find(sc => sc.User.Id == currentUser.Id)!;
+                connection.IsStored = true;
+            }
+
+
             await _studysetDataAccess.UpdateAsync(studyset);
+        }
+
+        public async Task UnNoticeStudyset(Studyset studyset, User currentUser)
+        {
+            var connection = studyset.Connections.FirstOrDefault(sc => sc.User.Id == currentUser.Id);
+
+            if (connection is not null) 
+            {
+                connection.IsStored = false;
+                await _studysetDataAccess.UpdateAsync(studyset);
+            }         
         }
     }
 }
