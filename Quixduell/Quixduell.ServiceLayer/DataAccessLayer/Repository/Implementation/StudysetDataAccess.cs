@@ -43,7 +43,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
             }
             if (categoryName is not null)
             {
-                result = result.Where((s) => name == null || EF.Functions.Like(s.Category.Name, $"%{categoryName}%"));
+                result = result.Where((s) => categoryName == null || EF.Functions.Like(s.Category.Name, $"%{categoryName}%"));
             }
 
 
