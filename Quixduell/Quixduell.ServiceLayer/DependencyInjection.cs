@@ -42,6 +42,7 @@ namespace Quixduell.ServiceLayer
             services.AddScoped<StudysetDataAccess>();
             services.AddScoped<CategoryDataAccess>();
             services.AddScoped<GlobalSearch>();
+            services.AddScoped<InitSampleData>();
 
             services.AddScoped<CategoryHandler>();
             services.AddScoped<StudysetHandler>();

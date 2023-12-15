@@ -11,6 +11,10 @@ namespace Quixduell.Blazor.Pages
 {
     public partial class Index
     {
+
+        [Inject]
+        private InitSampleData InitSampleData { get; set; } = default!;
+
         [Inject]
         private GlobalSearch GlobalSearch { get; set; } = default!;
 
@@ -46,6 +50,8 @@ namespace Quixduell.Blazor.Pages
 
             User = user;
 
+            await InitSampleData.GenerateSampleData(user);
+
             _categories = await GlobalSearch.SearchCategory("");
             await SearchForStudysets();
         }
@@ -70,7 +76,7 @@ namespace Quixduell.Blazor.Pages
             await GlobalSearch.UnNoticeStudyset(studySet, User);
         }
 
-        private async Task InitSampleData()
+        private async Task InitSampleDataMethod()
         {
             var cat = await CategoryHandler.AddCategoryAsync(GenerateRandomString(10));
             var studySet = await StudysetHandler.AddStudysetAsync(GenerateRandomString(10), cat, User);
