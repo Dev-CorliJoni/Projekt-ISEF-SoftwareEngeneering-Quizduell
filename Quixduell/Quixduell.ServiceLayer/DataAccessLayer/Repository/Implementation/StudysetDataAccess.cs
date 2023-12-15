@@ -8,15 +8,26 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
     {
         public StudysetDataAccess(AppDatabaseContext<User> dbContext) : base(dbContext) {  }
 
-        public override async Task AddAsync(Studyset model)
+        public override async Task<Studyset> AddAsync(Studyset model)
         {
             await this.dbContext.Studysets.AddAsync(model);
             await this.dbContext.SaveChangesAsync();
+            return model;
         }
 
-        public override async Task<int> Count()
+        public override async Task<int> CountAsync()
         {
             return await this.dbContext.Studysets.CountAsync();
+        }
+
+        public override async Task<bool> ExistsAsync(Studyset model)
+        {
+            return await dbContext.Studysets.ContainsAsync(model);
+        }
+
+        public async Task<bool> ExistsAsync(string name)
+        {
+            return await dbContext.Studysets.AnyAsync(s => s.Name == name);
         }
 
         public override async Task DeleteAsync(Studyset model)
@@ -30,20 +41,29 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
             return await this.dbContext.Studysets.SingleAsync(s => s.Id == id);
         }
 
-        public async Task<IQueryable<Studyset>> LoadTopByParamsAsync(string? name = null, User? user = null, string? categoryName = null, int amount = 50)
+        public async Task<Studyset> GetAsync(string name)
+        {
+            return await dbContext.Studysets.SingleAsync(o => o.Name == name);
+        }
+
+        public async Task<IQueryable<Studyset>> LoadTopByParamsAsync(string? name = null, User? creatorOrContributor = null, User? userHasStored = null, string? categoryName = null, int amount = 50)
         {
             var result = await LoadQueryableAsync();
             if (name is not null)
             {
-                result = result.Where((s) => name == null || EF.Functions.Like(s.Name, $"%{name}%"));
+                result = result.Where((s) => EF.Functions.Like(s.Name, $"%{name}%"));
             }
-            if (user is not null)
+            if (creatorOrContributor is not null)
             {
-                result = result.Where((s) => user == null || s.Creator == user || s.Contributors.Contains(user));
+                result = result.Where((s) => s.Creator == creatorOrContributor || s.Contributors.Contains(creatorOrContributor));
+            }
+            if (userHasStored is not null)
+            { 
+               result = result.Where((s) => s.Connections.Any(con => con.User.Id == userHasStored.Id && con.IsStored == true));
             }
             if (categoryName is not null)
             {
-                result = result.Where((s) => name == null || EF.Functions.Like(s.Category.Name, $"%{categoryName}%"));
+                result = result.Where((s) => EF.Functions.Like(s.Category.Name, $"%{categoryName}%"));
             }
 
 

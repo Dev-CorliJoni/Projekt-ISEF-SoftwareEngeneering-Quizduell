@@ -11,24 +11,26 @@
             <div class="row">
                 <div class="col">
                     <label for="inputSearch" class="form-label"></label>
-                    <input @bind=@SearchText @bind:event="oninput" @bind:after=@SearchForStudysets id="inputSearch" class="form-control" />
+                    <input @bind=@SearchText @bind:after=@SearchForStudysets id="inputSearch" class="form-control" />
                 </div>
                 @if (_categories is not null)
                 {
                     <div class="col form-group">
                         <label for="inputCat" class="form-label"></label>
-                        <input @bind=@SelectedCategoryName @bind:event="oninput" @bind:after=@SearchForStudysets list="items" id="inputCat" class="form-control" />
-                        <datalist id="items">
+                        <select @bind=@SelectedCategoryName @bind:event="oninput" @bind:after=@SearchForStudysets id="inputCat" class="form-control">
+                            <option value=""></option>
                             @foreach (var item in _categories)
                             {
-                                <option value="@item.Name"></option>
+                                <option value="@item.Name">@item.Name</option>
                             }
-                        </datalist>
+                        </select>
                     </div>
                 }
                 <div class="col">
-                    <label for="inputDate" class="form-label"></label>
-                    <input @bind-value=@MinDate id="inputDate" class="form-control" type="date" />
+                    <div class="form-check form-switch">
+                        <input @bind=@ShowConnected  @bind:after=@SearchForStudysets class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                        <label class="form-check-label" for="flexSwitchCheckChecked">Zeige eigene und gemerkte Studysets</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,19 +46,26 @@
             </thead>
             <tbody>
                 <Virtualize Items="@_studysets" Context="Studyset" ItemSize="10" OverscanCount="5">
-                    <tr style="cursor: pointer" onclick="window.location='studyset/@Studyset.Id'">
+                    <tr style="cursor: pointer">
                         <th scope="row"></th>
                         <td>@Studyset.Name</td>
                         <td>@Studyset.Category.Name</td>
                         <td>@Studyset.Creator.Email</td>
-                        <td></td>
+                        @if (CheckIfCurrentUserStored(Studyset))
+                        {
+                            <th scope="col" style="color: red;" @onclick="async (s) =>{await UnNoticeStudyset(Studyset);}">&#10084;</th>
+                        }
+                        else
+                        {
+                            <th scope="col" style="color: grey;" @onclick="async (s) =>{await NoticeStudyset(Studyset);}">&#x1F44D;</th>
+                        }
                     </tr>
                 </Virtualize>
             </tbody>
         </table>
 
 
-        <button class="btn" @onclick="InitSampleData">Init Sample Data</button>
+        <button class="btn" @onclick="InitSampleDataMethod">Init Sample Data</button>
 
     </div>
 }
