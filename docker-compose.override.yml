@@ -8,7 +8,7 @@ services:
       - ConnectionStrings__SQL=Server=azuresql,1433;Database=QuixDB;Persist Security Info=False;User ID=sa;Password=bZYu04XMuyMqXWAcq9;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;
     ports:
       - "80"
-      - "443:5500"
+      - "443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
