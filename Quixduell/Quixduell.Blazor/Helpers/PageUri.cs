@@ -3,6 +3,7 @@
     public static class PageUri
     {
         public const string LoginPage = "/Identity/Account/Login";
-        public const string StudysetPage = "/studyset";
+        public const string EditStudysetPage = "/editstudyset";
+        public const string ViewStudysetPage = "/viewstudyset";
     }
 }

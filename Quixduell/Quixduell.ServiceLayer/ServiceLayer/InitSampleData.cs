@@ -52,6 +52,7 @@ namespace Quixduell.ServiceLayer.ServiceLayer
             {
                 if (await _studysetData.ExistsAsync(studyset.Name) == false)
                 {
+                    studyset.Connections.Add(new UserStudysetConnection(user, studyset, true, new Rating(4, "Ist Ok"), 1000));
                     await _studysetData.AddAsync(studyset);
                 }
             }            
