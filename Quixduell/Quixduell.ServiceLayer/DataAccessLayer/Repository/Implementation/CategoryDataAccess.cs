@@ -31,7 +31,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
         /// Count the elements of type <see cref="Category"/>
         /// </summary>
         /// <returns>Count of elements</returns>
-        public override async Task<int> Count()
+        public override async Task<int> CountAsync()
         {
             return await dbContext.Categories.CountAsync();
         }
@@ -46,14 +46,34 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
             await dbContext.SaveChangesAsync();
         }
 
+        public override async Task<bool> ExistsAsync(Category model)
+        {
+            return await dbContext.Categories.ContainsAsync(model);
+        }
+
+        public async Task<bool> ExistsAsync(string name)
+        {
+            return await dbContext.Categories.AnyAsync(s => s.Name == name);
+        }
+
         ///// <summary>
         ///// Retrieves a category by its ID asynchronously.
         ///// </summary>
         ///// <param name="id">The ID of the category to retrieve.</param>
         ///// <returns>The category if found, otherwise null.</returns>
-        public override async Task<Category> GetAsync(Guid id)
+        public override async Task<Category?> GetAsync(Guid id)
         {
             return await dbContext.Categories.SingleAsync(o => o.Id == id);
+        }
+
+        ///// <summary>
+        ///// Retrieves a category by its ID asynchronously.
+        ///// </summary>
+        ///// <param name="id">The ID of the category to retrieve.</param>
+        ///// <returns>The category if found, otherwise null.</returns>
+        public async Task<Category?> GetAsync(string name)
+        {
+            return await dbContext.Categories.SingleOrDefaultAsync(o => o.Name == name);
         }
 
         /// <summary>

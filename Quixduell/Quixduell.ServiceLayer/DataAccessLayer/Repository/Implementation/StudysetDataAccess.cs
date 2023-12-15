@@ -15,9 +15,19 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
             return model;
         }
 
-        public override async Task<int> Count()
+        public override async Task<int> CountAsync()
         {
             return await this.dbContext.Studysets.CountAsync();
+        }
+
+        public override async Task<bool> ExistsAsync(Studyset model)
+        {
+            return await dbContext.Studysets.ContainsAsync(model);
+        }
+
+        public async Task<bool> ExistsAsync(string name)
+        {
+            return await dbContext.Studysets.AnyAsync(s => s.Name == name);
         }
 
         public override async Task DeleteAsync(Studyset model)
@@ -29,6 +39,11 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
         public override async Task<Studyset> GetAsync(Guid id)
         {
             return await this.dbContext.Studysets.SingleAsync(s => s.Id == id);
+        }
+
+        public async Task<Studyset> GetAsync(string name)
+        {
+            return await dbContext.Studysets.SingleAsync(o => o.Name == name);
         }
 
         public async Task<IQueryable<Studyset>> LoadTopByParamsAsync(string? name = null, User? creatorOrContributor = null, User? userHasStored = null, string? categoryName = null, int amount = 50)
