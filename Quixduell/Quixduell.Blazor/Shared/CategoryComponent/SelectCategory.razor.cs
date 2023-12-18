@@ -13,13 +13,20 @@ namespace Quixduell.Blazor.Shared.CategoryComponent
         [Parameter]
         public EventCallback<Category> ValueChanged { get; set; }
 
+        public async Task Preselect(Guid ID)
+        {
+            _categories = await CategoryHandler.SearchCategoryAsync("");
+            _selectedId = ID.ToString();
+            StateHasChanged();
+        }
 
         private List<Category>? _categories = null;
         private string _selectedId;
 
         private string SelectedId
         {
-            get => _selectedId; set
+            get => _selectedId; 
+            set
             { 
                 _selectedId = value;
                 if (_categories is not null)
