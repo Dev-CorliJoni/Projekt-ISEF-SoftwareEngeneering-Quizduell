@@ -1,5 +1,7 @@
 ﻿@page "/"
+@using Quixduell.Blazor.Shared.CategoryComponent
 <PageTitle>Index</PageTitle>
+
 
 
 @if (_studysets is not null)
@@ -13,19 +15,7 @@
                     <label for="inputSearch" class="form-label"></label>
                     <input @bind=@SearchText @bind:after=@SearchForStudysets id="inputSearch" class="form-control" />
                 </div>
-                @if (_categories is not null)
-                {
-                    <div class="col form-group">
-                        <label for="inputCat" class="form-label"></label>
-                        <select @bind=@SelectedCategoryName @bind:event="oninput" @bind:after=@SearchForStudysets id="inputCat" class="form-control">
-                            <option value=""></option>
-                            @foreach (var item in _categories)
-                            {
-                                <option value="@item.Name">@item.Name</option>
-                            }
-                        </select>
-                    </div>
-                }
+                <SelectCategory @bind-Value="SelectedCategory" @bind-Value:after=@SearchForStudysets></SelectCategory>
                 <div class="col">
                     <div class="form-check form-switch">
                         <input @bind=@ShowConnected  @bind:after=@SearchForStudysets class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">

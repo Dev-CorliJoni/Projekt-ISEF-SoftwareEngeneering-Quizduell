@@ -20,10 +20,6 @@ namespace Quixduell.ServiceLayer.ServiceLayer
             return await (await _studysetDataAccess.LoadTopByParamsAsync(name, user, user, categoryName)).ToListAsync();
         }
 
-        public async Task<List<Category>> SearchCategory(string name)
-        {
-            return await (await _categoryDataAccess.LoadByNameAsync(name)).ToListAsync();
-        }
 
         public async Task NoticeStudyset(Studyset studyset, User currentUser)
         {

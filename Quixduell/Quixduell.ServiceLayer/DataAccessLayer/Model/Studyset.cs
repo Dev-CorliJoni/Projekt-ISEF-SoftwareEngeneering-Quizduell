@@ -19,7 +19,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
         public List<BaseQuestion> Questions { get; set; }
         public List<UserStudysetConnection> Connections { get; set; }
 
-        private Studyset(){}
+        public Studyset(){}
 
         public Studyset(string name, Category category, User creator, List<User> contributors, List<BaseQuestion> questions) : base()
         {

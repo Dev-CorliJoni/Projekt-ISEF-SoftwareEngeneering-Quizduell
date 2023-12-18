@@ -35,7 +35,7 @@ namespace Quixduell.Blazor.Pages
         private List<Category>? _categories = null;
 
         private string SearchText { get; set; } = "";
-        private string SelectedCategoryName { get; set; } = "";
+        private Category? SelectedCategory { get; set; }
         private bool ShowConnected { get; set; } = true;
 
         private User User { get; set; } = default!;
@@ -52,7 +52,7 @@ namespace Quixduell.Blazor.Pages
 
             await InitSampleData.GenerateSampleData(user);
 
-            _categories = await GlobalSearch.SearchCategory("");
+            _categories = await CategoryHandler.SearchCategoryAsync("");
             await SearchForStudysets();
         }
 
@@ -91,11 +91,11 @@ namespace Quixduell.Blazor.Pages
         {
             if (ShowConnected)
             {
-                _studysets = await GlobalSearch.Search(SearchText, User, SelectedCategoryName);
+                _studysets = await GlobalSearch.Search(SearchText, User, SelectedCategory?.Name??"");
             }
             else
             {
-                _studysets = await GlobalSearch.Search(SearchText, null, SelectedCategoryName);
+                _studysets = await GlobalSearch.Search(SearchText, null, SelectedCategory?.Name ?? "");
             }
         }
 

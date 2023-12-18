@@ -18,5 +18,10 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
             var Studyset = new Studyset(name, category, creator, new List<User>(), new List<BaseQuestion>());
             return await _studysetDataAccess.AddAsync(Studyset);
         }
+
+        public async Task<Studyset?> GetStudysetViaIDAsync(Guid id)
+        {
+            return (await _studysetDataAccess.LoadAsync(o => o.Id == id)).FirstOrDefault();
+        }
     }
 }

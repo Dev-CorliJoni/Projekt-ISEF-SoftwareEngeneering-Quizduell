@@ -1,4 +1,5 @@
-﻿using Quixduell.ServiceLayer.DataAccessLayer.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation;
 
 namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
@@ -19,6 +20,11 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
                 return cat;
 
             return await _categoryDataAccess.AddAsync(new Category(categoryName));
+        }
+
+        public async Task<List<Category>> SearchCategoryAsync(string name)
+        {
+            return await (await _categoryDataAccess.LoadByNameAsync(name)).ToListAsync();
         }
     }
 }

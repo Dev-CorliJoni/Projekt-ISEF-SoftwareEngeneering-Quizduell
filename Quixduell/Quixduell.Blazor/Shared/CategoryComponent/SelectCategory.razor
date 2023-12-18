@@ -1,0 +1,10 @@
+﻿@if (_categories is not null)
+{
+    <InputSelect @bind-Value=SelectedId>
+        <option value="@Guid.Empty"></option>
+        @foreach (var cat in _categories)
+        {
+            <option value="@cat.Id">@cat.Name</option>
+        }
+    </InputSelect>
+}

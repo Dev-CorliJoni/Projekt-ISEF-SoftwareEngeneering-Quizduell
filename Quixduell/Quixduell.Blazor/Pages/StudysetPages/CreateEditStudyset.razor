@@ -1,0 +1,19 @@
+﻿@page "/editstudyset/{StudysetID}"
+@page "/editstudyset"
+@using Quixduell.Blazor.Shared.CategoryComponent
+
+@if (Studyset is not null)
+{
+    <EditForm EditContext="EditContext">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label class="form-label" for="ss_name">Name:</label>
+            <InputText class="form-text" id="ss_name" @bind-Value="Studyset.Name"></InputText>
+            <ValidationMessage For="() => Studyset.Name"></ValidationMessage>
+        </div>
+        <div>
+            <CreateEditCategory @bind-Value="Studyset.Category"></CreateEditCategory>
+        </div>
+    </EditForm>
+}
