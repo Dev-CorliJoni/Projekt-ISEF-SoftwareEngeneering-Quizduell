@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Quixduell.ServiceLayer.DataAccessLayer;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
+using Quixduell.ServiceLayer.DataAccessLayer.Repository;
 
 namespace Quixduell.ServiceLayer.Services.HostedServices
 {
@@ -12,16 +13,16 @@ namespace Quixduell.ServiceLayer.Services.HostedServices
     /// </summary>
     internal class DBStarter : IHostedService, IDisposable
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly DBConnectionFactory _dBConnectionFactory;
         private readonly ILogger<DBStarter> _logger;
         private Timer? _timer = null;
         private int _executionCount = 0;
         private bool _sqlAlive = false;
 
-        public DBStarter(ILogger<DBStarter> logger, IServiceProvider serviceProvider)
+        public DBStarter(ILogger<DBStarter> logger, DBConnectionFactory dBConnectionFactory)
         {
             _logger = logger;
-            _serviceProvider = serviceProvider;
+            _dBConnectionFactory = dBConnectionFactory;
         }
 
         private void DoWork(object? state)
@@ -48,25 +49,21 @@ namespace Quixduell.ServiceLayer.Services.HostedServices
 
         private async Task DoAsyncWork()
         {
-
-            using (var scope = _serviceProvider.CreateScope())
+            try
             {
-                try
-                {
-                    var databaseContext = scope.ServiceProvider.GetRequiredService<AppDatabaseContext<User>>();
+                var databaseContext = _dBConnectionFactory.GetAppDatabaseContext();
 
-                    if (await databaseContext.Database.CanConnectAsync())
-                    {
-                        var result = await databaseContext.Database.ExecuteSqlRawAsync("Select 1");
-                        _sqlAlive = true;
-
-                    }
-                    _logger.LogInformation("Database not on-line");
-                }
-                catch (Exception ex)
+                if (await databaseContext.Database.CanConnectAsync())
                 {
-                    _logger.LogInformation("Database not on-line: {Exception}", ex);
+                    var result = await databaseContext.Database.ExecuteSqlRawAsync("Select 1");
+                    _sqlAlive = true;
+
                 }
+                _logger.LogInformation("Database not on-line");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation("Database not on-line: {Exception}", ex);
             }
         }
 

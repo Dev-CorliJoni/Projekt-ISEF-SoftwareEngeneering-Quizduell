@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Quixduell.ServiceLayer.DataAccessLayer;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Options;
+using Quixduell.ServiceLayer.DataAccessLayer.Repository;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation;
 using Quixduell.ServiceLayer.ServiceLayer;
 using Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality;
@@ -17,6 +18,8 @@ namespace Quixduell.ServiceLayer
         public static IServiceCollection AddQuixServiceLayer(this IServiceCollection services)
         {
             services.AddHostedService<DBStarter>();
+            services.AddScoped<CategoryHandler>();
+            services.AddScoped<StudysetHandler>();
             return services;
         }
 
@@ -33,19 +36,20 @@ namespace Quixduell.ServiceLayer
                     option.UseSqlServer(bBOptions.Value.ConnectionString);
                 });
 
-                services.AddDbContext<AppDatabaseContext<User>>(option =>
-                {
-                    option.UseSqlServer(bBOptions.Value.ConnectionString);
-                }, ServiceLifetime.Transient);
+                //services.AddDbContext<AppDatabaseContext<User>>(option =>
+                //{
+                //    option.UseSqlServer(bBOptions.Value.ConnectionString);
+                //}, ServiceLifetime.Transient);
             }
+
+            services.AddSingleton<DBConnectionFactory>();
 
             services.AddScoped<StudysetDataAccess>();
             services.AddScoped<CategoryDataAccess>();
             services.AddScoped<GlobalSearch>();
             services.AddScoped<InitSampleData>();
 
-            services.AddScoped<CategoryHandler>();
-            services.AddScoped<StudysetHandler>();
+
             return services;
         }
     }

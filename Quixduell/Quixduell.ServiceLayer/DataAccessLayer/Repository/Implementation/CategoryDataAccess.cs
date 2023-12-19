@@ -12,7 +12,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
     {
 
 
-        public CategoryDataAccess(AppDatabaseContext<User> dbContext) : base(dbContext)
+        public CategoryDataAccess(DBConnectionFactory connectionFactory) : base(connectionFactory)
         {
         }
 
