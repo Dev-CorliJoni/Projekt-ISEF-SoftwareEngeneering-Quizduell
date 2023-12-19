@@ -19,8 +19,6 @@ namespace Quixduell.Blazor.Shared.CategoryComponent
 
         private CreateEditCategoryFormModel? _formModel = null;
 
-        private SelectCategory _childComponent = new();
-
         private async Task SaveCategory ()
         {
             if (_formModel?.Id == Guid.Empty) 
@@ -28,13 +26,9 @@ namespace Quixduell.Blazor.Shared.CategoryComponent
                 var cat  = await CategoryHandler.AddCategoryAsync(_formModel.Name);
                 _formModel = null;
                 Value = cat;
-                //StateHasChanged();
-               // await _childComponent.Preselect(cat.Id);
                 return;
             }
             await CategoryHandler.UpdateCategoryAsync(_formModel!.Id, _formModel.Name);
-            //StateHasChanged();
-            //await _childComponent.Preselect(_formModel!.Id);
             _formModel = null;
         }
 

@@ -1,0 +1,20 @@
+﻿@using Quixduell.Blazor.EditFormModel
+@if (Value is not null)
+{
+    <EditForm Model="Value" OnValidSubmit="ValidSubmitAsync">
+        <div class="input-group">
+            <label for="qu_Name" class="form-label">Frage:</label>
+            <InputText class="form-control" id="qu_Name" @bind-Value="Value.QuestionText"></InputText>
+        </div>
+        <div>
+            <label class="form-label" for="qu_Type">Typ:</label>
+            <InputSelect class="form-control form-select" @bind-Value="Value.QuestionType">
+                @foreach (var type in (QuestionType[])Enum.GetValues(typeof(QuestionType)))
+                {
+                    <option value="@type">@type.ToString()</option>
+                }
+            </InputSelect>
+        </div>
+        <button type="submit" class="btn btn-primary">OK</button>
+    </EditForm>
+}

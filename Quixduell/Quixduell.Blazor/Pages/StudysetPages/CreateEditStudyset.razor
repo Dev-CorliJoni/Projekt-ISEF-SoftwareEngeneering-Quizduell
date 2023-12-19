@@ -2,29 +2,41 @@
 @page "/editstudyset"
 @using Quixduell.Blazor.Shared.CategoryComponent
 @using Quixduell.Blazor.Shared.UserComponent
+@using Quixduell.Blazor.Shared.QuestionComponent
 
-@if (Studyset is not null)
+@if (FormModel is not null)
 {
     <EditForm EditContext="EditContext">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="form-group">
             <label class="form-label" for="ss_name">Name:</label>
-            <InputText class="form-text" id="ss_name" @bind-Value="Studyset.Name"></InputText>
-            <ValidationMessage For="() => Studyset.Name"></ValidationMessage>
+            <InputText class="form-text" id="ss_name" @bind-Value="FormModel.Name"></InputText>
+            <ValidationMessage For="() => FormModel.Name"></ValidationMessage>
         </div>
         <div>
-            <CreateEditCategory @bind-Value="Studyset.Category"></CreateEditCategory>
-            <ValidationMessage For="() => Studyset.Category"></ValidationMessage>
+            <CreateEditCategory @bind-Value="FormModel.Category"></CreateEditCategory>
+            <ValidationMessage For="() => FormModel.Category"></ValidationMessage>
         </div>
         <div>
-            @if (Studyset.Contributors is not null && Studyset.Contributors.Count > 0)
+            @if (FormModel.Contributors is not null && FormModel.Contributors.Count > 0)
             {
                 <label for="ss_contri">Mitwirkende:</label>
-                <label id="ss_contri">@string.Join(",",Studyset.Contributors)</label>
+                <label id="ss_contri">@string.Join(",", FormModel.Contributors)</label>
             }
-            <SelectUnselectUsers @bind-Value="Studyset.Contributors"></SelectUnselectUsers>
-            <ValidationMessage For="() => Studyset.Contributors"></ValidationMessage>
+            <SelectUnselectUsers @bind-Value="FormModel.Contributors"></SelectUnselectUsers>
+            <ValidationMessage For="() => FormModel.Contributors"></ValidationMessage>
+        </div>
+        <div>
+            <SelectQuestionEditForm @bind-Value=_currentQuestion @bind-QuestionForms=FormModel.QuestionFormModels></SelectQuestionEditForm>
+            @if (_currentQuestion is not null)
+            {
+                <EditQuestion @bind-Value=_currentQuestion @bind-Value:after="() => {_currentQuestion = null;}"></EditQuestion>
+            }
+            <button class="btn btn-primary" type="button" @onclick="AddQuestion">Frage hinzufügen</button>
+        </div>
+        <div>
+
         </div>
     </EditForm>
 }

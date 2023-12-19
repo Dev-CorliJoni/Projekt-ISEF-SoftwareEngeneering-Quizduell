@@ -19,7 +19,7 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
             return await _studysetDataAccess.AddAsync(Studyset);
         }
 
-        public async Task<Studyset?> GetStudysetViaIDAsync(Guid id)
+        public async Task<Studyset?> GetStudysetViaIdAsync(Guid id)
         {
             return (await _studysetDataAccess.LoadAsync(o => o.Id == id)).FirstOrDefault();
         }

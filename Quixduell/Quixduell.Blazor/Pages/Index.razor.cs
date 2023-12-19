@@ -50,7 +50,7 @@ namespace Quixduell.Blazor.Pages
 
             User = user;
 
-            await InitSampleData.GenerateSampleData(user);
+            //await InitSampleData.GenerateSampleData(user);
 
             _categories = await CategoryHandler.SearchCategoryAsync("");
             await SearchForStudysets();

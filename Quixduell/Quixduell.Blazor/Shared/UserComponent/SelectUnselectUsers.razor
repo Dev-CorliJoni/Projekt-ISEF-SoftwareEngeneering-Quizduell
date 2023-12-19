@@ -1,10 +1,10 @@
-﻿<div class="container" style="height:20vh;overflow-y:scroll">
-    @if (_displayedAppUsers is not null)
+﻿    @if (_displayedAppUsers is not null)
     {
         <div class="form-group">
             <div class="input-group">
                 <input class="form-control" placeholder="Suche..." @bind=_searchString @bind:event="oninput" @bind:after="SearchUser">
             </div>
+        <div class="container" style="height:20vh;overflow-y:scroll">
             <table class="table">
                 <thead>
                     <tr>
@@ -26,5 +26,5 @@
                 </tbody>
             </table>
         </div>
+        </div>
     }
-</div>

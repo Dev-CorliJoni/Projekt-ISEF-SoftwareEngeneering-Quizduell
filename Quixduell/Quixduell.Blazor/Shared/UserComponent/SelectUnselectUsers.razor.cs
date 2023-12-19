@@ -64,8 +64,11 @@ namespace Quixduell.Blazor.Shared.UserComponent
         private async Task AddUser(User appUser)
         {
             var user = UserManager.Users.First(o => o.Id == appUser.Id);
-            Value?.Add(user);
-            await ValueChanged.InvokeAsync(Value);
+            if (!Value.Contains(user)) 
+            {
+                Value?.Add(user);
+                await ValueChanged.InvokeAsync(Value);
+            }
         }
     }
 }
