@@ -15,7 +15,9 @@
                     <label for="inputSearch" class="form-label"></label>
                     <input @bind=@SearchText @bind:after=@SearchForStudysets id="inputSearch" class="form-control" />
                 </div>
-                <SelectCategory @bind-Value="SelectedCategory" @bind-Value:after=@SearchForStudysets></SelectCategory>
+                <div class="col">
+                    <SelectCategory @bind-Value="SelectedCategory" @bind-Value:after=@SearchForStudysets></SelectCategory>
+                </div>
                 <div class="col">
                     <div class="form-check form-switch">
                         <input @bind=@ShowConnected  @bind:after=@SearchForStudysets class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">

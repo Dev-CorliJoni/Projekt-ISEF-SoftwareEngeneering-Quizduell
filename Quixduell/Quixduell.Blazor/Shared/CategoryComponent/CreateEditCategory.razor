@@ -8,12 +8,12 @@
 @if(_formModel is not null)
 {
     <EditForm Model="_formModel" Context="Model" OnValidSubmit="SaveCategory">
-        <div>
-            <label for="c_name">Name:</label>
-            <InputText id="c_name" @bind-Value=_formModel.Name></InputText>
+        <div class="input-group">
+            <label class="form-label" for="c_name">Name:</label>
+            <InputText class="form-control" id="c_name" @bind-Value=_formModel.Name></InputText>
             <ValidationMessage For="() => _formModel.Name"></ValidationMessage>
         </div>
-        <button type="submit">Save</button>
-        <button type="button" @onclick="() => {_formModel = null;}">Abbrechen</button>
+        <button class="btn btn-success" type="submit">Save</button>
+        <button class="btn btn-danger" type="button" @onclick="() => {_formModel = null;}">Abbrechen</button>
     </EditForm>
 }

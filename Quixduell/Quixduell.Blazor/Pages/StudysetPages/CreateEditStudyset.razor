@@ -15,14 +15,16 @@
         </div>
         <div>
             <CreateEditCategory @bind-Value="Studyset.Category"></CreateEditCategory>
+            <ValidationMessage For="() => Studyset.Category"></ValidationMessage>
         </div>
         <div>
             @if (Studyset.Contributors is not null && Studyset.Contributors.Count > 0)
             {
                 <label for="ss_contri">Mitwirkende:</label>
-                <label id="ss_contri">@string.Join(",",Studyset.Contributors)"</label>
+                <label id="ss_contri">@string.Join(",",Studyset.Contributors)</label>
             }
             <SelectUnselectUsers @bind-Value="Studyset.Contributors"></SelectUnselectUsers>
+            <ValidationMessage For="() => Studyset.Contributors"></ValidationMessage>
         </div>
     </EditForm>
 }
