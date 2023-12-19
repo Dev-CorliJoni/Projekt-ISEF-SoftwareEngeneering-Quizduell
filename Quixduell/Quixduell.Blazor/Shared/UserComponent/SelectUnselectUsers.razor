@@ -1,0 +1,30 @@
+﻿<div class="container" style="height:20vh;overflow-y:scroll">
+    @if (_displayedAppUsers is not null)
+    {
+        <div class="form-group">
+            <div class="input-group">
+                <input class="form-control" placeholder="Suche..." @bind=_searchString @bind:event="oninput" @bind:after="SearchUser">
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Nutzer</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <Virtualize Items="@_displayedAppUsers" Context="User" ItemSize="10" OverscanCount="5">
+                        <tr>
+                            <th><input class="form-check-input" type="checkbox" value="@Value?.Any(o => o.Id == User.Id)" id="defaultCheck2" disabled></th>
+                            <td>@User.Email</td>
+                            <td><button type="button" @onclick="() => AddUser(User)" class=" btn btn-primary">Mitwirkender hinzufügen</button></td>
+                            <td><button type="button" @onclick="() => DeleteUser(User)" class="btn btn-danger">Mitwirkender entfernen</button></td>
+                        </tr>
+                    </Virtualize>
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

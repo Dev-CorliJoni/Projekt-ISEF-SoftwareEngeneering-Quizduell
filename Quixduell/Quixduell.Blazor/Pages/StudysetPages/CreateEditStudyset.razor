@@ -1,6 +1,7 @@
 ﻿@page "/editstudyset/{StudysetID}"
 @page "/editstudyset"
 @using Quixduell.Blazor.Shared.CategoryComponent
+@using Quixduell.Blazor.Shared.UserComponent
 
 @if (Studyset is not null)
 {
@@ -14,6 +15,14 @@
         </div>
         <div>
             <CreateEditCategory @bind-Value="Studyset.Category"></CreateEditCategory>
+        </div>
+        <div>
+            @if (Studyset.Contributors is not null && Studyset.Contributors.Count > 0)
+            {
+                <label for="ss_contri">Mitwirkende:</label>
+                <label id="ss_contri">@string.Join(",",Studyset.Contributors)"</label>
+            }
+            <SelectUnselectUsers @bind-Value="Studyset.Contributors"></SelectUnselectUsers>
         </div>
     </EditForm>
 }
