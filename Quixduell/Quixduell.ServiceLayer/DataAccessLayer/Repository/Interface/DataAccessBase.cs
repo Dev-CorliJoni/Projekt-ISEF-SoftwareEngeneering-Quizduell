@@ -4,11 +4,14 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Interface
 {
     public abstract class DataAccessBase<TModel>
     {
-        protected readonly AppDatabaseContext<User> dbContext;
+        private readonly DBConnectionFactory _connectionFactory;
 
-        public DataAccessBase(AppDatabaseContext<User> dbContext)
+        internal AppDatabaseContext<User> dbContext { get; set; }
+
+        protected DataAccessBase(DBConnectionFactory connectionFactory)
         {
-            this.dbContext = dbContext;
+            _connectionFactory = connectionFactory;
+            dbContext = _connectionFactory.GetAppDatabaseContext();
         }
 
         public abstract Task<int> CountAsync();

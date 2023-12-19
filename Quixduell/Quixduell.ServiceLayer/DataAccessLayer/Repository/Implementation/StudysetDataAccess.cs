@@ -6,7 +6,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
 {
     public class StudysetDataAccess : DataAccessBase<Studyset>
     {
-        public StudysetDataAccess(AppDatabaseContext<User> dbContext) : base(dbContext) {  }
+        public StudysetDataAccess(DBConnectionFactory connectionFactory) : base(connectionFactory) {  }
 
         public override async Task<Studyset> AddAsync(Studyset model)
         {

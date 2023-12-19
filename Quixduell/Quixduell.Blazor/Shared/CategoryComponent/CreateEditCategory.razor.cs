@@ -27,11 +27,14 @@ namespace Quixduell.Blazor.Shared.CategoryComponent
             {
                 var cat  = await CategoryHandler.AddCategoryAsync(_formModel.Name);
                 _formModel = null;
-                await _childComponent.Preselect(cat.Id);
+                Value = cat;
+                //StateHasChanged();
+               // await _childComponent.Preselect(cat.Id);
                 return;
             }
             await CategoryHandler.UpdateCategoryAsync(_formModel!.Id, _formModel.Name);
-            await _childComponent.Preselect(_formModel!.Id);
+            //StateHasChanged();
+            //await _childComponent.Preselect(_formModel!.Id);
             _formModel = null;
         }
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Mvc;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality;
 
@@ -47,9 +46,14 @@ namespace Quixduell.Blazor.Shared.CategoryComponent
             await base.OnInitializedAsync();
         }
 
-        protected override Task OnParametersSetAsync()
+        protected override async  Task OnParametersSetAsync()
         {
-            return base.OnParametersSetAsync();
+            if (Value is not null && Value.Id.ToString() != _selectedId)
+            {
+                _categories = await CategoryHandler.SearchCategoryAsync("");
+                _selectedId = Value.Id.ToString();
+            }
+            await base.OnParametersSetAsync();
         }
 
     }
