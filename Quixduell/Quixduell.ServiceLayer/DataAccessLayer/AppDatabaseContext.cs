@@ -19,6 +19,10 @@ namespace Quixduell.ServiceLayer.DataAccessLayer
         public DbSet<Studyset> Studysets { get; set; }
         public DbSet<Category> Categories { get; set; }
 
+        public DbSet<OpenQuestion> OpenQuestions { get; set; }
+
+        public DbSet<MultipleChoiceQuestion> MultipleChoiceQuestions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

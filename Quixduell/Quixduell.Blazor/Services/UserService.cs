@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Quixduell.Blazor.Helpers;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 
@@ -25,8 +26,13 @@ namespace Quixduell.Blazor.Services
 
             if (user.Identity!.IsAuthenticated)
             {
-                return await userManager.GetUserAsync(user);
+                var userWithOutProps =  await userManager.GetUserAsync(user);
+                return userManager.Users
+                    .Include( o => o.StudysetConnections)
+                    .Where(o => o.Id == userWithOutProps!.Id)
+                    .First();
             }
+
             return null;
         }
         public async Task<User?> GetAuthenticatedUserOrRedirect(UserManager<User> userManager)

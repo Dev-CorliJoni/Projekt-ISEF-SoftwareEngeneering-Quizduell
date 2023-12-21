@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Answers;
+using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.Interface;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
@@ -77,7 +78,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
 
             if (where != null)
             {
-                return results.Include(o => o.Questions).Where(where);
+                return results.Where(where);
             }
             else 
             {   
@@ -90,11 +91,15 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
             return await Task.Run(() =>
             {
                 return dbContext.Studysets
-                .Include(o => o.Questions)
                 .Include(o => o.Creator)
                 .Include(o => o.Connections)
                 .Include(o => o.Category)
-                .Include(o => o.Contributors);
+                .Include(o => o.Contributors)
+                .Include(o => o.Questions)
+                    .ThenInclude(o => ((MultipleChoiceQuestion)o).Answers)
+                .Include(o => o.Questions)
+                    .ThenInclude(o => ((OpenQuestion)o).Answer);
+
             });
         }
 

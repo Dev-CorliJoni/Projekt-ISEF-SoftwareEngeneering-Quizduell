@@ -1,11 +1,8 @@
 ﻿using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.ServiceLayer;
-using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 using Microsoft.AspNetCore.Components;
 using Quixduell.Blazor.Services;
-using System;
 using Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Identity;
 
 namespace Quixduell.Blazor.Pages
@@ -91,13 +88,8 @@ namespace Quixduell.Blazor.Pages
 
         private async Task InitSampleDataMethod()
         {
-            var cat = await CategoryHandler.AddCategoryAsync(GenerateRandomString(10));
-            var studySet = await StudysetHandler.AddStudysetAsync(GenerateRandomString(10), cat, User);
-
-            await NoticeStudyset(studySet);
-
+            await InitSampleData.GenerateSampleData(User);
             await SearchForStudysets();
-
         }
 
         private async Task SearchForStudysets ()

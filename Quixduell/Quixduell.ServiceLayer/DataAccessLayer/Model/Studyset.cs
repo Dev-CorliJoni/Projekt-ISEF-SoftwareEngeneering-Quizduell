@@ -18,7 +18,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
 
         [Required]
         public List<BaseQuestion> Questions { get; set; }
-        public List<UserStudysetConnection> Connections { get; set; }
+        public List<UserStudysetConnection> Connections { get; set; } = new List<UserStudysetConnection>();
 
         public Studyset(){}
 
