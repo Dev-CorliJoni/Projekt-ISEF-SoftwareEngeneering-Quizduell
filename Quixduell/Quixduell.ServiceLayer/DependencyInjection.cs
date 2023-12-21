@@ -17,7 +17,7 @@ namespace Quixduell.ServiceLayer
     {
         public static IServiceCollection AddQuixServiceLayer(this IServiceCollection services)
         {
-            //services.AddHostedService<DBStarter>();
+            services.AddHostedService<DBStarter>();
             services.AddScoped<CategoryHandler>();
             services.AddScoped<StudysetHandler>();
             return services;
