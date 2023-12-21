@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
+using Quixduell.ServiceLayer.DataAccessLayer.Model.Answers;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.Interface;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation

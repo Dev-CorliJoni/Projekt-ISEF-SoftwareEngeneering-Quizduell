@@ -17,7 +17,7 @@ namespace Quixduell.ServiceLayer
     {
         public static IServiceCollection AddQuixServiceLayer(this IServiceCollection services)
         {
-            services.AddHostedService<DBStarter>();
+            //services.AddHostedService<DBStarter>();
             services.AddScoped<CategoryHandler>();
             services.AddScoped<StudysetHandler>();
             return services;
@@ -42,7 +42,7 @@ namespace Quixduell.ServiceLayer
                 //}, ServiceLifetime.Transient);
             }
 
-            services.AddSingleton<DBConnectionFactory>();
+            services.AddScoped<DBConnectionFactory>();
 
             services.AddScoped<StudysetDataAccess>();
             services.AddScoped<CategoryDataAccess>();

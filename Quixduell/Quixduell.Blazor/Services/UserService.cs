@@ -11,29 +11,27 @@ namespace Quixduell.Blazor.Services
 
 
         private readonly AuthenticationStateProvider _authenticationStateProvider;
-        private readonly UserManager<User> _userManager;
         private readonly NavigationManager _navigationManager;
 
-        public UserService(AuthenticationStateProvider authenticationStateProvider, UserManager<User> userManager, NavigationManager navigationManager)
+        public UserService(AuthenticationStateProvider authenticationStateProvider,  NavigationManager navigationManager)
         {
             _authenticationStateProvider = authenticationStateProvider;
-            _userManager = userManager;
             _navigationManager = navigationManager;
         }
 
-        public async Task<User?> GetAuthenticatedUser()
+        public async Task<User?> GetAuthenticatedUser(UserManager<User> userManager)
         {
             var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
 
             if (user.Identity!.IsAuthenticated)
             {
-                return await _userManager.GetUserAsync(user);
+                return await userManager.GetUserAsync(user);
             }
             return null;
         }
-        public async Task<User?> GetAuthenticatedUserOrRedirect()
+        public async Task<User?> GetAuthenticatedUserOrRedirect(UserManager<User> userManager)
         {
-            var currentUser = await GetAuthenticatedUser();
+            var currentUser = await GetAuthenticatedUser(userManager);
 
             if (currentUser is not null)
             {

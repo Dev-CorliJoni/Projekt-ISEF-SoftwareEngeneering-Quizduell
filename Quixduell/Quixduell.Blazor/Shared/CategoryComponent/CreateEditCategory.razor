@@ -1,19 +1,23 @@
-﻿<SelectCategory @bind-Value="Value" @ref="_childComponent"></SelectCategory>
-<button type="button" @onclick="() => {_formModel = new();}">Hinzufügen</button>
-@if (Value is not null)
-{
-    <button type="button" @onclick="() => {_formModel = new (Value);}">Bearbeiten</button>
-}
+﻿<div class="m-2">
+<SelectCategory @bind-Value="Value" @bind-Value:after="InvokeValueChange" ></SelectCategory>
+<div class="m-2">
+<button class="btn btn-primary" type="button" @onclick="() => {_formModel = new();}">Kategorie hinzufügen</button>
+    @if (Value is not null)
+    {
+        <button class="btn btn-secondary" type="button" @onclick="() => {_formModel = new (Value);}">Bearbeiten</button>
+    }
+</div>
+</div>
 
 @if(_formModel is not null)
 {
     <EditForm Model="_formModel" Context="Model" OnValidSubmit="SaveCategory">
-        <div class="input-group">
+        <div class="form-group m-3">
             <label class="form-label" for="c_name">Name:</label>
             <InputText class="form-control" id="c_name" @bind-Value=_formModel.Name></InputText>
             <ValidationMessage For="() => _formModel.Name"></ValidationMessage>
         </div>
-        <button class="btn btn-success" type="submit">Save</button>
+        <button class="btn btn-success" type="submit">Speichern</button>
         <button class="btn btn-danger" type="button" @onclick="() => {_formModel = null;}">Abbrechen</button>
     </EditForm>
 }

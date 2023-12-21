@@ -40,7 +40,7 @@ namespace Quixduell.ServiceLayer.ServiceLayer
             };
 
             List<Studyset> studysets = [
-                new Studyset("Studyset1", category, user, new List<User>(), questions)
+                new Studyset("Studyset1", category, user, new List<User>(), questions, new List<UserStudysetConnection>())
             ];
 
             if (await _categoryData.ExistsAsync(category.Name)== false ) 

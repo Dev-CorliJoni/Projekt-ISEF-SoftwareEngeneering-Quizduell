@@ -39,7 +39,7 @@
             <tbody>
                 <Virtualize Items="@_studysets" Context="Studyset" ItemSize="10" OverscanCount="5">
                     <tr style="cursor: pointer">
-                        <th scope="row"></th>
+                        <td scope="row"></td>
                         <td>@Studyset.Name</td>
                         <td>@Studyset.Category.Name</td>
                         <td>@Studyset.Creator.Email</td>
@@ -50,6 +50,10 @@
                         else
                         {
                             <th scope="col" style="color: grey;" @onclick="async (s) =>{await NoticeStudyset(Studyset);}">&#x1F44D;</th>
+                        }
+                        @if(CheckEditRights(Studyset))
+                        {
+                            <td><button class="btn btn-secondary" onclick="window.location.href='/editstudyset/@Studyset.Id';">Bearbeiten</button></td>
                         }
                     </tr>
                 </Virtualize>

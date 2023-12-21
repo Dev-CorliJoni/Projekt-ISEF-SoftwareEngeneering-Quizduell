@@ -6,6 +6,7 @@ using Quixduell.Blazor.Services;
 using System;
 using Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Identity;
 
 namespace Quixduell.Blazor.Pages
 {
@@ -20,6 +21,9 @@ namespace Quixduell.Blazor.Pages
 
         [Inject]
         private UserService UserService { get; set; } = default!;
+
+        [Inject]
+        private UserManager<User> UserManager { get; set; } = default!;
 
         [Inject]
         private NavigationManager NavigationManager { get; set; } = default!;
@@ -45,12 +49,12 @@ namespace Quixduell.Blazor.Pages
         override protected async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            var user = await UserService.GetAuthenticatedUserOrRedirect();
+            var user = await UserService.GetAuthenticatedUserOrRedirect(UserManager);
             if (user is null) { return; }
 
             User = user;
 
-            await InitSampleData.GenerateSampleData(user);
+            //await InitSampleData.GenerateSampleData(user);
 
             _categories = await CategoryHandler.SearchCategoryAsync("");
             await SearchForStudysets();
@@ -60,6 +64,15 @@ namespace Quixduell.Blazor.Pages
         {
             var connection = studyset.Connections.FirstOrDefault(con => con.User == User);
             if (connection is not null && connection.IsStored)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool CheckEditRights (Studyset studyset)
+        {
+            if (studyset.Creator.Id == User.Id || studyset.Contributors.Any(o => o.Id == User.Id))
             {
                 return true;
             }
