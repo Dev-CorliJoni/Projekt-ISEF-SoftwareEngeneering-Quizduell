@@ -7,20 +7,17 @@ using System;
 using Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using Microsoft.AspNetCore.Identity;
 
 namespace Quixduell.Blazor.Pages
 {
     public partial class StudysetView
     {
-
-        [Inject]
-        private InitSampleData InitSampleData { get; set; } = default!;
-
-        [Inject]
-        private GlobalSearch GlobalSearch { get; set; } = default!;
-
         [Inject]
         private UserService UserService { get; set; } = default!;
+
+        [Inject]
+        private UserManager<User> UserManager { get; set; } = default!;
 
         [Inject]
         private NavigationManager NavigationManager { get; set; } = default!;
@@ -32,27 +29,14 @@ namespace Quixduell.Blazor.Pages
         private CategoryHandler CategoryHandler { get; set; } = default!;
 
 
-        private Studyset _studyset;
-
-
-        private Studyset Studyset { 
-            set {
-                _studyset = value;                
-                Connection = _studyset.Connections.Find((sc) => sc.User == User)!;
-            }
-            get
-            {
-                return _studyset;
-            }
-        }
-
-        private UserStudysetConnection Connection { get; set; } = default!;
+        private Studyset Studyset { get; set; } = default!;
         private User User { get; set; } = default!;
+
 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            var user = await UserService.GetAuthenticatedUserOrRedirect();
+            var user = await UserService.GetAuthenticatedUserOrRedirect(UserManager);
             if (user is null) { return; }
 
             User = user;
@@ -72,24 +56,10 @@ namespace Quixduell.Blazor.Pages
             }
         }
 
-        private string GetStarColor()
-        {
-            return Connection.IsStored ? "yellow" : "lightgray";
-        }
 
-        private async Task StarFunction(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
+        private UserStudysetConnection GetConnection()
         {
-            await Task.Run(() =>
-            {
-                Connection.IsStored = !Connection.IsStored;
-            });
+            return Studyset?.Connections.Find((sc) => sc.User == User)!;
         }
-
-        private Task Play(Microsoft.AspNetCore.Components.Web.MouseEventArgs e) 
-        {
-            throw new NotImplementedException();
-        }
-
-        
     }
 }

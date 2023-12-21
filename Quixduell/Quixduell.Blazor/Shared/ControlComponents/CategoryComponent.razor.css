@@ -1,0 +1,16 @@
+﻿.category-div {
+    margin: 5px;
+    margin-left: 10px;
+    background-color: red;
+    opacity: 0.6;
+    padding: 3px;
+    padding-right: 5px;
+    padding-left: 5px;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.category-text {
+    margin: 0;
+    color: white
+}

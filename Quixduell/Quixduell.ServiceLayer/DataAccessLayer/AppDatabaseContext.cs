@@ -26,7 +26,11 @@ namespace Quixduell.ServiceLayer.DataAccessLayer
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            
+
+            builder.Entity<User>()
+                .HasMany(u => u.StudysetConnections)
+                .WithOne(connection => connection.User);
+
             builder.Entity<Answer>()
                 .HasDiscriminator<string>("answer_type")
                 .HasValue<Answer>("a")
@@ -40,7 +44,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer
 
 
             builder.Entity<Studyset>()
-             .HasMany<UserStudysetConnection>(st => st.Connections)
+             .HasMany(st => st.Connections)
              .WithOne(usc => usc.Studyset)
              .OnDelete(DeleteBehavior.NoAction);
 
