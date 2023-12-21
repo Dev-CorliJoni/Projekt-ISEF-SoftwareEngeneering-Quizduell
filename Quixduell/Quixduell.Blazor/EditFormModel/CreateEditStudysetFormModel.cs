@@ -1,13 +1,16 @@
 ﻿using Quixduell.ServiceLayer.DataAccessLayer.Model;
+using System.ComponentModel.DataAnnotations;
 
 namespace Quixduell.Blazor.EditFormModel
 {
     public class CreateEditStudysetFormModel
     {
         public Guid ID { get; set; }
-        public string Name { get; set; } = String.Empty;
 
-        public Category Category { get; set; }
+        [StringLength(150, MinimumLength = 5)]
+        public string Name { get; set; } = String.Empty;
+        [Required]
+        public Category? Category { get; set; }
         public List<User>  Contributors { get; set; } = new List<User>();
         public List<UserStudysetConnection> UserStudysetConnections { get; set; } = new List<UserStudysetConnection>();
         public User Creator { get; set; }
@@ -26,7 +29,7 @@ namespace Quixduell.Blazor.EditFormModel
             Contributors = studyset.Contributors;
             Creator = studyset.Creator;
             Category = studyset.Category;
-            UserStudysetConnections = new List<UserStudysetConnection>();
+            UserStudysetConnections = studyset.Connections;
             if (studyset.Questions is not null) 
             {
                 foreach(var question in studyset.Questions)

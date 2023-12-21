@@ -33,6 +33,8 @@ namespace Quixduell.ServiceLayer.DataAccessLayer
                 .HasValue<MultipleChoiceQuestion>("mcq")
                 .HasValue<OpenQuestion>("oq");
 
+
+
             builder.Entity<Studyset>()
              .HasMany<UserStudysetConnection>(st => st.Connections)
              .WithOne(usc => usc.Studyset)

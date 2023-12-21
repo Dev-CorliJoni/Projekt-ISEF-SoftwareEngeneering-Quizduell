@@ -1,15 +1,26 @@
-﻿using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
+﻿using Quixduell.ServiceLayer.DataAccessLayer.Model.Answers;
+using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
+using System.ComponentModel.DataAnnotations;
 
 namespace Quixduell.Blazor.EditFormModel
 {
     public class CreateEditQuestionFormModel
     {
         public QuestionType QuestionType { get; set; } = QuestionType.MultipleChoise;
+
+        [Required]
         public List<CreateEditAnswerFormModel> AnswerFormModels { get; set; } = new List<CreateEditAnswerFormModel>();
 
+        [StringLength(1000, MinimumLength = 5)]
         public string QuestionText { get; set; } = String.Empty;
 
+        [StringLength(1000, MinimumLength = 5)]
         public string Hint { get; set; } = String.Empty;
+
+        public CreateEditQuestionFormModel()
+        {
+            QuestionText = "";
+        }
 
         public CreateEditQuestionFormModel(BaseQuestion question)
         {
@@ -31,10 +42,29 @@ namespace Quixduell.Blazor.EditFormModel
             Hint = question.Hint;
         }
 
-        public CreateEditQuestionFormModel()
+        public BaseQuestion ToBaseQuestion()
         {
-            QuestionText = "Question";
+            switch (QuestionType)
+            {
+                case QuestionType.MultipleChoise:
+                    var multipList = new List<MultipleChoiceAnswer>();
+                    foreach (var answer in AnswerFormModels)
+                    {
+                        multipList.Add(answer.ToMultipleChoiceAnswer());
+                    }
+                    return new MultipleChoiceQuestion(QuestionText, Hint, multipList);
+                case QuestionType.OpenText:
+                    var answerList = new List<Answer>();
+                    foreach (var answer in AnswerFormModels)
+                    {
+                        answerList.Add(answer.ToAnswer());
+                    }
+                    return new OpenQuestion(QuestionText, Hint, answerList.First());
+            }
+            throw new NotImplementedException();
         }
+
+
     }
 
 

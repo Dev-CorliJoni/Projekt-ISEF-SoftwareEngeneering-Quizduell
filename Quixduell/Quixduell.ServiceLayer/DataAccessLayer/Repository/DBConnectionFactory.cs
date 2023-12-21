@@ -7,19 +7,17 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository
 {
     public class DBConnectionFactory
     {
-        private readonly IOptions<DataAccessOptions> _options;
 
-        public DBConnectionFactory(IOptions<DataAccessOptions> options)
+        private readonly AppDatabaseContext<User> _databaseContext;
+
+        public DBConnectionFactory(AppDatabaseContext<User> databaseContext)
         {
-            _options = options;
+            _databaseContext = databaseContext;
         }
 
         public AppDatabaseContext<User> GetAppDatabaseContext ()
         {
-            var options = new DbContextOptionsBuilder<AppDatabaseContext<User>>()
-                .UseSqlServer(_options.Value.ConnectionString);
-
-            return new AppDatabaseContext<User>(options.Options);
+            return _databaseContext;
         }
     }
 }

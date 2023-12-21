@@ -1,20 +1,57 @@
 ﻿@using Quixduell.Blazor.EditFormModel
+@using Quixduell.Blazor.Shared.AnswerComponent
 @if (Value is not null)
 {
     <EditForm Model="Value" OnValidSubmit="ValidSubmitAsync">
-        <div class="input-group">
-            <label for="qu_Name" class="form-label">Frage:</label>
-            <InputText class="form-control" id="qu_Name" @bind-Value="Value.QuestionText"></InputText>
-        </div>
-        <div>
-            <label class="form-label" for="qu_Type">Typ:</label>
-            <InputSelect class="form-control form-select" @bind-Value="Value.QuestionType">
-                @foreach (var type in (QuestionType[])Enum.GetValues(typeof(QuestionType)))
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+        <div class="m-2">
+            <div class="form-group">
+                <label for="qu_Name" class="form-label">Frage:</label>
+                <InputText class="form-control" id="qu_Name" @bind-Value="Value.QuestionText"></InputText>
+            </div>
+            <div class="form-group">
+                <label for="qu_Hint" class="form-label">Tipp:</label>
+                <InputText class="form-control" id="qu_Hint" @bind-Value="Value.Hint"></InputText>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="qu_Type">Typ:</label>
+                <InputSelect class="form-control form-select" @bind-Value="Value.QuestionType">
+                    @foreach (var type in (QuestionType[])Enum.GetValues(typeof(QuestionType)))
+                    {
+                        <option value="@type">@type.ToString()</option>
+                    }
+                </InputSelect>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Antworten</label>
+                <div class="container" style="height:20vh;overflow-y:scroll">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Antwort</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <Virtualize Items="Value.AnswerFormModels" Context="Answer">
+                                <tr>
+                                    <th>@Answer.AnswerText</th>
+                                    <th><button @onclick=" () => {_selectedAnswer = Answer;}" type="button">Bearbeiten</button></th>
+                                </tr>
+                            </Virtualize>
+                        </tbody>
+                    </table>
+                </div>
+                @if (_selectedAnswer is not null)
                 {
-                    <option value="@type">@type.ToString()</option>
+                    <EditAnswer @bind-Value="_selectedAnswer" @bind-Value:after="() => {_selectedAnswer = null;}"></EditAnswer>
                 }
-            </InputSelect>
+                <button type="button" @onclick="AddQuestion" class=" btn">Antwort hinzufügen</button>
+            </div>
         </div>
         <button type="submit" class="btn btn-primary">OK</button>
+        <button class="btn btn-danger" type="button" @onclick="OnAbort">Abbrechen</button>
     </EditForm>
 }

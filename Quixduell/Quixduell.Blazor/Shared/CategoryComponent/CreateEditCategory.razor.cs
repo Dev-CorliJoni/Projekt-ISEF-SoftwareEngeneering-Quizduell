@@ -26,10 +26,17 @@ namespace Quixduell.Blazor.Shared.CategoryComponent
                 var cat  = await CategoryHandler.AddCategoryAsync(_formModel.Name);
                 _formModel = null;
                 Value = cat;
+                await ValueChanged.InvokeAsync(Value);
                 return;
             }
             await CategoryHandler.UpdateCategoryAsync(_formModel!.Id, _formModel.Name);
+            await ValueChanged.InvokeAsync(Value);
             _formModel = null;
+        }
+
+        private async Task InvokeValueChange ()
+        {
+            await ValueChanged.InvokeAsync(Value);
         }
 
 

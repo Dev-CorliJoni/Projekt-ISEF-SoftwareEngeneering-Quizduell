@@ -1,0 +1,20 @@
+﻿
+@if (Value is not null)
+{
+    <EditForm Model="Value" OnValidSubmit="OnSumbmit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+        <div class="m-3">
+            <div class="form-group">
+                <label for="an_Text">Antwort</label>
+                <InputText id="an_Text" class="form-control" @bind-Value=Value.AnswerText></InputText>
+            </div>
+            <div class="form-group">
+                <label for="an_isTrue">Richtige Antwort</label>
+                <InputCheckbox id="an_isTrue" class="form-check" @bind-Value=Value.IsTrue></InputCheckbox>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Speichern</button>
+        <button type="button">Abbrechen</button>
+    </EditForm>
+}

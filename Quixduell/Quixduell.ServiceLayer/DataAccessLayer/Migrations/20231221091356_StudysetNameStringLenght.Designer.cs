@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Quixduell.ServiceLayer.DataAccessLayer;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
@@ -12,9 +13,11 @@ using Quixduell.ServiceLayer.DataAccessLayer.Model;
 namespace Quixduell.ServiceLayer.DataAccessLayer.Migrations
 {
     [DbContext(typeof(AppDatabaseContext<User>))]
-    partial class AppDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231221091356_StudysetNameStringLenght")]
+    partial class StudysetNameStringLenght
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
