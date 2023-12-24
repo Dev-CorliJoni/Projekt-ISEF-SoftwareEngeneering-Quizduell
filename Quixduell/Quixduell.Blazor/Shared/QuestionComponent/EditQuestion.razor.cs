@@ -6,7 +6,6 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
     public partial class EditQuestion
     {
 
-
         [Parameter]
         public CreateEditQuestionFormModel? Value { get; set; }
 
@@ -14,6 +13,7 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
         public EventCallback<CreateEditQuestionFormModel> ValueChanged { get; set; }
 
         private CreateEditAnswerFormModel? _selectedAnswer;
+        private CreateEditQuestionFormModel? _originalFormModel = null;
 
 
         protected override void OnParametersSet()
@@ -25,26 +25,24 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
             base.OnParametersSet();
         }
 
-        private void AddQuestion ()
+        private void AddAnswer ()
         {
             var answer = new CreateEditAnswerFormModel();
             Value?.AnswerFormModels.Add(answer);
             _selectedAnswer = answer;
 
         }
+
+        private void RemoveAnswer(CreateEditAnswerFormModel formModel) 
+        {
+            Value?.AnswerFormModels.Remove(formModel);
+            _selectedAnswer = null;
+        }
         private async Task ValidSubmitAsync ()
         {
             await ValueChanged.InvokeAsync(Value);
 
         }
-
-        private async Task OnAbort()
-        {
-            Value = null;
-            await ValueChanged.InvokeAsync(Value);
-        }
-
-
 
     }
 }

@@ -9,6 +9,7 @@ namespace Quixduell.Blazor.EditFormModel
         public QuestionType QuestionType { get; set; } = QuestionType.MultipleChoise;
 
         [Required]
+        [MinLength(1)]
         public List<CreateEditAnswerFormModel> AnswerFormModels { get; set; } = new List<CreateEditAnswerFormModel>();
 
         [StringLength(1000, MinimumLength = 5)]

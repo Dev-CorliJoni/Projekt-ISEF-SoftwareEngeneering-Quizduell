@@ -3,7 +3,7 @@ using Quixduell.Blazor.EditFormModel;
 
 namespace Quixduell.Blazor.Shared.QuestionComponent
 {
-    public partial class SelectQuestionEditForm
+    public partial class SelectDeleteQuestionEditForm
     {
         [Parameter]
         public List<CreateEditQuestionFormModel>? QuestionForms { get; set; }
@@ -15,12 +15,12 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
         public CreateEditQuestionFormModel? Value { get; set; }
 
         [Parameter]
-        public EventCallback<CreateEditQuestionFormModel> ValueChanged { get; set; } 
+        public EventCallback<CreateEditQuestionFormModel> ValueChanged { get; set; }
 
 
         private List<CreateEditQuestionFormModel>? _filteredQuestions;
         private string _searchString = String.Empty;
-                    
+
 
         protected override async Task OnParametersSetAsync()
         {
@@ -31,15 +31,15 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
             await base.OnParametersSetAsync();
         }
 
-        private void SearchQuestion ()
+        private void SearchQuestion()
         {
-            if (QuestionForms is not null) 
+            if (QuestionForms is not null)
             {
                 _filteredQuestions = QuestionForms.FindAll(o => o.QuestionText.ToLower().Contains(_searchString.ToLower()));
             }
         }
 
-        private async Task SelectQuestionAsync (CreateEditQuestionFormModel questionForm)
+        private async Task SelectQuestionAsync(CreateEditQuestionFormModel questionForm)
         {
             if (questionForm != Value)
             {
@@ -47,6 +47,13 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
                 await ValueChanged.InvokeAsync(Value);
             }
         }
+        private async Task RemoveQuestionAsync(CreateEditQuestionFormModel questionForm)
+        {
+            QuestionForms?.Remove(questionForm);
+            await QuestionFormsChanged.InvokeAsync(QuestionForms);
+
+        }
+
 
     }
 }
