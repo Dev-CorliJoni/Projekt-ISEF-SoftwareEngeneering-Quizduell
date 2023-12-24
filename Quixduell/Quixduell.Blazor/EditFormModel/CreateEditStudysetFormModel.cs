@@ -13,8 +13,10 @@ namespace Quixduell.Blazor.EditFormModel
         public Category? Category { get; set; }
         public List<User>  Contributors { get; set; } = new List<User>();
         public List<UserStudysetConnection> UserStudysetConnections { get; set; } = new List<UserStudysetConnection>();
+        [Required]
         public User Creator { get; set; }
 
+        [MinLength(1)]
         public List<CreateEditQuestionFormModel> QuestionFormModels { get; set; } = new List<CreateEditQuestionFormModel>();
 
 

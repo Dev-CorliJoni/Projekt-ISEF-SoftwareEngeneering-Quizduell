@@ -38,7 +38,8 @@
                             <Virtualize Items="Value.AnswerFormModels" Context="Answer">
                                 <tr>
                                     <th>@Answer.AnswerText</th>
-                                    <th><button @onclick=" () => {_selectedAnswer = Answer;}" type="button">Bearbeiten</button></th>
+                                    <th><button class="btn btn-secondary" @onclick=" () => {_selectedAnswer = Answer;}" type="button">Bearbeiten</button></th>
+                                    <th><button class="btn btn-danger" @onclick="() => RemoveAnswer(Answer)" type="button">Entfernen</button></th>
                                 </tr>
                             </Virtualize>
                         </tbody>
@@ -48,10 +49,9 @@
                 {
                     <EditAnswer @bind-Value="_selectedAnswer" @bind-Value:after="() => {_selectedAnswer = null;}"></EditAnswer>
                 }
-                <button type="button" @onclick="AddQuestion" class=" btn">Antwort hinzufügen</button>
+                <button type="button" @onclick="AddAnswer" class=" btn">Antwort hinzufügen</button>
             </div>
         </div>
         <button type="submit" class="btn btn-primary">OK</button>
-        <button class="btn btn-danger" type="button" @onclick="OnAbort">Abbrechen</button>
     </EditForm>
 }

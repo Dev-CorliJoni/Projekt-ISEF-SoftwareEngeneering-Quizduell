@@ -39,7 +39,7 @@
             <div class="form-group">
                 <label for="ss_question" class="form-label">Fragen</label>
                 <div id="ss_question">
-                    <SelectQuestionEditForm @bind-Value=_currentQuestion @bind-QuestionForms=FormModel.QuestionFormModels></SelectQuestionEditForm>
+                    <SelectDeleteQuestionEditForm @bind-Value=_currentQuestion @bind-QuestionForms=FormModel.QuestionFormModels></SelectDeleteQuestionEditForm>
                     <ValidationMessage For="() => FormModel.QuestionFormModels"></ValidationMessage>
                     @if (_currentQuestion is not null)
                     {
@@ -48,9 +48,6 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title">Frage bearbeiten</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="() => {_currentQuestion = null;}">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
                                     </div>
                                     <div class="modal-body">
                                         <EditQuestion @bind-Value=_currentQuestion @bind-Value:after="() => {_currentQuestion = null;}"></EditQuestion>
