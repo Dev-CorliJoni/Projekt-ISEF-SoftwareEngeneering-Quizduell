@@ -1,0 +1,20 @@
+﻿@using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions
+
+@if (Studyset is not null)
+{
+    <div class="col div-container">
+
+        @foreach (var kv in _questionData)
+        {
+            <div class="row form-group">
+                <div class="col col-sm-8 d-flex justify-content-start">
+                    @kv.Key
+                </div>
+                <div class="col d-flex justify-content-end">
+                    @kv.Value()
+                </div>
+            </div>
+        }
+
+    </div>
+}

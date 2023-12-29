@@ -56,10 +56,5 @@ namespace Quixduell.Blazor.Pages
             }
         }
 
-
-        private UserStudysetConnection GetConnection()
-        {
-            return Studyset?.Connections.Find((sc) => sc.User == User)!;
-        }
     }
 }

@@ -11,12 +11,13 @@ namespace Quixduell.Blazor.Shared.ControlComponents
 
         private string GetStarColor()
         {
-            return Connection.IsStored ? "yellow" : "lightgray";
+            // Golden Yellow || darkgray
+            return Connection.IsStored ? "#FFC000" : "darkgray";
         }
 
-        private async Task StarFunction(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
+        private Task StarFunction(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
         {
-            await Task.Run(() =>
+            return Task.Run(() =>
             {
                 Connection.IsStored = !Connection.IsStored;
             });

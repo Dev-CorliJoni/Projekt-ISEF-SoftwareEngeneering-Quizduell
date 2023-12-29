@@ -1,0 +1,35 @@
+﻿@using Quixduell.Blazor.Shared.ControlComponents
+@using Quixduell.Blazor.Shared.StudysetView.RatingComponent
+
+<div class="col div-container">
+
+    <div class="container" style="padding: 0">
+        <div class="row">
+            <div class="w-75">
+
+                <div class="row">
+                    <div style="width: 35%">
+                        <h3>
+                            Rating
+                        </h3>
+                    </div>
+                    <div style="width: 65%; display: flex; justify-content: center; align-content: center">
+                        <RatingComponent @bind-CurrentRating="Rating" @bind-IsEditable="IsEditing" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <textarea class="w-100 h-100" style="resize: none" readonly="@(IsEditing==false)">
+                        </textarea>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="w-25 d-flex justify-content-center align-items-center">
+                <UploadButtonComponent @bind-IsEditing="IsEditing" UploadFunction="@Rate" />
+            </div>
+        </div>
+    </div>
+
+</div>

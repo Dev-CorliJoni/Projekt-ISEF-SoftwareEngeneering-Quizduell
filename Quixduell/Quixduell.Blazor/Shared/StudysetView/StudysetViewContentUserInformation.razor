@@ -1,0 +1,28 @@
+﻿@if (Studyset is not null)
+{
+    <div class="col div-container">
+
+        <div class="row">
+            <div class="col col-sm-4 d-flex justify-content-start">
+                Creator:
+            </div>
+            <div class="col d-flex justify-content-end">
+                @Studyset.Creator.UserName
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-sm-4 d-flex justify-content-start">
+                Contributors:
+            </div>
+            <div class="col d-flex justify-content-end">
+                @foreach (var c in Studyset.Contributors)
+                {
+                    <p>
+                        @c.UserName
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+}
