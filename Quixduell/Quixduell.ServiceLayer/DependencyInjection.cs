@@ -48,6 +48,7 @@ namespace Quixduell.ServiceLayer
             services.AddScoped<CategoryDataAccess>();
             services.AddScoped<GlobalSearch>();
             services.AddScoped<InitSampleData>();
+            services.AddScoped<GameManager>();
 
 
             return services;

@@ -1,0 +1,54 @@
+﻿@page "/singleplayer"
+@page "/singleplayer/{LobbyGuidParameter}"
+@using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions
+
+@*
+    Create New
+    /singleplayer?studyset=50092a18-8465-4542-b1fa-a882360ddae8
+
+    Join
+    /singleplayer/50092a18-8465-4542-b1fa-a882360ddae8
+
+*@
+
+@if (Game is not null)
+{
+    <div>
+        @if (SelectedQuestion is not null)
+        {
+            <div class="card">
+                <div class="card-header">
+                    @SelectedQuestion.Question.Text
+                </div>
+                <div class="card-body">
+                    @if (SelectedQuestion.Question is OpenQuestion openQuestion)
+                    {
+                        <button class="btn btn-primary" type="button" @onclick="() => {_showOpenQuestionAnswer = !_showOpenQuestionAnswer;}">
+                            Antwort prüfen
+                        </button>
+                        @if (_showOpenQuestionAnswer)
+                        {
+                            <p class="card-text">@openQuestion.Answer.Text</p>
+
+                        }
+                    }
+                    @if (SelectedQuestion.Question is MultipleChoiceQuestion multipleChoiceQuestion)
+                    {
+                        <div class="custom-control custom-radio">
+                        <Virtualize Items="multipleChoiceQuestion.Answers">
+                                <input type="radio" id="@context.Id" name="customRadio" class="custom-control-input" @onclick="() => {SelectedQuestion.SelectedAnswer = multipleChoiceQuestion.Answers.First(o => o.Id == context.Id);}">
+                                <label class="custom-control-label" for="@context.Id">@context.Text</label>
+                        </Virtualize>
+                        </div>
+
+                        
+                    }
+
+                </div>
+            </div>
+        }
+        <div>
+            <button class="btn" @onclick=Next>Next</button>
+        </div>
+    </div>
+}
