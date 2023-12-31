@@ -1,10 +1,28 @@
-﻿namespace Quixduell.Blazor.Shared.ControlComponents
+﻿using Microsoft.AspNetCore.Components;
+using Quixduell.Blazor.EditFormModel;
+using Quixduell.Blazor.Helpers;
+using Quixduell.ServiceLayer.DataAccessLayer.Model;
+using System.Runtime.CompilerServices;
+
+namespace Quixduell.Blazor.Shared.ControlComponents
 {
     public partial class StartGameComponent
     {
-        private Task Play(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
+
+        [Parameter]
+        public Studyset? Value { get; set; }
+
+        [Parameter]
+        public EventCallback<Studyset> ValueChanged { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; } = default!;
+        private void Play()
         {
-            throw new NotImplementedException();
+            if (Value is not null)
+            {
+                NavigationManager.NavigateTo($"{PageUri.SingeplayerPage}?studyset={Value.Id}");
+            }
         }
     }
 }
