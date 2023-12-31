@@ -14,7 +14,7 @@ namespace Quixduell.Blazor.Services
         private readonly AuthenticationStateProvider _authenticationStateProvider;
         private readonly NavigationManager _navigationManager;
 
-        public UserService(AuthenticationStateProvider authenticationStateProvider,  NavigationManager navigationManager)
+        public UserService(AuthenticationStateProvider authenticationStateProvider, NavigationManager navigationManager)
         {
             _authenticationStateProvider = authenticationStateProvider;
             _navigationManager = navigationManager;
@@ -26,9 +26,20 @@ namespace Quixduell.Blazor.Services
 
             if (user.Identity!.IsAuthenticated)
             {
-                var userWithOutProps =  await userManager.GetUserAsync(user);
+                var userWithOutProps = await userManager.GetUserAsync(user);
                 return userManager.Users
-                    .Include( o => o.StudysetConnections)
+                    .Include(o => o.StudysetConnections)
+                        .ThenInclude(o => o.Studyset)
+                            .ThenInclude(o => o.Creator)
+                    .Include(o => o.StudysetConnections)
+                        .ThenInclude(o => o.Studyset)
+                            .ThenInclude(o => o.Questions)
+                    .Include(o => o.StudysetConnections)
+                        .ThenInclude(o => o.Studyset)
+                            .ThenInclude(o => o.Contributors)
+                    .Include(o => o.StudysetConnections)
+                        .ThenInclude(o => o.Studyset)
+                            .ThenInclude(o => o.Category)
                     .Where(o => o.Id == userWithOutProps!.Id)
                     .First();
             }
