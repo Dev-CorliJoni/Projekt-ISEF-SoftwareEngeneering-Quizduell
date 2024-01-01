@@ -1,4 +1,6 @@
-﻿namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
+﻿using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
+
+namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
 {
     public class SinglePlayer : Game
     {
@@ -9,7 +11,7 @@
             Player = player;
         }
 
-        public AnsweredQuestion LoadNextQuestion()
+        public BaseQuestion? LoadNextQuestion()
         {
             return base.LoadNextQuestion(Player);
         }

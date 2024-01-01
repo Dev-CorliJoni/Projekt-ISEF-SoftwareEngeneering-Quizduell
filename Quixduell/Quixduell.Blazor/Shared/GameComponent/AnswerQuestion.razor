@@ -1,0 +1,54 @@
+﻿@using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions
+
+@if (_answeredQuestion is not null)
+{
+    <div class="card">
+        <div class="card-header">
+            @_answeredQuestion.Question.Text
+        </div>
+        <div class="card-body">
+            <div>
+                @if (_answeredQuestion.Question is OpenQuestion openQuestion)
+                {
+                    <button class="btn btn-primary" type="button" @onclick="() => {_showOpenAnswer = !_showOpenAnswer;}">Antwort prüfen</button>
+                    @if (_showOpenAnswer)
+                    {
+                        <p class="card-text">
+                            @openQuestion.Answer.Text
+                        </p>
+                        <div>
+                            <button class="btn btn-primary" type="button" @onclick="() => {_answeredQuestion.SelectedAnswer = openQuestion.Answer;_questionAnswered = true;}">Antwort richtig</button>
+                            <button class="btn btn-danger" type="button" @onclick="() => {_answeredQuestion.SelectedAnswer = null;_questionAnswered = true;}">Antwort falsch</button>
+                        </div>
+                    }
+
+                }
+                @if (_answeredQuestion.Question is MultipleChoiceQuestion multipleChoiceQuestion)
+                {
+                    <div class="custom-control custom-radio">
+                        <Virtualize Items="multipleChoiceQuestion.Answers">
+                            <input type="radio" id="@context.Id" name="customRadio" class="custom-control-input" @onclick="() => {_answeredQuestion.SelectedAnswer = multipleChoiceQuestion.Answers.First(o => o.Id == context.Id);_questionAnswered = true;}">
+                            <label class="custom-control-label" for="@context.Id">@context.Text</label>
+                        </Virtualize>
+                    </div>
+                }
+
+                <button class="btn" @onclick="() => {_showHint = !_showHint;}">Hilfe anzeigen</button>
+                @if(_showHint)
+                {
+                    <p class="card-text">
+                        @_answeredQuestion.Question.Hint
+                    </p>
+                }
+            </div>
+
+            @if (_questionAnswered)
+            {
+                <div>
+                    <button class="btn btn-success" @onclick="QuestionComplete">Senden</button>
+                </div>
+            }
+        </div>
+    </div>
+
+}
