@@ -33,8 +33,6 @@ namespace Quixduell.Blazor.Pages.GamePages
         private SinglePlayer? Game { get; set; }
         private BaseQuestion? SelectedQuestion { get; set; }
 
-        private bool _allowNext = false;
-
         private bool _gameFinished = false;
 
 
@@ -72,24 +70,25 @@ namespace Quixduell.Blazor.Pages.GamePages
 
         }
 
-        private void Next ()
+        private async Task Next ()
         {
-            _allowNext = false;
             var question = Game!.LoadNextQuestion();
 
             if (question is null)
             {
                 _gameFinished = true;
-                //TODO Redirect to  Result Page ?
+                await GameManager.EndSinglePlayerGameAsync(Game);
+                SelectedQuestion = null;
+                return;
             }
 
             SelectedQuestion = question;
         }
 
-        private void OnQuestionAnswered (AnsweredQuestion answeredQuestion) 
+        private async Task OnQuestionAnswered (AnsweredQuestion answeredQuestion) 
         {
             Game!.ReportAnsweredQuestion(answeredQuestion);
-            _allowNext = true;
+            await Next();
         }
 
 
