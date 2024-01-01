@@ -1,0 +1,29 @@
+﻿@if (Value is not null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Frage</th>
+                <th scope="col">Antwort</th>
+                <th scope="col">Richtige Antwort</th>
+            </tr>
+        </thead>
+        <tbody>
+            <Virtualize Items="Value.AnsweredQuestionResults" Context="Result">
+                <tr class="@GetColor(Result)">
+                    <td>@Result.Question.Text</td>
+                    @if (Result.SelectedAnswer is not null)
+                    {
+                        <td>@Result.SelectedAnswer.Text</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    <td>@Result.CorrectAnswer.Text</td>
+                </tr>
+            </Virtualize>
+        </tbody>
+    </table>
+
+}

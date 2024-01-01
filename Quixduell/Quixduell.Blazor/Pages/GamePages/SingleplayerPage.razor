@@ -18,18 +18,13 @@
         {
             <AnswerQuestion @bind-Value=SelectedQuestion QuestionAnswered="OnQuestionAnswered"></AnswerQuestion>
         }
-        @if (_allowNext)
-        {
-            <div>
-                <button class="btn" @onclick=Next>Next</button>
-        </div>
-        }
 
         @if (_gameFinished)
         {
             <div>
                 Alle Fragen beantwortet !
             </div>
+            <GameResultComponent @bind-Value=Game.GameResult></GameResultComponent>
         }
     </div>
 }
