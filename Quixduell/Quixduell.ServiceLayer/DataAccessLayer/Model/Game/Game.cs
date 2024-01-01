@@ -1,4 +1,6 @@
-﻿namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
+﻿using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
+
+namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
 {
     public abstract class Game
     {
@@ -13,27 +15,28 @@
         }
 
 
-        public AnsweredQuestion LoadNextQuestion(User player)
+        public BaseQuestion? LoadNextQuestion(User player)
         {
             if (AnsweredQuestions.FirstOrDefault(o => o.Player.Id == player.Id) == null)
             {
                 //First Question
-                var question = new AnsweredQuestion(Studyset.Questions.First(), player);
-                AnsweredQuestions.Add(question);
-                return question;
+                return (Studyset.Questions.First());
             }
             else
             {
                 var count = AnsweredQuestions.Where(o => o.Player.Id == player.Id).Count();
                 if (count < Studyset.Questions.Count) 
                 {
-                    var question = new AnsweredQuestion(Studyset.Questions[count], player);
-                    AnsweredQuestions.Add(question);
-                    return question;
+                    return Studyset.Questions[count];
                 }
-                return AnsweredQuestions.Where(o => o.Player.Id == player.Id).Last();
+                return null;
             }
 
+        }
+
+        public void ReportAnsweredQuestion (AnsweredQuestion question)
+        {
+            AnsweredQuestions.Add(question);
         }
     }
 }

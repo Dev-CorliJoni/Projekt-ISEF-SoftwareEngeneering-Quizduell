@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Quixduell.Blazor.Services;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.Blazor.Helpers;
+using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 
 namespace Quixduell.Blazor.Pages.GamePages
 {
@@ -30,9 +31,11 @@ namespace Quixduell.Blazor.Pages.GamePages
         public NavigationManager NavigationManager { get; set; } = default!;
 
         private SinglePlayer? Game { get; set; }
-        private AnsweredQuestion? SelectedQuestion { get; set; }
+        private BaseQuestion? SelectedQuestion { get; set; }
 
-        private bool _showOpenQuestionAnswer = false;
+        private bool _allowNext = false;
+
+        private bool _gameFinished = false;
 
 
         protected override async Task OnParametersSetAsync()
@@ -71,8 +74,22 @@ namespace Quixduell.Blazor.Pages.GamePages
 
         private void Next ()
         {
-            SelectedQuestion = Game.LoadNextQuestion();
-            _showOpenQuestionAnswer = false;
+            _allowNext = false;
+            var question = Game!.LoadNextQuestion();
+
+            if (question is null)
+            {
+                _gameFinished = true;
+                //TODO Redirect to  Result Page ?
+            }
+
+            SelectedQuestion = question;
+        }
+
+        private void OnQuestionAnswered (AnsweredQuestion answeredQuestion) 
+        {
+            Game!.ReportAnsweredQuestion(answeredQuestion);
+            _allowNext = true;
         }
 
 
