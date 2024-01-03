@@ -4,29 +4,67 @@
     <div class="col div-container">
         <div class="container">
             <div class="row">
-                <div class="col">
-                    
+
+                <div class="col col-sm-auto">                    
                     @foreach (float mark in HighscoreMarks)
                     {
-                        <div class="row">
+                        <div class="row justify-content-center">
                             @mark
                         </div>
                     }
+
+                    <div class="row">
+                    </div>
                 </div>
-                @* Bar chart *@
-            </div>
-            <div class="row">
-                @foreach (var connection in Connections)
-                {
-                    <div class="col">
-                        <div class="row d-flex justify-content-center">
-                            @connection.Highscore
-                        </div>
-                        <div class="row d-flex justify-content-center" style="font-size: smaller">
-                            @connection.User.UserName.Split('@')[0]
+
+                <div class="col">
+                    <div class="container">
+                        <div class="row">
+                            @{var colors = GetRandomBackgrounds().ToList();}
+
+                            @for (int i = 0; i < Connections.Count; i++)
+                            {
+                                var connection = Connections[i];
+
+                                <div class="col">
+
+                                    @foreach (float mark in HighscoreMarks)
+                                    {
+                                        var step = GetMarkSize();
+                                        var multiplicator = 100 / step;
+                                        
+                                        var height = connection.Highscore >= mark ? "100%" : $"{(mark - connection.Highscore) * multiplicator}%";
+                                        var background = (connection.Highscore > mark - step ? colors[i] : "");
+
+                                        var rounded = mark >= connection.Highscore;
+
+                                        <div class="row">
+                                            <div class="col d-flex" style="margin-left: 0.25rem; margin-right: 0.25rem;">
+                                                <div style="background: @background; height: @height ; width: 100%; align-self: flex-end; border-radius: @(rounded ? "10px 10px 0 0": "0 0 0 0");">
+                                                    &nbsp; @* Empty Content *@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <div class="row">
+                                        <div class="col" style="border: @(connection.User == User ? "solid red 1px;" : ""); border-radius: 0.5rem; margin-top: 1px">
+                                            @* Do sth border color on or sth like that*@
+                                            <div class="row d-flex justify-content-center">
+                                                @connection.Highscore
+                                            </div>
+                                            <div class="row d-flex justify-content-center" style="font-size: smaller">
+                                                @connection.User.UserName.Split('@')[0]
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            }
                         </div>
                     </div>
-                }
+                </div>
+
             </div>
         </div>
     </div>

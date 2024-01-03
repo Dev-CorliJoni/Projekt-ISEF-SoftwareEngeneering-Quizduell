@@ -45,17 +45,48 @@ namespace Quixduell.Blazor.Shared.StudysetView
                     .ToList();
         }
 
+        public float GetMarkSize()
+        {
+            return Connections.Max(c => c.Highscore) / 10;
+        }
+
         public IEnumerable<float> HighscoreMarks
         {
             get
             {
-                float lowest = Connections.Max(c => c.Highscore) / 10;
+                float lowest = GetMarkSize();
 
                 for (int i = 10; i > 0; i--)
                 {
                     yield return lowest * i;
                 }
             }
+        }
+
+        public IEnumerable<string> GetRandomBackgrounds()
+        {
+            List<string> colors = ["black", "blue", "red", "yellow", "green", "darkgray", "lightgray", "brown", "gray", "pink"];
+            foreach(var color in Shuffle(colors))
+            {
+                yield return color;
+            }
+        }
+
+        static List<T> Shuffle<T>(List<T> list)
+        {
+            Random random = new Random();
+
+            // Fisher-Yates shuffle algorithm
+            int n = list.Count;
+            for (int i = n - 1; i > 0; i--)
+            {
+                int j = random.Next(0, i + 1);
+                T temp = list[i];
+                list[i] = list[j];
+                list[j] = temp;
+            }
+
+            return list;
         }
     }
 }
