@@ -1,0 +1,33 @@
+﻿
+@if (Studyset is not null)
+{
+    <div class="col div-container">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    
+                    @foreach (float mark in HighscoreMarks)
+                    {
+                        <div class="row">
+                            @mark
+                        </div>
+                    }
+                </div>
+                @* Bar chart *@
+            </div>
+            <div class="row">
+                @foreach (var connection in Connections)
+                {
+                    <div class="col">
+                        <div class="row d-flex justify-content-center">
+                            @connection.Highscore
+                        </div>
+                        <div class="row d-flex justify-content-center" style="font-size: smaller">
+                            @connection.User.UserName.Split('@')[0]
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
