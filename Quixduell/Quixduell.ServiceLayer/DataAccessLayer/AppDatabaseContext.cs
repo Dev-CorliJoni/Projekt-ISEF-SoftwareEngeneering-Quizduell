@@ -56,5 +56,6 @@ namespace Quixduell.ServiceLayer.DataAccessLayer
             builder.Entity<OpenQuestion>();
 
         }
+
     }
 }

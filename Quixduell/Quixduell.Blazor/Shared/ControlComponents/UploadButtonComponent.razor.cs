@@ -54,7 +54,6 @@ namespace Quixduell.Blazor.Shared.ControlComponents
                 bool validAction = await UploadFunction(e);
                 if (validAction == false)
                 {
-                    //Make error meessage
                     return;
                 }
             }

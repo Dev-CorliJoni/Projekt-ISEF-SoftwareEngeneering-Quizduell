@@ -1,19 +1,41 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
+using Quixduell.ServiceLayer.ServiceLayer;
 
 namespace Quixduell.Blazor.Shared.StudysetView
 {
     public partial class StudysetViewContentRating
     {
+
+        [Inject]
+        private ServiceLayer.ServiceLayer.StudysetView StudysetView { get; set; } = default!;
+
+        private Studyset _studyset;
+
         [Parameter]
         public User User { get; set; }
+
         [Parameter]
-        public Studyset Studyset { get; set; }
+        public Studyset Studyset
+        {
+            get => _studyset;
+            set
+            {
+                _studyset = value;
+                Connection = Studyset.Connections.SingleOrDefault(c => c.User == User);
+                
+                if (Connection != null && Connection.Rating != null)
+                {
+                    Rating = Connection.Rating.Value;
+                    RatingText = Connection.Rating.Description;
+                }
+            }
+        }
 
 
         private bool _isEditing;
 
-        public UserStudysetConnection Connection { get => Studyset.Connections.SingleOrDefault(c => c.User == User); }
+        public UserStudysetConnection Connection { get; set; }
 
         public float Rating { get; set; } = 0;
         public string RatingText { get; set; }
@@ -29,15 +51,13 @@ namespace Quixduell.Blazor.Shared.StudysetView
 
         private async Task<bool> Rate(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
         {
-
-            if (Rating >= 0)
+            if (Rating == 0)
             {
-                Connection.Rating.Value = Rating;
-                Connection.Rating.Description = RatingText;
-                //Update
+                return false;
             }
 
-            return true; // return false if failed
+            await StudysetView.RateAsync(Studyset, Connection, User, Rating, RatingText);
+            return true; 
         }
 
     }
