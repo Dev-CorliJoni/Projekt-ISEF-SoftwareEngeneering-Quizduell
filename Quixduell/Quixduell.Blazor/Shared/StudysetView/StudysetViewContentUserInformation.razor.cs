@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 
 namespace Quixduell.Blazor.Shared.StudysetView
@@ -7,6 +8,11 @@ namespace Quixduell.Blazor.Shared.StudysetView
     {
         [Parameter]
         public Studyset Studyset { get; set; }
+
+        public void AddContributor(MouseEventArgs e)
+        {
+
+        }
 
     }
 }

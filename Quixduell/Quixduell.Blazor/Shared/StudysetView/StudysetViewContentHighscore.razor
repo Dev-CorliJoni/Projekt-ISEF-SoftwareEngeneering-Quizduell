@@ -34,6 +34,8 @@
                                         var multiplicator = 100 / step;
                                         
                                         var height = connection.Highscore >= mark ? "100%" : $"{(mark - connection.Highscore) * multiplicator}%";
+                                        height = connection.Highscore < mark - step ? "0%" : height;
+
                                         var background = (connection.Highscore > mark - step ? colors[i] : "");
 
                                         var rounded = mark >= connection.Highscore;

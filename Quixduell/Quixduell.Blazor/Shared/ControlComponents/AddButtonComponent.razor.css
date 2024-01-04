@@ -1,2 +1,35 @@
-﻿body {
+﻿.add-button {
+    font-size: 1.5rem;
+    font-weight: bolder;
+    padding-bottom: 0.25em;
+    padding-top: 0.25em;
+    color: #fff;
+    /*margin-bottom: 0.25em;*/
+}
+
+.upload-button-edit {
+    padding-right: 0.5em;
+    padding-left: 0.5em;
+}
+
+.upload-button-checkmark {
+    padding-right: 0.625em;
+    padding-left: 0.625em;
+}
+
+.round-div {
+    display: inline-block;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 0.5rem;
+}
+
+.color-blue-div {
+    background-color: #3498db;
+}
+
+.color-blue-div:hover {
+    background-color: #2980b9;
 }
