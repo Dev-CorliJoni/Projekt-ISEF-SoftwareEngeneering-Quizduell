@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Quixduell.Blazor.Shared.CategoryComponent
+@using Quixduell.Blazor.Helpers;
 <PageTitle>Index</PageTitle>
 
 
@@ -39,10 +40,10 @@
             <tbody>
                 <Virtualize Items="@_studysets" Context="Studyset" ItemSize="10" OverscanCount="5">
                     <tr style="cursor: pointer">
-                        <td scope="row"></td>
-                        <td>@Studyset.Name</td>
-                        <td>@Studyset.Category.Name</td>
-                        <td>@Studyset.Creator.Email</td>
+                        <td scope="row" onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';"></td>
+                        <td onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';" >@Studyset.Name</td>
+                        <td onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';">@Studyset.Category.Name</td>
+                        <td onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';">@Studyset.Creator.Email</td>
                         @if (CheckIfCurrentUserStored(Studyset))
                         {
                             <th scope="col" style="color: red;" @onclick="async (s) =>{await UnNoticeStudyset(Studyset);}">&#10084;</th>
@@ -53,7 +54,7 @@
                         }
                         @if(CheckEditRights(Studyset))
                         {
-                            <td><button class="btn btn-secondary" onclick="window.location.href='/editstudyset/@Studyset.Id';">Bearbeiten</button></td>
+                            <td><button class="btn btn-secondary" onclick="window.location.href='@PageUri.EditStudysetPage/@Studyset.Id';">Bearbeiten</button></td>
                         }
                     </tr>
                 </Virtualize>
