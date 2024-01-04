@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.AzureAppServices;
 using Quixduell.Blazor.Areas.Identity;
@@ -64,7 +65,8 @@ internal class Program
         var app = builder.Build();
 
         //Isolated CSS
-       app.UseStaticFiles();
+        StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
+        app.UseStaticFiles();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
