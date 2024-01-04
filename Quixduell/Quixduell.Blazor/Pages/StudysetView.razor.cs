@@ -1,18 +1,17 @@
 ﻿using Quixduell.ServiceLayer.DataAccessLayer.Model;
-using Quixduell.ServiceLayer.ServiceLayer;
-using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 using Microsoft.AspNetCore.Components;
 using Quixduell.Blazor.Services;
-using System;
 using Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality;
-using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using Microsoft.AspNetCore.Identity;
 
 namespace Quixduell.Blazor.Pages
 {
     public partial class StudysetView
     {
+
+        [Parameter]
+        public string? StudysetID { get; set; }
+
         [Inject]
         private UserService UserService { get; set; } = default!;
 
@@ -29,7 +28,7 @@ namespace Quixduell.Blazor.Pages
         private CategoryHandler CategoryHandler { get; set; } = default!;
 
 
-        private Studyset Studyset { get; set; } = default!;
+        private Studyset? Studyset { get; set; } = default!;
         private User User { get; set; } = default!;
 
 
@@ -40,21 +39,19 @@ namespace Quixduell.Blazor.Pages
             if (user is null) { return; }
 
             User = user;
-            SelectStudyset();
-            Initialize();
+
         }
 
-        private void Initialize()
+        protected override async Task OnParametersSetAsync()
         {
-        }
-
-        private void SelectStudyset()
-        {
-            if (User.StudysetConnections.Any())
+            if (Guid.TryParse(StudysetID, out var ParsedStudysetID))
             {
-                Studyset = User.StudysetConnections[0].Studyset;
+                Studyset = await StudysetHandler.GetStudysetViaIdAsync(ParsedStudysetID);
             }
         }
+
+      
+        
 
     }
 }
