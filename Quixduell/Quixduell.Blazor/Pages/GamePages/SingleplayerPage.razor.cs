@@ -30,6 +30,7 @@ namespace Quixduell.Blazor.Pages.GamePages
         [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
 
+        private User? Player { get; set; }
         private SinglePlayer? Game { get; set; }
         private BaseQuestion? SelectedQuestion { get; set; }
 
@@ -38,8 +39,8 @@ namespace Quixduell.Blazor.Pages.GamePages
 
         protected override async Task OnParametersSetAsync()
         {
-            var user = await UserService.GetAuthenticatedUserOrRedirect(UserManager);
-            if (user is null) { return; }
+            if (Player is null)
+                return;
 
             if (Guid.TryParse(LobbyGuidParameter, out var parsedGameGuid))
             {
@@ -49,7 +50,7 @@ namespace Quixduell.Blazor.Pages.GamePages
                     Game = singlePlayer;
                     if (SelectedQuestion  is null) 
                     {
-                        Next();
+                        await Next();
                     }
                 }
             }
@@ -61,13 +62,18 @@ namespace Quixduell.Blazor.Pages.GamePages
                     var studyset = await StudysetHandler.GetStudysetViaIdAsync(parsedStudysetGuid);
                     if (studyset is not null)
                     {
-                        Game = GameManager.CreateSinglePlayerGame(user, studyset);
+                        Game = GameManager.CreateSinglePlayerGame(Player, studyset);
                         NavigationManager.NavigateTo($"{PageUri.SingeplayerPage}/{Game.Id}");
                     }
 
                 }
             }
 
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            Player = await UserService.GetAuthenticatedUserOrRedirect(UserManager);
         }
 
         private async Task Next ()

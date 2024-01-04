@@ -11,7 +11,7 @@
             </div>
 
             <div class="col form-group div-col contributors-scroll-box justify-content-end">
-                <StartGameComponent/>
+                <StartGameComponent @bind-Value="Studyset"/>
                 <StarComponent Connection="@GetConnection()" Studyset="@Studyset" />
             </div>
 
