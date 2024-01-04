@@ -1,0 +1,8 @@
+﻿@using Quixduell.Blazor.Shared.StudysetView.RatingComponent
+
+<div class="row w-100">
+    @for (int i = 1; i <= _maxRating; i++)
+    {
+        <RatingStarComponent Id="@i" IsFilled="@IsStarFilled(i)" OnToggle="@ToggleStar" />
+    }
+</div>

@@ -6,20 +6,23 @@ namespace Quixduell.Blazor.Shared.ControlComponents
 {
     public partial class StarComponent
     {
+        [Inject]
+        private ServiceLayer.ServiceLayer.StudysetView StudysetView { get; set; } = default!;
+
+        [Parameter]
+        public Studyset Studyset { get; set; } = default!;
         [Parameter]
         public UserStudysetConnection Connection { get; set; } = default!;
 
         private string GetStarColor()
         {
-            return Connection.IsStored ? "yellow" : "lightgray";
+            // Golden Yellow || darkgray
+            return Connection.IsStored ? "#FFC000" : "darkgray";
         }
 
         private async Task StarFunction(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
         {
-            await Task.Run(() =>
-            {
-                Connection.IsStored = !Connection.IsStored;
-            });
+            await StudysetView.StarStudysetAsync(Studyset, Connection);
         }
     }
 }

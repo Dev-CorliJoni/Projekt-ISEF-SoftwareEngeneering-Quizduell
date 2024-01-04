@@ -1,0 +1,20 @@
+﻿@using Quixduell.Blazor.Shared.ControlComponents
+
+@if (Studyset is not null)
+{
+    <div class="container div-container">
+        <div class="row">
+
+            <div class="col form-group div-col d-flex justify-content-start">
+                <StudysetViewHeaderName Studyset="@Studyset"/>
+                <CategoryComponent Category="@Studyset.Category"/>
+            </div>
+
+            <div class="col form-group div-col contributors-scroll-box justify-content-end">
+                <StartGameComponent/>
+                <StarComponent Connection="@GetConnection()" Studyset="@Studyset" />
+            </div>
+
+        </div>
+    </div>
+}
