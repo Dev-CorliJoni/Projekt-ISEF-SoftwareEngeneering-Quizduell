@@ -13,13 +13,12 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-
         //Logging for Azure App Service
         builder.Logging.AddAzureWebAppDiagnostics();
         builder.Services.Configure<AzureFileLoggerOptions>(options =>
         {
             options.FileName = "azure-diagnostics-";
-            options.FileSizeLimit = 50 * 1024;
+            options.FileSizeLimit = 50 * 1024; 
             options.RetainedFileCountLimit = 5;
         });
 
@@ -53,12 +52,19 @@ internal class Program
         {
             option.ConnectionString = connectionString;
         });
+
+
+
+      
+
         //Add Service Layer
         builder.Services.AddQuixServiceLayer();
 
 
         var app = builder.Build();
 
+        //Isolated CSS
+       app.UseStaticFiles();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
