@@ -29,22 +29,30 @@ namespace Quixduell.Blazor.Shared.GameComponent
         private bool _showHint = false;
         private bool _showOpenAnswer = false;
         private bool _questionAnswered = false;
+        private User? _user;
 
-        protected override async Task OnParametersSetAsync()
+
+        protected override async  Task OnInitializedAsync()
         {
-            _showHint = false;
-            _showOpenAnswer = false;
-            _questionAnswered = false;
             var user = await UserService.GetAuthenticatedUserOrRedirect(UserManager);
             if (user is null)
                 return;
 
-            if (Value is null)
+            _user = user;
+        }
+
+        protected override void OnParametersSet()
+        {
+            _showHint = false;
+            _showOpenAnswer = false;
+            _questionAnswered = false;
+
+            if (Value is null || _user is null)
                 return;
 
-            _answeredQuestion = new AnsweredQuestion(Value, user);
-
+            _answeredQuestion = new AnsweredQuestion(Value, _user);
         }
+
 
         private async Task QuestionComplete ()
         {
