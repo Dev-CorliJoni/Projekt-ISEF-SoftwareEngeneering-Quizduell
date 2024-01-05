@@ -6,7 +6,7 @@ namespace Quixduell.Blazor.Shared.GameComponent
     public partial class GameResultComponent
     {
         [Parameter]
-        public GameResult Value { get; set; }
+        public GameResult? Value { get; set; }
 
         [Parameter]
         public EventCallback<GameResult> ValueChanged { get; set; }

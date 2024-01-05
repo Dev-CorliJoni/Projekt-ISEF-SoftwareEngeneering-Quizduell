@@ -47,7 +47,13 @@ namespace Quixduell.Blazor.Shared.StudysetView
 
         public float GetMarkSize()
         {
-            return Connections.Max(c => c.Highscore) / 10;
+            if (Connections.Any())
+            {
+                return Connections.Max(c => c.Highscore) / 10;
+            }
+
+            return 0;
+
         }
 
         public IEnumerable<float> HighscoreMarks

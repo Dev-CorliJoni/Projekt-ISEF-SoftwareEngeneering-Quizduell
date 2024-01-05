@@ -24,7 +24,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
             if (AnsweredQuestions.FirstOrDefault(o => o.Player.Id == player.Id) == null)
             {
                 //First Question
-                return (Studyset.Questions.First());
+                return (Studyset.Questions.FirstOrDefault());
             }
             else
             {
