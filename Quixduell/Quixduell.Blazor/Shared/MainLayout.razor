@@ -15,7 +15,7 @@
 
         <article class="content px-4">
             <Quixduell.Blazor.Shared.DialogComponent.ShowDialogComponent @ref="Dialog"></Quixduell.Blazor.Shared.DialogComponent.ShowDialogComponent>
-
+            <Quixduell.Blazor.Shared.AlertComponent.AlertComponent @ref="Alert"></Quixduell.Blazor.Shared.AlertComponent.AlertComponent>
 
             <CascadingValue Value="this">
                 @Body
@@ -28,5 +28,6 @@
 @code
 {
     public Quixduell.Blazor.Shared.DialogComponent.ShowDialogComponent Dialog;
+    public Quixduell.Blazor.Shared.AlertComponent.AlertComponent Alert;
 
 }
