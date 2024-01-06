@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Components;
 using Quixduell.Blazor.Services;
 using Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality;
 using Microsoft.AspNetCore.Identity;
+using Quixduell.Blazor.Shared;
+using Quixduell.Blazor.Shared.QuestionComponent;
+using Quixduell.Blazor.EditFormModel;
+using Quixduell.Blazor.Shared.CategoryComponent;
 
 namespace Quixduell.Blazor.Pages
 {
@@ -30,6 +34,10 @@ namespace Quixduell.Blazor.Pages
 
         [Inject]
         private CategoryHandler CategoryHandler { get; set; } = default!;
+
+        [CascadingParameter]
+        public MainLayout Layout { get; set; }
+
 
 
         private List<Studyset>? _studysets = null;
@@ -118,6 +126,19 @@ namespace Quixduell.Blazor.Pages
             }
 
             return new string(stringChars);
+        }
+
+        private void ShowAlert ()
+        {
+            Layout.Alert.AddAlert("Hallo Welt");
+        }
+
+        private void ShowDialog()
+        {
+            Layout.Dialog.ShowDialog<EditQuestion, CreateEditQuestionFormModel>("Hallo Welt", new EditQuestion(),
+                new CreateEditQuestionFormModel(), (CreateEditQuestionFormModel value) =>{
+                },() => {
+                });
         }
 
 
