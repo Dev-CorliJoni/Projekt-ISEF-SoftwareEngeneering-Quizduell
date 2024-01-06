@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using Quixduell.Blazor.EditFormModel;
 
 namespace Quixduell.Blazor.Shared.AnswerComponent
@@ -12,24 +11,12 @@ namespace Quixduell.Blazor.Shared.AnswerComponent
         [Parameter]
         public EventCallback<CreateEditAnswerFormModel> ValueChanged { get; set; }
 
+        [Parameter]
+        public EventCallback<CreateEditAnswerFormModel> OnSubmit { get; set; }
 
-
-
-
-        protected override void OnParametersSet()
+        private async Task OnSumbmit()
         {
-            if (Value is null)
-            {
-                throw new NotImplementedException();
-            }
-
-
-            base.OnParametersSet();
-        }
-
-        private async Task OnSumbmit ()
-        {
-            await ValueChanged.InvokeAsync(Value);
+            await OnSubmit.InvokeAsync(Value);
         }
     }
 }

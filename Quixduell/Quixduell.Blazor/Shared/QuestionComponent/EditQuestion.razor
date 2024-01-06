@@ -2,7 +2,7 @@
 @using Quixduell.Blazor.Shared.AnswerComponent
 @if (Value is not null)
 {
-    <EditForm EditContext=EditContext OnValidSubmit="ComplexValidate" @onclick="() => ValidationMessageStore?.Clear()">
+    <EditForm Model=Value OnValidSubmit="ComplexValidate" @onclick="() => ValidationMessageStore?.Clear()">
         <DataAnnotationsValidator></DataAnnotationsValidator>
         <ValidationSummary></ValidationSummary>
         <div class="m-2">
@@ -47,7 +47,7 @@
                 </div>
                 @if (_selectedAnswer is not null)
                 {
-                    <EditAnswer @bind-Value="_selectedAnswer" @bind-Value:after="() => {_selectedAnswer = null;}"></EditAnswer>
+                    <EditAnswer @bind-Value="_selectedAnswer" OnSubmit="() => _selectedAnswer = null"></EditAnswer>
                 }
                 <button type="button" @onclick="AddAnswer" class=" btn">Antwort hinzufügen</button>
             </div>

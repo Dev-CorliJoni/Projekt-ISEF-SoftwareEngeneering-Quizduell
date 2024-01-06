@@ -13,7 +13,7 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
 
 
         [Parameter]
-        public EventCallback<CreateEditQuestionFormModel> OnValueChanged { get; set; }
+        public EventCallback<CreateEditQuestionFormModel> ValueChanged { get; set; }
 
         [Parameter]
         public EventCallback<CreateEditQuestionFormModel> OnValidSubmit { get; set; }
@@ -25,8 +25,6 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
 
         private CreateEditQuestionFormModel? _originalFormModel = null;
         private string _originalFormModelData = "";
-
-        private EditContext EditContext { get; set; } = default!;
         private ValidationMessageStore ValidationMessageStore { get; set; } = default!;
 
         protected override void OnParametersSet()
@@ -41,8 +39,8 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
                 _originalFormModelData = JsonSerializer.Serialize(Value);
             }
 
-            EditContext = new EditContext(Value);
-            ValidationMessageStore = new ValidationMessageStore(EditContext);
+
+          
             base.OnParametersSet();
         }
 
@@ -72,12 +70,14 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
 
         private async Task ComplexValidate (EditContext editContext)
         {
+            ValidationMessageStore = new ValidationMessageStore(editContext);
+
             if (editContext.Model is CreateEditQuestionFormModel formModel) 
             {
                 bool isValid = true;
                 ValidationMessageStore.Clear();
 
-                if (formModel.AnswerFormModels.Count() > 1)
+                if (formModel.AnswerFormModels.Count() < 1)
                 {
                     ValidationMessageStore.Add(() => formModel.AnswerFormModels, "One Answer has to be set!");
                     isValid = false;
@@ -87,17 +87,25 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
                 {
                     if (formModel.AnswerFormModels.Where(o => o.IsTrue).Count() > 1)
                     {
-                        ValidationMessageStore.Add(() => formModel.AnswerFormModels, "One one Answer can be true");
+                        ValidationMessageStore.Add(() => formModel.AnswerFormModels, "Only one Answer can be true");
                         isValid = false;
                     }
-                    if (formModel.AnswerFormModels.Any(o => o.IsTrue))
+                    if (formModel.AnswerFormModels.Where(o => o.IsTrue).Count() < 1)
                     {
                         ValidationMessageStore.Add(() => formModel.AnswerFormModels, "One one Answer has to be true");
                         isValid = false;
                     }
                 }
+                if (formModel.QuestionType == QuestionType.OpenText)
+                {
+                    if (formModel.AnswerFormModels.Count() > 1)
+                    {
+                        ValidationMessageStore.Add(() => formModel.AnswerFormModels, "Only Answer has to be set!");
+                        isValid = false;
+                    }
+                }
 
-                if (isValid) 
+                    if (isValid) 
                 {
                     await OnValidSubmit.InvokeAsync(Value);
                 }
