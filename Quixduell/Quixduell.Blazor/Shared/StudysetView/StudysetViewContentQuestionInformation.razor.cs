@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Identity;
-using Quixduell.Blazor.Services;
+using Quixduell.Blazor.EditFormModel;
 using Quixduell.Blazor.Shared.ControlComponents;
+using Quixduell.Blazor.Shared.QuestionComponent;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 
@@ -14,6 +14,9 @@ namespace Quixduell.Blazor.Shared.StudysetView
         public User User { get; set; }
         [Parameter]
         public Studyset Studyset { get; set; }
+
+        [CascadingParameter]
+        public MainLayout Layout { get; set; }
 
         private List<QuestionData> _questionData;
 
@@ -42,7 +45,11 @@ namespace Quixduell.Blazor.Shared.StudysetView
 
         public void OpenAddQuestion(MouseEventArgs e)
         {
-
+            var questionForm = new CreateEditQuestionFormModel();
+            Layout.Dialog.ShowDialog<EditQuestion, CreateEditQuestionFormModel>("Frage hinzufügen",new EditQuestion(), questionForm, (CreateEditQuestionFormModel form) =>
+            {
+                //Speichern direkt oder was soll passieren ? :D 
+            },() => { });
         }
 
     }

@@ -39,24 +39,8 @@
             <div class="form-group">
                 <label for="ss_question" class="form-label">Fragen</label>
                 <div id="ss_question">
-                    <SelectDeleteQuestionEditForm @bind-Value=_currentQuestion @bind-QuestionForms=FormModel.QuestionFormModels></SelectDeleteQuestionEditForm>
+                    <SelectDeleteQuestionEditForm OnQuestionSelected="ShowQuestionDialog" @bind-QuestionForms=FormModel.QuestionFormModels></SelectDeleteQuestionEditForm>
                     <ValidationMessage For="() => FormModel.QuestionFormModels"></ValidationMessage>
-                    @if (_currentQuestion is not null)
-                    {
-                        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Frage bearbeiten</h5>
-                                    </div>
-                                    <div class="modal-body">
-                                        <EditQuestion @bind-Value=_currentQuestion OnAbort="() => _currentQuestion = null" OnValidSubmit="() => _currentQuestion = null"></EditQuestion>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    }
                     <button class="btn btn-secondary" type="button" @onclick="AddQuestion">Frage hinzufügen</button>
                 </div>
             </div>

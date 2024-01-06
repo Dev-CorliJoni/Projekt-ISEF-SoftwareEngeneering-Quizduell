@@ -1,0 +1,18 @@
+﻿@if (_componentBase is not null)
+{
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@Header</h5>
+                </div>
+                <div class="modal-body">
+
+                    @_componentBase
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+}

@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Identity.Client;
 using Quixduell.Blazor.EditFormModel;
 using Quixduell.Blazor.Helpers;
 using Quixduell.Blazor.Services;
+using Quixduell.Blazor.Shared;
+using Quixduell.Blazor.Shared.QuestionComponent;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 using Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality;
@@ -18,6 +18,9 @@ namespace Quixduell.Blazor.Pages.StudysetPages
 
         [Parameter]
         public String StudysetID { get; set; } = default!;
+
+        [CascadingParameter]
+        public MainLayout Layout { get; set; }
 
         [Inject]
         private UserService UserService { get; set; } = default!;
@@ -35,16 +38,11 @@ namespace Quixduell.Blazor.Pages.StudysetPages
         private NavigationManager NavigationManager { get; set; } = default!;
 
 
-        public CreateEditStudyset()
-        {
-
-        }
-
         private CreateEditStudysetFormModel? FormModel { get; set; }
         private EditContext EditContext { get; set; } = default!;
         private ValidationMessageStore ValidationMessage { get; set; } = default!;
 
-        private CreateEditQuestionFormModel? _currentQuestion;
+
 
         protected override async Task OnParametersSetAsync()
         {
@@ -82,7 +80,7 @@ namespace Quixduell.Blazor.Pages.StudysetPages
         {
             var question = new CreateEditQuestionFormModel();
             FormModel?.QuestionFormModels.Add(question);
-            _currentQuestion = question;
+            ShowQuestionDialog(question);
         }
 
 
@@ -140,6 +138,17 @@ namespace Quixduell.Blazor.Pages.StudysetPages
                 NavigationManager.NavigateTo(PageUri.Index, true);
             }
 
+        }
+
+        private void ShowQuestionDialog (CreateEditQuestionFormModel formModel)
+        {
+            Layout.Dialog.ShowDialog<EditQuestion, CreateEditQuestionFormModel>("Frage bearbeiten",new EditQuestion(), formModel, (CreateEditQuestionFormModel o) =>
+            {
+
+            }, () => 
+            {
+
+            });
         }
 
 

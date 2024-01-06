@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Quixduell.Blazor.EditFormModel;
+using Quixduell.Blazor.Shared.DialogComponent;
 using System.Text.Json;
 
 namespace Quixduell.Blazor.Shared.QuestionComponent
 {
-    public partial class EditQuestion
+    public partial class EditQuestion : IDialogBase<CreateEditQuestionFormModel>
     {
 
         [Parameter]
@@ -16,16 +17,19 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
         public EventCallback<CreateEditQuestionFormModel> ValueChanged { get; set; }
 
         [Parameter]
-        public EventCallback<CreateEditQuestionFormModel> OnValidSubmit { get; set; }
+        public Action<CreateEditQuestionFormModel> OnSubmit { get; set; }
 
         [Parameter]
-        public EventCallback OnAbort { get; set; }
+        public Action OnCancel { get; set; }
+
 
         private CreateEditAnswerFormModel? _selectedAnswer;
 
         private CreateEditQuestionFormModel? _originalFormModel = null;
         private string _originalFormModelData = "";
         private ValidationMessageStore ValidationMessageStore { get; set; } = default!;
+
+
 
         protected override void OnParametersSet()
         {
@@ -59,16 +63,16 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
         }
 
 
-        private async Task Abort ()
+        private void Abort ()
         {
             var original = JsonSerializer.Deserialize<CreateEditQuestionFormModel>(_originalFormModelData!) ?? new CreateEditQuestionFormModel(); 
             Value!.QuestionText = original.QuestionText;
             Value!.Hint = original.Hint;
             Value.AnswerFormModels = original.AnswerFormModels;
-            await OnAbort.InvokeAsync();
+            OnCancel.Invoke();
         }
 
-        private async Task ComplexValidate (EditContext editContext)
+        private void ComplexValidate (EditContext editContext)
         {
             ValidationMessageStore = new ValidationMessageStore(editContext);
 
@@ -107,7 +111,7 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
 
                     if (isValid) 
                 {
-                    await OnValidSubmit.InvokeAsync(Value);
+                    OnSubmit.Invoke(Value);
                 }
             }
 

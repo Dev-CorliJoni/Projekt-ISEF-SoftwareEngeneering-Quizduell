@@ -10,14 +10,11 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
 
         [Parameter]
         public EventCallback<List<CreateEditQuestionFormModel>> QuestionFormsChanged { get; set; }
-
         [Parameter]
-        public CreateEditQuestionFormModel? Value { get; set; }
-
-        [Parameter]
-        public EventCallback<CreateEditQuestionFormModel> ValueChanged { get; set; }
+        public EventCallback<CreateEditQuestionFormModel> OnQuestionSelected { get; set; }
 
 
+        private CreateEditQuestionFormModel? Value { get; set; }
         private List<CreateEditQuestionFormModel>? _filteredQuestions;
         private string _searchString = String.Empty;
 
@@ -41,11 +38,10 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
 
         private async Task SelectQuestionAsync(CreateEditQuestionFormModel questionForm)
         {
-            if (questionForm != Value)
-            {
-                Value = questionForm;
-                await ValueChanged.InvokeAsync(Value);
-            }
+
+            Value = questionForm;
+            await OnQuestionSelected.InvokeAsync(Value);
+
         }
         private async Task RemoveQuestionAsync(CreateEditQuestionFormModel questionForm)
         {
