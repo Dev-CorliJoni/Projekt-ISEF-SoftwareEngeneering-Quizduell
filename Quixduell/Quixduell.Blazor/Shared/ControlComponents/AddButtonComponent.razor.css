@@ -1,20 +1,13 @@
 ﻿.add-button {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: bolder;
-    padding-bottom: 0.25em;
-    padding-top: 0.25em;
+    border: 0;
+    padding-right: 0.49em;
+    padding-left: 0.498em;
+    padding-bottom: 0.03em;
+    padding-top: 0.03em;
     color: #fff;
     /*margin-bottom: 0.25em;*/
-}
-
-.upload-button-edit {
-    padding-right: 0.5em;
-    padding-left: 0.5em;
-}
-
-.upload-button-checkmark {
-    padding-right: 0.625em;
-    padding-left: 0.625em;
 }
 
 .round-div {

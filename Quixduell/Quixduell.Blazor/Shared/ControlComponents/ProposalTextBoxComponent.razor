@@ -1,0 +1,22 @@
+﻿<div class="autocomplete">
+    <input type="text" @onkeydown="OnKeyDownAsync" @bind="_contributorName" class="form-control filter">
+
+    @if (ContributorProposal is not null)
+    {
+        <ul class="options">
+            @if (ContributorProposal.Any())
+            {
+                @foreach (var contributor in ContributorProposal)
+                {
+                    <li class="option" @onclick=@(async _ => await ContributorSelectedAsync(contributor))>
+                        <span class="option-text">@contributor.UserName</span>
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="disabled option">No results</li>
+            }
+        </ul>
+    }
+</div>
