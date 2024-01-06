@@ -71,7 +71,7 @@ namespace Quixduell.Blazor.Shared.StudysetView
 
         public IEnumerable<string> GetRandomBackgrounds()
         {
-            List<string> colors = ["#9b2948", "#de0c1c", "red", "#ffcd74", "green", "#ff7251", "#ffedbf", "brown", "#fecf02", "pink"];
+            List<string> colors = ["#9b2948", "#E36414", "#5F0F40", "#ffcd74", "green", "#ff7251", "#ffedbf", "brown", "#fecf02", "pink"];
             foreach(var color in Shuffle(colors))
             {
                 yield return color;

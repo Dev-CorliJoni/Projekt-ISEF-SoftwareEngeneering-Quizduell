@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Quixduell.Blazor.Services;
+using Quixduell.Blazor.Shared.ControlComponents;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 
@@ -8,22 +10,48 @@ namespace Quixduell.Blazor.Shared.StudysetView
 {
     public partial class StudysetViewContentQuestionInformation
     {
-        [Parameter] 
+        [Parameter]
+        public User User { get; set; }
+        [Parameter]
         public Studyset Studyset { get; set; }
 
-        private Dictionary<string, Func<int>> _questionData;
+        private List<QuestionData> _questionData;
+
+        public List<PieChartPart> GetPieChartParts
+        {
+            get => _questionData.Skip(1).Select(q => new PieChartPart(q.Percentage, q.Color)).ToList();
+        }
+
+        public bool IsUserAdmin() => Studyset.Creator == User || Studyset.Contributors.Contains(User);
 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
 
-            _questionData = new Dictionary<string, Func<int>>
+            var questionCount = () => Studyset.Questions.Count;
+            var openQuestionCount = () => Studyset.Questions.Count(q => q.GetType() == typeof(OpenQuestion));
+            var multipleChoiceQuestionCount = () => Studyset.Questions.Count(q => q.GetType() == typeof(MultipleChoiceQuestion));
+
+            _questionData = new List<QuestionData>
             {
-                { "Questions", () => Studyset.Questions.Count },
-                { "Open Questions", () => Studyset.Questions.Count(q => q.GetType() == typeof(OpenQuestion)) },
-                { "Multiple Choice Questions", () => Studyset.Questions.Count(q => q.GetType() == typeof(MultipleChoiceQuestion)) }
+                new("Questions", "", questionCount, questionCount),
+                new("Open Questions", "#5F0F40", openQuestionCount, questionCount),
+                new("Multiple Choice Questions", "#9A031E", multipleChoiceQuestionCount, questionCount)
             };
         }
 
+        public void OpenAddQuestion(MouseEventArgs e)
+        {
+
+        }
+
+    }
+
+    public class QuestionData(string title, string color, Func<int> getOwnCount, Func<int> getFullCount)
+    {
+        public string Title { get; set; } = title;
+        public string Color { get; set; } = color;
+        public int Percentage { get => (int)(getOwnCount() / (getFullCount() / 100.0)); }
+        public Func<int> GetCount { get; set; } = getOwnCount;
     }
 }
