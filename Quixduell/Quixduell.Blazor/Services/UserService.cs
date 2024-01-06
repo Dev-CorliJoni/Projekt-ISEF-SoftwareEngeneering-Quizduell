@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Quixduell.Blazor.Helpers;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Quixduell.Blazor.Services
 {
@@ -46,6 +48,7 @@ namespace Quixduell.Blazor.Services
 
             return null;
         }
+
         public async Task<User?> GetAuthenticatedUserOrRedirect(UserManager<User> userManager)
         {
             var currentUser = await GetAuthenticatedUser(userManager);
@@ -58,7 +61,16 @@ namespace Quixduell.Blazor.Services
             return null;
         }
 
+        public async Task<List<User>> LoadUserProposalAsync(UserManager<User> userManager, string name, int amount)
+        {
+            List<User> users = new List<User>();
 
+            await Task.Run(() =>
+            {
+                users = userManager.Users.Where(u => u.UserName.Contains(name)).Take(amount).ToList();
+            });
 
+            return users;
+        }
     }
 }

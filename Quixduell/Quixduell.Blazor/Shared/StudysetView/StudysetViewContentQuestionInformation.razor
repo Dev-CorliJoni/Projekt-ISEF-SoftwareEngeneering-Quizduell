@@ -1,20 +1,39 @@
 ﻿@using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions
+@using Quixduell.Blazor.Shared.ControlComponents
 
 @if (Studyset is not null)
 {
     <div class="col div-container">
+        <div class="container" style="padding: 0">
+            <div class="row">
+                <div class="col col-3" style="padding-right: 0; height: 9.5rem">
+                    <PieChartComponent Parts="@(GetPieChartParts)" />
+                </div>
 
-        @foreach (var kv in _questionData)
-        {
-            <div class="row form-group">
-                <div class="col col-sm-8 d-flex justify-content-start">
-                    @kv.Key
+                <div class="col" style="margin-left: 1rem; height: 9.5rem; padding-right:0.125em;">
+                    @foreach (var questionData in _questionData)
+                    {
+                        <div class="row form-group d-flex justify-content-start align-items-center" style="margin-top: 0.25rem; ">
+                            <div class="col col-1 d-flex align-self-center" style="border-radius: 50%; border: solid @(questionData.Color == "" ? "azure" :  "darkgray") 1px; background-color: @questionData.Color; aspect-ratio: 1;">
+                            </div>
+                            <div class="col col-auto d-flex justify-content-start align-self-center">
+                                @questionData.Title
+                            </div>
+                            <div class="col d-flex justify-content-end align-self-center">
+                                @questionData.GetCount()
+                            </div>
+                        </div>
+                    }
                 </div>
-                <div class="col d-flex justify-content-end">
-                    @kv.Value()
-                </div>
+
+                @if (IsUserAdmin())
+                {
+                    <div class="col col-sm-auto d-flex justify-content-end align-items-center" style="padding-left:0.125em; padding-right:0.25em">
+                        <AddButtonComponent OnClick="@OpenAddQuestion" />
+                    </div>
+                }
             </div>
-        }
+        </div>
 
     </div>
 }

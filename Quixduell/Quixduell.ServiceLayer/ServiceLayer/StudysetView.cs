@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.AspNetCore.Identity;
 
 namespace Quixduell.ServiceLayer.ServiceLayer
 {
@@ -44,6 +46,19 @@ namespace Quixduell.ServiceLayer.ServiceLayer
                     connection.Rating.Value = rating;
                     connection.Rating.Description = text;
 
+                }
+            });
+
+            await _studysetDataAccess.UpdateAsync(studyset);
+        }
+
+        public async Task AddContributorAsync(Studyset studyset, User user)
+        {
+            await Task.Run(() =>
+            {
+                if (studyset.Creator != user && studyset.Contributors.Contains(user) == false)
+                {
+                    studyset.Contributors.Add(user);
                 }
             });
 
