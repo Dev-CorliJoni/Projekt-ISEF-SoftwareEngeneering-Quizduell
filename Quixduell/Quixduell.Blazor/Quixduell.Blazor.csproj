@@ -29,19 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EditorConfigFiles Remove="C:\Users\i00109253\source\repos\CLONE-Projekt-ISEF-SoftwareEngeneering-Quizduell\Quixduell\Quixduell.Blazor\.editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Pages\StudysetView.razor.css" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Pages\StudysetView.razor.css" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="C:\Users\i00109253\source\repos\CLONE-Projekt-ISEF-SoftwareEngeneering-Quizduell\Quixduell\Quixduell.Blazor\.editorconfig" />
+    <None Include="..\Quixduell\Quixduell.Blazor\.editorconfig" />
   </ItemGroup>
 
 </Project>

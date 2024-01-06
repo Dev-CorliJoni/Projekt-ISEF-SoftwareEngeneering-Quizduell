@@ -50,7 +50,7 @@
                                         <h5 class="modal-title">Frage bearbeiten</h5>
                                     </div>
                                     <div class="modal-body">
-                                        <EditQuestion @bind-Value=_currentQuestion @bind-Value:after="() => {_currentQuestion = null;}"></EditQuestion>
+                                        <EditQuestion Value=_currentQuestion OnAbort="() => _currentQuestion = null" OnValidSubmit="() => _currentQuestion = null"></EditQuestion>
                                     </div>
 
                                 </div>

@@ -118,31 +118,6 @@ namespace Quixduell.Blazor.Pages.StudysetPages
                     isValid = false;
                 }
 
-                foreach (var question in model.QuestionFormModels)
-                {
-                    if (question.QuestionType == QuestionType.MultipleChoise)
-                    {
-                        if (question.AnswerFormModels.Count() < 1)
-                        {
-                            ValidationMessage.Add(() => model.QuestionFormModels, $"One Answer for {question.QuestionText} must be present");
-                            isValid = false;
-                        }
-                        if (!question.AnswerFormModels.Any(o => o.IsTrue))
-                        {
-                            ValidationMessage.Add(() => model.QuestionFormModels, $"One Answer from {question.QuestionText} has to be true");
-                            isValid = false;
-                        }
-                    }
-                    else
-                    {
-                        if (question.AnswerFormModels.Count() > 1)
-                        {
-                            ValidationMessage.Add(() => model.QuestionFormModels, $"Only One Answer for {question.QuestionText} must be present");
-                            isValid = false;
-                        }
-                    }
-                }
-
                 if (!isValid)
                 { return; }
 
