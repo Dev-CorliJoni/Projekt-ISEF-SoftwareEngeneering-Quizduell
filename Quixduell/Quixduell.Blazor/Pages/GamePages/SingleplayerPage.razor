@@ -16,7 +16,14 @@
     <div>
         @if (SelectedQuestion is not null)
         {
-            <AnswerQuestion @bind-Value=SelectedQuestion QuestionAnswered="OnQuestionAnswered"></AnswerQuestion>
+            if (SelectedQuestion is OpenQuestion openQuestion)
+            {
+                <AnswerOpenQuestionComponent @bind-Value=openQuestion QuestionAnswered="OnOpenQuestionAnswered"></AnswerOpenQuestionComponent>
+            }
+            else if (SelectedQuestion is MultipleChoiceQuestion multipleChoiceQuestion)
+            {
+                <AnswerMultiQuestionComponent @bind-Value=multipleChoiceQuestion QuestionAnswered="OnMultiQuestionAnswered"></AnswerMultiQuestionComponent>
+            }
         }
 
         @if (_gameFinished)

@@ -12,14 +12,7 @@
             <Virtualize Items="Value.AnsweredQuestionResults" Context="Result">
                 <tr class="@GetColor(Result)">
                     <td>@Result.Question.Text</td>
-                    @if (Result.SelectedAnswer is not null)
-                    {
-                        <td>@Result.SelectedAnswer.Text</td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
+                        <td>@Result.SelectedAnswerText</td>
                     <td>@Result.CorrectAnswer.Text</td>
                 </tr>
             </Virtualize>

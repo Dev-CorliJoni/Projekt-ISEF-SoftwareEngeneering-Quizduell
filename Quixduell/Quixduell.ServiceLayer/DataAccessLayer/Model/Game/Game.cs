@@ -1,4 +1,5 @@
-﻿using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
+﻿using Quixduell.ServiceLayer.DataAccessLayer.Model.Game.AnsweredQuestion;
+using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
 {
@@ -6,7 +7,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
     {
         public Guid Id { get; set; }
         internal Studyset Studyset { get; set; }
-        internal List<AnsweredQuestion> AnsweredQuestions { get; set; } = new List<AnsweredQuestion>();
+        internal List<AnsweredQuestionBase> AnsweredQuestions { get; set; } = new List<AnsweredQuestionBase>();
 
         public GameResult? GameResult { get; set; }
         internal GameState GameState { get; set; }
@@ -38,7 +39,12 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
 
         }
 
-        public void ReportAnsweredQuestion (AnsweredQuestion question)
+        public void ReportOpenAnsweredQuestion (AnsweredOpenQuestion question)
+        {
+            ThrowIfFinished();
+            AnsweredQuestions.Add(question);
+        }
+        public void ReportMultiQuestion(AnsweredMultiQuestion question)
         {
             ThrowIfFinished();
             AnsweredQuestions.Add(question);

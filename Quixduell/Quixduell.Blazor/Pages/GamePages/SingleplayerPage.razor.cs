@@ -6,6 +6,7 @@ using Quixduell.Blazor.Services;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.Blazor.Helpers;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
+using Quixduell.ServiceLayer.DataAccessLayer.Model.Game.AnsweredQuestion;
 
 namespace Quixduell.Blazor.Pages.GamePages
 {
@@ -91,9 +92,14 @@ namespace Quixduell.Blazor.Pages.GamePages
             SelectedQuestion = question;
         }
 
-        private async Task OnQuestionAnswered (AnsweredQuestion answeredQuestion) 
+        private async Task OnMultiQuestionAnswered(AnsweredMultiQuestion answeredQuestion) 
         {
-            Game!.ReportAnsweredQuestion(answeredQuestion);
+            Game.ReportMultiQuestion(answeredQuestion);
+            await Next();
+        }
+        private async Task OnOpenQuestionAnswered(AnsweredOpenQuestion answeredQuestion)
+        {
+            Game!.ReportOpenAnsweredQuestion(answeredQuestion);
             await Next();
         }
 

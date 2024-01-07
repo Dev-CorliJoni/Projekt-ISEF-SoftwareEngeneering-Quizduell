@@ -1,39 +1,41 @@
 ﻿using Quixduell.ServiceLayer.DataAccessLayer.Model.Answers;
+using Quixduell.ServiceLayer.DataAccessLayer.Model.Game.AnsweredQuestion;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
 {
     public class AnsweredQuestionResult
     {
-        public bool RightAnswer
-        {
-            get
-            {
-                return SelectedAnswer == CorrectAnswer;
-            }
-        }
+        public bool RightAnswer { get; set; } = false;
 
         public BaseQuestion Question { get; set; }
-        public Answer? SelectedAnswer { get; set; }
+        public string? SelectedAnswerText { get; set; }
 
         public Answer CorrectAnswer { get; set; }
 
         public User Player { get; set; }
 
-        public AnsweredQuestionResult(AnsweredQuestion answeredQuestion)
+        public AnsweredQuestionResult(AnsweredMultiQuestion answeredQuestion)
         {
             Question = answeredQuestion.Question;
-            SelectedAnswer = answeredQuestion.SelectedAnswer;
+            SelectedAnswerText = answeredQuestion.SelectedAnswer?.Text;
             Player = answeredQuestion.Player;
+            CorrectAnswer = answeredQuestion.RightAnswer;
 
-            if (answeredQuestion.Question is MultipleChoiceQuestion multipleChoiceQuestion)
+            if (answeredQuestion.SelectedAnswer == answeredQuestion.RightAnswer)
             {
-                CorrectAnswer = multipleChoiceQuestion.Answers.Where(o => o.IsTrue).First();
+                RightAnswer = true;
             }
-            if (answeredQuestion.Question is OpenQuestion openQuestion)
-            {
-                CorrectAnswer = openQuestion.Answer;
-            }
+        }
+
+        public AnsweredQuestionResult(AnsweredOpenQuestion answeredQuestion)
+        {
+            Question = answeredQuestion.Question;
+            SelectedAnswerText = answeredQuestion.CustomAnswer;
+            Player = answeredQuestion.Player;
+            CorrectAnswer = answeredQuestion.RightAnswer;
+
+            RightAnswer = answeredQuestion.IsRightAnswer;
         }
     }
 }
