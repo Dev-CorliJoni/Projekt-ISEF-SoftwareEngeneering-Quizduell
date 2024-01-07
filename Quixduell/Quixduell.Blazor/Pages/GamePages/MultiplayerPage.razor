@@ -1,0 +1,60 @@
+﻿@page "/multiplayer"
+@page "/multiplayer/{LobbyGuidParameter}"
+@using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions
+@using Quixduell.Blazor.Shared.GameComponent
+@*
+    Create New
+    /singleplayer?studyset=50092a18-8465-4542-b1fa-a882360ddae8
+
+    Join
+    /singleplayer/50092a18-8465-4542-b1fa-a882360ddae8
+
+*@
+
+@if (Game is not null)
+{
+    @if(!Game.IsGameStarted())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Spieler</th>
+                </tr>
+            </thead>
+            <tbody>
+                <Virtualize Items="Game.Players">
+                    <tr>
+                        <td>@context.Player.Email</td>
+                    </tr>
+                </Virtualize>
+            </tbody>
+        </table>
+        <button class="btn" @onclick="OnStartGame">StartGame</button>
+
+    }
+    else
+    {
+    <div>
+        @if (SelectedQuestion is not null)
+        {
+            if (SelectedQuestion is OpenQuestion openQuestion)
+            {
+                <AnswerOpenQuestionComponent @bind-Value=openQuestion QuestionAnswered="OnOpenQuestionAnswered"></AnswerOpenQuestionComponent>
+            }
+            else if (SelectedQuestion is MultipleChoiceQuestion multipleChoiceQuestion)
+            {
+                <AnswerMultiQuestionComponent @bind-Value=multipleChoiceQuestion QuestionAnswered="OnMultiQuestionAnswered"></AnswerMultiQuestionComponent>
+            }
+        }
+
+        @if (_gameFinished)
+        {
+            <div>
+                Alle Fragen beantwortet !
+            </div>
+            <GameResultComponent @bind-Value=Game.GameResult></GameResultComponent>
+        }
+        
+    </div>
+    }
+}

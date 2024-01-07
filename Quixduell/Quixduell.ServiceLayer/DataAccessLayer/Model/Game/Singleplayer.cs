@@ -4,16 +4,16 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
 {
     public class SinglePlayer : Game
     {
-        public User Player { get; set; }
+        public PlayerState PlayerState { get; set; }
 
         public SinglePlayer(User player, Studyset studyset) : base(studyset)
         {
-            Player = player;
+            PlayerState = new PlayerState(player);
         }
 
         public BaseQuestion? LoadNextQuestion()
         {
-            return base.LoadNextQuestion(Player);
+            return base.LoadNextQuestion(PlayerState.Player);
         }
     }
 }
