@@ -1,15 +1,25 @@
-﻿namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
+﻿using Quixduell.ServiceLayer.DataAccessLayer.Model.Game.AnsweredQuestion;
+
+namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
 {
     public class GameResult
     {
         public List<AnsweredQuestionResult>  AnsweredQuestionResults { get; set; }
 
-        public GameResult(List<AnsweredQuestion> answeredQuestions)
+        public GameResult(List<AnsweredQuestionBase> answeredQuestions)
         {
             AnsweredQuestionResults = new List<AnsweredQuestionResult>();
             foreach (var answer in answeredQuestions) 
             {
-                AnsweredQuestionResults.Add(new AnsweredQuestionResult(answer));
+                if (answer is AnsweredOpenQuestion answeredOpen) 
+                {
+                    AnsweredQuestionResults.Add(new AnsweredQuestionResult(answeredOpen));
+                }
+                else if (answer is AnsweredMultiQuestion answeredMulti)
+                {
+                    AnsweredQuestionResults.Add(new AnsweredQuestionResult(answeredMulti));
+                }
+
             }
         }
 

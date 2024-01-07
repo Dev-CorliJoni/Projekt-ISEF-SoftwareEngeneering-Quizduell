@@ -2,21 +2,21 @@
 using Microsoft.AspNetCore.Identity;
 using Quixduell.Blazor.Services;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
-using Quixduell.ServiceLayer.DataAccessLayer.Model.Game;
+using Quixduell.ServiceLayer.DataAccessLayer.Model.Game.AnsweredQuestion;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 
 namespace Quixduell.Blazor.Shared.GameComponent
 {
-    public partial class AnswerQuestion
+    public partial class AnswerMultiQuestionComponent
     {
         [Parameter]
-        public BaseQuestion? Value { get; set; }
+        public MultipleChoiceQuestion? Value { get; set; }
 
         [Parameter]
-        public EventCallback<BaseQuestion?> ValueChanged { get; set; }
+        public EventCallback<MultipleChoiceQuestion?> ValueChanged { get; set; }
 
         [Parameter]
-        public EventCallback<AnsweredQuestion> QuestionAnswered { get; set; }
+        public EventCallback<AnsweredMultiQuestion> QuestionAnswered { get; set; }
 
         [Inject]
         public UserService UserService { get; set; } = default!;
@@ -25,7 +25,7 @@ namespace Quixduell.Blazor.Shared.GameComponent
         public UserManager<User> UserManager { get; set; } = default!;
 
 
-        private AnsweredQuestion? _answeredQuestion;
+        private AnsweredMultiQuestion? _answeredQuestion;
         private bool _showHint = false;
         private bool _showOpenAnswer = false;
         private bool _questionAnswered = false;
@@ -50,7 +50,9 @@ namespace Quixduell.Blazor.Shared.GameComponent
             if (Value is null || _user is null)
                 return;
 
-            _answeredQuestion = new AnsweredQuestion(Value, _user);
+            _answeredQuestion = new AnsweredMultiQuestion(Value,_user,Value.Answers.First(o => o.IsTrue));
+
+           
         }
 
 
