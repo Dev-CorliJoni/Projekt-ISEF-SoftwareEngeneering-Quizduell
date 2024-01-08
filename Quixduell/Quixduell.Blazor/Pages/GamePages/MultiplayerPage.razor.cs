@@ -105,10 +105,10 @@ namespace Quixduell.Blazor.Pages.GamePages
 
         private void Game_OnGameStarted(object? sender, EventArgs e)
         {
-            InvokeAsync(StateHasChanged);
             Task.Run(async () =>
             {
                 await Next();
+                await InvokeAsync(StateHasChanged);
             });
         }
 
@@ -129,8 +129,11 @@ namespace Quixduell.Blazor.Pages.GamePages
             if (question is null)
             {
                 _gameFinished = true;
-                await GameManager.EndMultiplayerGameAsync(Game, CurrentPlayer);
                 SelectedQuestion = null;
+                var gameIsOver = await GameManager.EndMultiplayerGameAsync(Game, CurrentPlayer);
+
+                if (!gameIsOver)
+                    Layout.Alert.AddAlert("Du bist fertig, warte auf die andere Spieler", TimeSpan.FromMinutes(1), Shared.AlertComponent.AlertMessageType.Success);
                 return;
             }
 
@@ -139,7 +142,7 @@ namespace Quixduell.Blazor.Pages.GamePages
 
         private async Task OnMultiQuestionAnswered(AnsweredMultiQuestion answeredQuestion)
         {
-            Game.ReportMultiQuestion(answeredQuestion);
+            Game!.ReportMultiQuestion(answeredQuestion);
             await Next();
         }
         private async Task OnOpenQuestionAnswered(AnsweredOpenQuestion answeredQuestion)
@@ -150,7 +153,7 @@ namespace Quixduell.Blazor.Pages.GamePages
 
         private void OnStartGame ()
         {
-            Game.StartGame();
+            Game!.StartGame();
         }
 
     }

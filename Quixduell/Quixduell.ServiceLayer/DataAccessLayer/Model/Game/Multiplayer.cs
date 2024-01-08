@@ -47,5 +47,15 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
             base.GameFinished();
             OnGameEnd?.Invoke(this, EventArgs.Empty);
         }
+
+        internal void PlayerFinished(User currentPlayer)
+        {
+            Players.First(o => o.Player.Id == currentPlayer.Id).IsFinished = true;
+
+            if (Players.All(o => o.IsFinished))
+            {
+                GameFinished();
+            }
+        }
     }
 }
