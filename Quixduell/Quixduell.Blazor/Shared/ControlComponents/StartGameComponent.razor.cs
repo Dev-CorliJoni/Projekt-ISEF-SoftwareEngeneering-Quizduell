@@ -24,5 +24,12 @@ namespace Quixduell.Blazor.Shared.ControlComponents
                 NavigationManager.NavigateTo($"{PageUri.SingeplayerPage}?studyset={Value.Id}");
             }
         }
+        private void PlayMulti()
+        {
+            if (Value is not null)
+            {
+                NavigationManager.NavigateTo($"{PageUri.MultiplayerPage}?studyset={Value.Id}");
+            }
+        }
     }
 }

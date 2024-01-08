@@ -39,6 +39,24 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
 
         }
 
+        public bool IsGameStarted ()
+        {
+            if (GameState == GameState.Created) 
+            {
+                return false; 
+            } 
+            return true;
+        }
+
+        public bool IsGameFinished()
+        {
+            if (GameState == GameState.Finished)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public void ReportOpenAnsweredQuestion (AnsweredOpenQuestion question)
         {
             ThrowIfFinished();
@@ -50,20 +68,27 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
             AnsweredQuestions.Add(question);
         }
 
-        public void GameFinished ()
+        public virtual void GameFinished ()
         {
             ThrowIfFinished();
 
             GameResult = new GameResult(AnsweredQuestions);
             GameState = GameState.Finished;
-
             
         }
 
-        private void ThrowIfFinished ()
+        internal void ThrowIfFinished ()
         {
             if (GameState == GameState.Finished)
                 throw new NotImplementedException ();
         }
+
+        internal void ThrowIfStarted()
+        {
+            if (GameState == GameState.Finished || GameState == GameState.Started)
+                throw new NotImplementedException();
+        }
+
+
     }
 }

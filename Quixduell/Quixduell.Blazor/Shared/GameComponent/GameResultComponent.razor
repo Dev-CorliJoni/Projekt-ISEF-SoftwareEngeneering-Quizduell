@@ -1,22 +1,55 @@
-﻿@if (Value is not null)
+﻿@using Quixduell.ServiceLayer.DataAccessLayer.Model.Game
+@if (Value is not null)
 {
-    <table class="table">
+@*     <table class="table">
         <thead>
             <tr>
                 <th scope="col">Frage</th>
+                <th scope="col">Spieler</th>
                 <th scope="col">Antwort</th>
                 <th scope="col">Richtige Antwort</th>
             </tr>
         </thead>
         <tbody>
-            <Virtualize Items="Value.AnsweredQuestionResults" Context="Result">
+            <Virtualize Items=GetResultOrderedByUser() Context="Result">
                 <tr class="@GetColor(Result)">
                     <td>@Result.Question.Text</td>
-                        <td>@Result.SelectedAnswerText</td>
+                    <td>@Result.Player.Email</td>
+                    <td>@Result.SelectedAnswerText</td>
                     <td>@Result.CorrectAnswer.Text</td>
                 </tr>
             </Virtualize>
         </tbody>
-    </table>
+    </table> *@
+
+
+    @if (_orderResults is not null)
+    {
+        @for (int i = 0; i < _orderResults.Count(); i++)
+        {
+            <h1>
+                @_orderResults.ElementAt(i).Key (@(i + 1))
+            </h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Frage</th>
+                        <th scope="col">Antwort</th>
+                        <th scope="col">Richtige Antwort</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <Virtualize Items=_orderResults.ElementAt(i).ToList() TItem="AnsweredQuestionResult" Context="Result">
+                        <tr class="@GetColor(Result)">
+                            <td>@Result.Question.Text</td>
+                            <td>@Result.SelectedAnswerText</td>
+                            <td>@Result.CorrectAnswer.Text</td>
+                        </tr>
+                    </Virtualize>
+                </tbody>
+            </table>
+        }
+
+    }
 
 }

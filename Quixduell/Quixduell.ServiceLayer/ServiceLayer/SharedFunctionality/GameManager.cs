@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.IdentityModel.Tokens;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Answers;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Game;
@@ -33,6 +34,15 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
             return game;
         }
 
+        public Multiplayer CreateMultiPlayerGame(User player, Studyset studyset)
+        {
+            var game = new Multiplayer(studyset);
+            game.Players.Add(new PlayerState(player));
+            game.GameState = GameState.Created;
+            Games.Add(game);
+            return game;
+        }
+
         /// <summary>
         /// Ends the Game, calculate the Highscore for the Player and Persist Change 
         /// </summary>
@@ -40,6 +50,7 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
         /// <returns></returns>
         public async Task EndSinglePlayerGameAsync(SinglePlayer singlePlayer)
         {
+            singlePlayer.PlayerState.IsFinished = true;
             singlePlayer.GameFinished();
 
             //TODO Persist Game ??
@@ -50,18 +61,44 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
 
         }
 
+        /// <summary>
+        /// Ends the Game for the current User, check if all Users Finished and update Highscore
+        /// </summary>
+        /// <param name="multiplayer"></param>
+        /// <param name="currentPlayer"></param>
+        /// <returns>True if Game is finished for all Users </returns>
+        public async Task<bool> EndMultiplayerGameAsync(Multiplayer multiplayer, User currentPlayer)
+        {
+           
+
+            multiplayer.PlayerFinished(currentPlayer);
+
+            if (multiplayer.IsGameFinished())
+            {
+                if (multiplayer.GameResult is not null)
+                {
+                    await UpdateUserConnections(multiplayer.Players.Select(o => o.Player).ToList(), multiplayer.GameResult, multiplayer.Studyset);
+                    Games.Remove(multiplayer);
+                    return true;
+                }
+            }
+
+            return false;
+
+        }
+
         private async Task UpdateUserConnection(SinglePlayer singlePlayer)
         {
-            var connection = singlePlayer.Studyset.Connections.Where(s => s.User.Id == singlePlayer.Player.Id).FirstOrDefault();
+            var connection = singlePlayer.Studyset.Connections.Where(s => s.Studyset.Id == singlePlayer.Studyset.Id).FirstOrDefault();
             if (connection is null)
             {
                 singlePlayer.Studyset.Connections.Add(
-                    new UserStudysetConnection(singlePlayer.Player, singlePlayer.Studyset, false, new Rating(), GetHighscore(singlePlayer.GameResult!, singlePlayer.Player)));
+                    new UserStudysetConnection(singlePlayer.PlayerState.Player, singlePlayer.Studyset, false, new Rating(), GetHighscore(singlePlayer.GameResult!, singlePlayer.PlayerState.Player)));
                 await _studysetDataAccess.UpdateAsync(singlePlayer.Studyset);
             }
             else
             {
-                var newHighscore = GetHighscore(singlePlayer.GameResult!, singlePlayer.Player);
+                var newHighscore = GetHighscore(singlePlayer.GameResult!, singlePlayer.PlayerState.Player);
                 if (newHighscore > connection.Highscore)
                 {
                     connection.Highscore = newHighscore;
@@ -70,13 +107,45 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
             }
         }
 
+        private async Task UpdateUserConnections(List<User> players, GameResult gameResult, Studyset studyset)
+        {
+            foreach (var currentPlayer in players)
+            {
+                var connection = currentPlayer.StudysetConnections.FirstOrDefault(o => o.Studyset.Id == studyset.Id);
+                if (connection is null)
+                {
+                    studyset.Connections.Add(
+                        new UserStudysetConnection(currentPlayer, studyset, false, new Rating(), GetHighscore(gameResult, currentPlayer)));
+                    await _studysetDataAccess.UpdateAsync(studyset);
+                }
+                else
+                {
+                    var newHighscore = GetHighscore(gameResult, currentPlayer);
+                    if (newHighscore > connection.Highscore)
+                    {
+                        connection.Highscore = newHighscore;
+                        await _studysetDataAccess.UpdateAsync(studyset);
+                    }
+                }
+            }
+        }
+
+
+
+        public Multiplayer CreateMultiplayerGame(User player, Studyset studyset)
+        {
+            var game = new Multiplayer(studyset);
+            Games.Add(game);
+            return game;
+        }
+
         /// <summary>
         /// Calculate Highscore for specific User in a Game
         /// </summary>
         /// <param name="game"></param>
         /// <param name="player"></param>
         /// <returns>Current User Highscore</returns>
-        private float GetHighscore(GameResult gameResult, User player)
+        internal float GetHighscore(GameResult gameResult, User player)
         {
             int score = 0;
             foreach (var result in gameResult.AnsweredQuestionResults.Where(o => o.Player.Id == player.Id))
@@ -88,13 +157,6 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
             }
 
             return score;
-        }
-
-        public SinglePlayer CreateMultiplayerGame(User player, Studyset studyset)
-        {
-            var game = new SinglePlayer(player, studyset);
-            Games.Add(game);
-            return game;
         }
 
 

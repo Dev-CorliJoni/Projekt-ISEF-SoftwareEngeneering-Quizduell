@@ -7,5 +7,6 @@
         public const string EditStudysetPage = "/editstudyset";
         public const string ViewStudysetPage = "/viewstudyset";
         public const string SingeplayerPage = "/singleplayer";
+        public const string MultiplayerPage = "/multiplayer";
     }
 }
