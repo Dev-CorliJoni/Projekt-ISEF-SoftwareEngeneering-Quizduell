@@ -16,10 +16,18 @@ namespace Quixduell.Blazor.Shared.ControlComponents
 
         private string _contributorName = "";
 
+        public ElementReference _textbox;
+
         [Parameter]
         public Func<User, Task> ContributorSelectedAsync { get; set; }
 
         private List<User> ContributorProposal { get; set; }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await _textbox.FocusAsync();
+            await base.OnAfterRenderAsync(firstRender);
+        }
 
         public async Task OnKeyDownAsync(KeyboardEventArgs e)
         {

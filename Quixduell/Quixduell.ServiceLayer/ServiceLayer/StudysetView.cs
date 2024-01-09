@@ -52,17 +52,21 @@ namespace Quixduell.ServiceLayer.ServiceLayer
             await _studysetDataAccess.UpdateAsync(studyset);
         }
 
-        public async Task AddContributorAsync(Studyset studyset, User user)
+        public async Task<bool> AddContributorAsync(Studyset studyset, User user)
         {
+            bool result = false;
+
             await Task.Run(() =>
             {
                 if (studyset.Creator != user && studyset.Contributors.Contains(user) == false)
                 {
                     studyset.Contributors.Add(user);
+                    result = true;
                 }
             });
 
             await _studysetDataAccess.UpdateAsync(studyset);
+            return result;
         }
 
     }

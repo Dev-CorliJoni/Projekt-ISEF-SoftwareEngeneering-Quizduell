@@ -128,7 +128,7 @@ namespace Quixduell.Blazor.Pages
             return new string(stringChars);
         }
 
-        private void ShowAlert ()
+        private void ShowAlert()
         {
             Layout.Alert.AddAlert("Hallo Welt");
         }
