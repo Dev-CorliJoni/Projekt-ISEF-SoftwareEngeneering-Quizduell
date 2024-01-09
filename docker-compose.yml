@@ -11,6 +11,12 @@ services:
     build:
       context: .
       dockerfile: Quixduell/Quixduell.Blazor/Dockerfile
+    environment:
+     - EmailConfiguration=SMTP #SendGrid or SMTP
+     - SMTPEmailConfiguration__DefaultSenderMail=support@linder-warmbach.de
+     - SMTPEmailConfiguration__UseSSL=False
+     - SMTPEmailConfiguration__SmtpPort=1025
+     - SMTPEmailConfiguration__SmtpServer=quixduell.Mailserver
 
 
   quixduell.SQLServer:
@@ -21,4 +27,12 @@ services:
      - MSSQL_PID=Developer 
     volumes:
       - SQLData:/var/opt/mssql
+
+  quixduell.Mailserver:
+    image: mailhog/mailhog
+    logging:
+      driver: 'none'  # disable saving logs
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
 
