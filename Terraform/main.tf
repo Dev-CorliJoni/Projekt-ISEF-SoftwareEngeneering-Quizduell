@@ -189,8 +189,8 @@ resource "azurerm_windows_web_app" "FrontWebapp" {
 
    app_settings = {
     "EmailConfiguration" = "SendGrid"
-     "SendGridEmailConfiguration_ApiKey" = var.SendGrid_Auth_Token
-     "SendGridEmailConfiguration_DefaultSender" = var.SendGrid_DefaultSender
+     "SendGridEmailConfiguration__ApiKey" = var.SendGrid_Auth_Token
+     "SendGridEmailConfiguration__DefaultSender" = var.SendGrid_DefaultSender
    }
 
 }
