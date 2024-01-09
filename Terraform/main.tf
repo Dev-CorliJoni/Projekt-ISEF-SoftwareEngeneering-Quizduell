@@ -40,6 +40,18 @@ variable "github_auth_token" {
   description = "Github Auth Token from Github > Developer Settings > Personal Access Tokens > Tokens Classic (needs to have repo permission)"
 }
 
+#Required for Continous Deployment via Github
+variable "SendGrid_Auth_Token" {
+  type        = string
+  description = "API Token for Send Grid"
+}
+
+variable "SendGrid_DefaultSender" {
+  type = string
+  description = "Default E-Mail for sending with SendGrid"
+  default = "quixduell@linder-warmbach.de"
+}
+
 
 variable "AppName" {
   type        = string
@@ -174,6 +186,13 @@ resource "azurerm_windows_web_app" "FrontWebapp" {
     type  = "SQLAzure"
     value = "Server=tcp:${azurerm_mssql_server.SqlServer.name}.database.windows.net,1433;Database=${azurerm_mssql_database.SqlServerDB.name};Persist Security Info=False;User ID=${azurerm_mssql_server.SqlServer.administrator_login};Password=${azurerm_mssql_server.SqlServer.administrator_login_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=180;"
   }
+
+   app_settings = {
+    "EmailConfiguration" = "SendGrid"
+     "SendGridEmailConfiguration_ApiKey" = var.SendGrid_Auth_Token
+     "SendGridEmailConfiguration_DefaultSender" = var.SendGrid_DefaultSender
+   }
+
 }
 
 #Create Azure SQL with random SQL PW 

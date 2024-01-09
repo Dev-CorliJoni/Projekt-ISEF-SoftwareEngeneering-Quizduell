@@ -1,17 +1,29 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.AzureAppServices;
+using Quixduell.Blazor;
 using Quixduell.Blazor.Areas.Identity;
 using Quixduell.Blazor.Services;
 using Quixduell.ServiceLayer;
 using Quixduell.ServiceLayer.DataAccessLayer;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
+using Quixduell.ServiceLayer.Services.MailSender.SendGrid;
+using Quixduell.ServiceLayer.Services.MailSender.SMTP;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
+        var loggerFactory = LoggerFactory.Create(o =>
+        {
+            o.SetMinimumLevel(LogLevel.Information);
+            o.AddConsole();
+        });
+        var logger = loggerFactory.CreateLogger<Program>();
+
         var builder = WebApplication.CreateBuilder(args);
 
         //Logging for Azure App Service
@@ -32,11 +44,14 @@ internal class Program
 
         //Configure Entity Framework for Identity
         builder.Services.AddDbContext<AppDatabaseContext<User>>(options =>
-            options.UseSqlServer(connectionString));
+            options.UseSqlServer(connectionString,option =>
+            {
+                option.CommandTimeout((int)TimeSpan.FromMinutes(2).TotalSeconds);
+            }));
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
         //Configure Identity Provider
-        builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+        builder.Services.AddDefaultIdentity<User>()
             .AddEntityFrameworkStores<AppDatabaseContext<User>>()
              .AddUserValidator<CustomEmailValidator>();
 
@@ -56,7 +71,30 @@ internal class Program
 
 
 
-      
+        var emailConfigName = Environment.GetEnvironmentVariable("EmailConfiguration");
+        if (String.IsNullOrEmpty(emailConfigName)) 
+        {
+            logger.LogWarning("No Email Configuration found, you can set one with ENV EmailConfiguration = (SendGrid or SMTP)");
+        }
+        else
+        {
+            if (emailConfigName.ToLower() == "sendgrid")
+            {
+                logger.LogInformation("SendGrid detected, use SendGrid Options");
+                builder.Services.AddSendGridEmailServices(builder.Configuration.GetSection(SendGridEmailConfiguration.Section));
+            }
+            else if (emailConfigName.ToLower() == "smtp")
+            {
+                logger.LogInformation("SMTP detected, use SMTP Options");
+                builder.Services.AddSMTPEmailServices(builder.Configuration.GetSection(SMTPEmailConfiguration.Section));
+            }
+            else 
+            {
+                logger.LogWarning("No Email Configuration found, you can set one with ENV EmailConfiguration = (SendGrid or SMTP)");
+            }
+        }
+        //For PW forget
+        builder.Services.AddTransient<IEmailSender, EmailSender>();
 
         //Add Service Layer
         builder.Services.AddQuixServiceLayer();
