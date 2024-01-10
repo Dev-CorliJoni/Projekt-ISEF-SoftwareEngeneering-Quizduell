@@ -11,6 +11,9 @@ namespace Quixduell.Blazor.Shared.StudysetView
         [Inject]
         private ServiceLayer.ServiceLayer.StudysetView StudysetView { get; set; } = default!;
 
+        [CascadingParameter]
+        public MainLayout Layout { get; set; }
+
         [Parameter]
         public User User { get; set; }
         [Parameter]
@@ -28,7 +31,12 @@ namespace Quixduell.Blazor.Shared.StudysetView
 
         public async Task AddContributorAsync(User u)
         {
-            await StudysetView.AddContributorAsync(Studyset, u);
+            bool result = await StudysetView.AddContributorAsync(Studyset, u);
+
+            if (result == false)
+            {
+                Layout.Alert.AddAlert("The user is already creator or contributor and cannot be added therefore!", new TimeSpan(0,0, 5), AlertComponent.AlertMessageType.Error);
+            }
 
             _isAddContributorActive = false;
             StateHasChanged();
