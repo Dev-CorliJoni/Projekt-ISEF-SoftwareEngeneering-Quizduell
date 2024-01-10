@@ -42,16 +42,50 @@ internal class Program
             throw new ArgumentNullException(nameof(connectionString));
         }
 
+        bool confirmAccountViaMail = false;
+        var emailConfigName = Environment.GetEnvironmentVariable("EmailConfiguration");
+        if (String.IsNullOrEmpty(emailConfigName))
+        {
+            logger.LogWarning("No Email Configuration found, you can set one with ENV EmailConfiguration = (SendGrid or SMTP)");
+        }
+        else
+        {
+            if (emailConfigName.ToLower() == "sendgrid")
+            {
+                confirmAccountViaMail = true;
+                logger.LogInformation("SendGrid detected, use SendGrid Options");
+                builder.Services.AddSendGridEmailServices(builder.Configuration.GetSection(SendGridEmailConfiguration.Section));
+            }
+            else if (emailConfigName.ToLower() == "smtp")
+            {
+                confirmAccountViaMail = true;
+                logger.LogInformation("SMTP detected, use SMTP Options");
+                builder.Services.AddSMTPEmailServices(builder.Configuration.GetSection(SMTPEmailConfiguration.Section));
+            }
+            else
+            {
+                logger.LogWarning("No Email Configuration found, you can set one with ENV EmailConfiguration = (SendGrid or SMTP)");
+            }
+        }
+        //For PW forget
+        builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+
+
+
         //Configure Entity Framework for Identity
         builder.Services.AddDbContext<AppDatabaseContext<User>>(options =>
             options.UseSqlServer(connectionString,option =>
             {
-                option.CommandTimeout((int)TimeSpan.FromMinutes(2).TotalSeconds);
+                option.CommandTimeout((int)TimeSpan.FromSeconds(45).TotalSeconds);
             }));
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
         //Configure Identity Provider
-        builder.Services.AddDefaultIdentity<User>()
+        builder.Services.AddDefaultIdentity<User>(o =>
+        {
+            o.SignIn.RequireConfirmedAccount = confirmAccountViaMail;
+        })
             .AddEntityFrameworkStores<AppDatabaseContext<User>>()
              .AddUserValidator<CustomEmailValidator>();
 
@@ -69,32 +103,6 @@ internal class Program
             option.ConnectionString = connectionString;
         });
 
-
-
-        var emailConfigName = Environment.GetEnvironmentVariable("EmailConfiguration");
-        if (String.IsNullOrEmpty(emailConfigName)) 
-        {
-            logger.LogWarning("No Email Configuration found, you can set one with ENV EmailConfiguration = (SendGrid or SMTP)");
-        }
-        else
-        {
-            if (emailConfigName.ToLower() == "sendgrid")
-            {
-                logger.LogInformation("SendGrid detected, use SendGrid Options");
-                builder.Services.AddSendGridEmailServices(builder.Configuration.GetSection(SendGridEmailConfiguration.Section));
-            }
-            else if (emailConfigName.ToLower() == "smtp")
-            {
-                logger.LogInformation("SMTP detected, use SMTP Options");
-                builder.Services.AddSMTPEmailServices(builder.Configuration.GetSection(SMTPEmailConfiguration.Section));
-            }
-            else 
-            {
-                logger.LogWarning("No Email Configuration found, you can set one with ENV EmailConfiguration = (SendGrid or SMTP)");
-            }
-        }
-        //For PW forget
-        builder.Services.AddTransient<IEmailSender, EmailSender>();
 
         //Add Service Layer
         builder.Services.AddQuixServiceLayer();
