@@ -30,6 +30,63 @@
                 <UploadButtonComponent @bind-IsEditing="IsEditing" UploadFunction="@Rate" />
             </div>
         </div>
+
+
+        <div class="row" style="margin-top: 1rem;">
+            <h3>
+                Other Ratings:
+            </h3>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="container" style="min-height: 0rem; max-height: 10rem; padding: 0.5rem; border: solid darkgray 1px; border-radius: 0.5rem; background-color: rgb(248,248,248); overflow-y : auto;">
+                   
+
+                    <div class="row" style="margin: 0;">
+                        @if(Connections.Count == 0)
+                        {
+                            <div class="col d-flex justify-content-center align-content-center">
+                                No Ratings Available
+                            </div>
+                        }
+
+                        @foreach (var connection in Connections)
+                        {
+                            <div class="col" style="margin: 0.5rem; padding: 0.5rem; border: solid darkgray 1px; border-radius: 0.5rem; background-color: rgb(240, 240, 240);">
+
+                                <div class="container" style="padding: 0;">
+
+                                    <div class="row" style="border-bottom: solid darkgray 1px; margin-right: -0.5rem; margin-left: -0.5rem; padding-bottom: 0.5rem;">
+                                        <div class="col col-auto" style="background-color: rgb(252, 252, 252);border: solid black 1px; border-radius: 50%; padding:0.25rem; margin-left: 0.5rem;">
+                                            &#x1F464;
+                                        </div>
+                                        <div class="col d-flex align-items-center">
+                                            <h5 style="margin:0">
+                                                @connection.User.UserName
+                                            </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="margin: 0; margin-top: 0.25rem; margin-bottom: 0.25rem;">
+                                        <div class="col" style="margin-left: 0.5rem; ">
+                                            <RatingComponent @bind-CurrentRating="connection.Rating.Value" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="margin: 0">
+                                        <div class="col">
+                                            @connection.Rating.Description
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>

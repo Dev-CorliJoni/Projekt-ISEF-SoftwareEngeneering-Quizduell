@@ -23,7 +23,8 @@ namespace Quixduell.Blazor.Shared.StudysetView
             {
                 _studyset = value;
                 Connection = Studyset.Connections.SingleOrDefault(c => c.User == User);
-                
+                Connections = Studyset.Connections.Where(c => c != Connection).ToList();
+
                 if (Connection != null && Connection.Rating != null)
                 {
                     Rating = Connection.Rating.Value;
@@ -36,6 +37,7 @@ namespace Quixduell.Blazor.Shared.StudysetView
         private bool _isEditing;
 
         public UserStudysetConnection Connection { get; set; }
+        public List<UserStudysetConnection> Connections { get; set; }
 
         public float Rating { get; set; } = 0;
         public string RatingText { get; set; }

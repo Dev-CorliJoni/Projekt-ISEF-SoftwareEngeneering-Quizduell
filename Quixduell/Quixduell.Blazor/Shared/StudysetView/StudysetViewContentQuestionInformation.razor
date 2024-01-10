@@ -10,11 +10,11 @@
                     <PieChartComponent Parts="@(GetPieChartParts)" />
                 </div>
 
-                <div class="col col-7" style="margin-left: 2rem; padding-right:0.125em;">
+                <div class="col" style="margin-left: 3rem; padding-right:0.125em; ">
                     @foreach (var questionData in _questionData)
                     {
-                        <div class="row form-group d-flex justify-content-start align-items-center" style="margin-top: 0.25rem; ">
-                            <div class="col col-1 d-flex align-self-center" style="border-radius: 50%; border: solid @(questionData.Color == "" ? "azure" :  "darkgray") 1px; background-color: @questionData.Color; aspect-ratio: 1;">
+                        <div class="row form-group d-flex justify-content-start align-items-center" style="margin-top: 0.25rem; margin-bottom: 0.25rem; ">
+                            <div class="col col-1 d-flex align-self-center" style="border-radius: 50%; border: solid @(questionData.Color == "" ? "azure" :  "darkgray") 1px; background-color: @questionData.Color; width: 2rem; height: 2rem;">
                             </div>
                             <div class="col col-auto d-flex justify-content-start align-self-center">
                                 @questionData.Title
@@ -26,7 +26,8 @@
                     }
                 </div>
 
-                <div class="col" />
+                @* <div class="col" /> *@
+                
 
                 @if (IsUserAdmin())
                 {

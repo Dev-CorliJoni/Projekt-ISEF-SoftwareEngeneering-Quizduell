@@ -35,7 +35,7 @@ namespace Quixduell.Blazor.Shared.StudysetView
 
             if (result == false)
             {
-                Layout.Alert.AddAlert("User is already creator or contributor!", new TimeSpan(0,0, 5), AlertComponent.AlertMessageType.Error);
+                Layout.Alert.AddAlert("The user is already creator or contributor and cannot be added therefore!", new TimeSpan(0,0, 5), AlertComponent.AlertMessageType.Error);
             }
 
             _isAddContributorActive = false;
