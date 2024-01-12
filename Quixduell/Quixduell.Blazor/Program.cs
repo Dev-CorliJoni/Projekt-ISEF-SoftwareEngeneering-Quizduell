@@ -55,12 +55,17 @@ internal class Program
                 confirmAccountViaMail = true;
                 logger.LogInformation("SendGrid detected, use SendGrid Options");
                 builder.Services.AddSendGridEmailServices(builder.Configuration.GetSection(SendGridEmailConfiguration.Section));
+
+                //For PW forget
+                builder.Services.AddTransient<IEmailSender, EmailSender>();
             }
             else if (emailConfigName.ToLower() == "smtp")
             {
                 confirmAccountViaMail = true;
                 logger.LogInformation("SMTP detected, use SMTP Options");
                 builder.Services.AddSMTPEmailServices(builder.Configuration.GetSection(SMTPEmailConfiguration.Section));
+
+                //For PW forget
                 builder.Services.AddTransient<IEmailSender, EmailSender>();
             }
             else
@@ -68,8 +73,7 @@ internal class Program
                 logger.LogWarning("No Email Configuration found, you can set one with ENV EmailConfiguration = (SendGrid or SMTP)");
             }
         }
-        //For PW forget
-        builder.Services.AddTransient<IEmailSender, EmailSender>();
+
 
 
 
