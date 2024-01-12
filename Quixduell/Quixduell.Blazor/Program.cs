@@ -61,6 +61,7 @@ internal class Program
                 confirmAccountViaMail = true;
                 logger.LogInformation("SMTP detected, use SMTP Options");
                 builder.Services.AddSMTPEmailServices(builder.Configuration.GetSection(SMTPEmailConfiguration.Section));
+                builder.Services.AddTransient<IEmailSender, EmailSender>();
             }
             else
             {
