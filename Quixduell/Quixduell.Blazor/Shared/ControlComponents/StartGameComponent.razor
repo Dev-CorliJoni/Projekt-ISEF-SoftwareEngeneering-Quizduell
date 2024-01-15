@@ -1,11 +1,25 @@
 ﻿
-<div class="start-game-div">
-    <button class="btn start-game-button" @onclick="Play">
-        Learn &#9654;
-    </button>
+<div class="expandable-button-container">
+    <div class="start-game-div">
+        <button class="btn start-game-button" style="padding-right: @(IsExpanded ? "0" : "0.125rem");" @onmouseover="() => IsExpanded = true" @onmouseout="() => IsExpanded = false">
+            Learn @(IsExpanded ? new MarkupString("\u25BC") : new MarkupString("&#9654;"))
+        </button>
+    </div>
+    @if (IsExpanded)
+    {
+        <ul class="options" @onmouseover="() => IsExpanded = true" @onmouseout="() => IsExpanded = false">
+            @if (GameModes.Any())
+            {
+                @foreach (var gameMode in GameModes)
+                {
+                    <li class="option" @onclick="gameMode.Value">
+                        <span class="option-text">@gameMode.Key</span>
+                    </li>
+                }
+            }
+        </ul>
+    }
+
 </div>
-<div class="start-game-div">
-<button class="btn start-game-button" @onclick="PlayMulti">
-    Learn &#128108;
-</button>
-</div>
+
+
