@@ -15,6 +15,11 @@
                     <li class="option" @onclick="gameMode.Value">
                         <span class="option-text">@gameMode.Key</span>
                     </li>
+
+                    @if(GameModes.ElementAt(GameModes.Count - 1).Key.Value != gameMode.Key.Value)
+                    {
+                        <li style="border: 1px solid darkgray; height: 1px; display: block;" />
+                    }
                 }
             }
         </ul>
