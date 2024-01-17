@@ -8,19 +8,19 @@
                 <div class="col" style="padding-right:0.125em;">
 
                     <div class="row">
-                        <div class="col col-2 justify-content-start">
+                        <div class="col col-3 col-xl-2 col-sm-3 justify-content-start">
                             Creator:
                         </div>
-                        <div class="col flex-sm-column justify-content-start">
+                        <div class="col w-100 justify-content-start">
                             @Studyset.Creator.UserName
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col col-2 justify-content-start" style="padding-right: 0;">
+                        <div class="col col-3 col-xl-2 col-sm-3 justify-content-start" style="padding-right: 0;">
                             Contributors:
                         </div>
-                        <div class="col flex-sm-column justify-content-start" style="@(IsUserAdmin() ? "padding-right: 0" : "")">
+                        <div class="col w-100 justify-content-start" style="@(IsUserAdmin() ? "padding-right: 0" : "")">
                             <div class="container" style="padding-left: 0.8em; height: 8rem;">
 
                                 <div class="row contributors-scroll-box" style="height: @(IsAddContributorActive() ? "5rem" : "100%");">
@@ -45,7 +45,7 @@
 
                 @if (IsUserAdmin())
                 {
-                    <div class="col col-sm-auto d-flex justify-content-end align-items-center" style="padding-left:0.125em; padding-right:0.25em">
+                    <div class="col col-auto d-flex justify-content-end align-items-center" style="padding-left:0.125em; padding-right:0.25em">
                         <AddButtonComponent OnClick="@ActivateAddContributor" />
                     </div>
                 }

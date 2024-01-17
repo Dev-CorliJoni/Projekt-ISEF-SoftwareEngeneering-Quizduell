@@ -40,12 +40,12 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
 
         public override async Task<Studyset> GetAsync(Guid id)
         {
-            return await this.dbContext.Studysets.SingleAsync(s => s.Id == id);
+            return await (await LoadQueryableAsync()).SingleAsync(s => s.Id == id);
         }
 
         public async Task<Studyset> GetAsync(string name)
         {
-            return await dbContext.Studysets.SingleAsync(o => o.Name == name);
+            return await (await LoadQueryableAsync()).SingleAsync(o => o.Name == name);
         }
 
         public async Task<IQueryable<Studyset>> LoadTopByParamsAsync(string? name = null, User? creatorOrContributor = null, User? userHasStored = null, string? categoryName = null, int amount = 50)
@@ -93,6 +93,9 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
                 return dbContext.Studysets
                 .Include(o => o.Creator)
                 .Include(o => o.Connections)
+                    .ThenInclude(c => c.Rating)
+                .Include(o => o.Connections)
+                    .ThenInclude(c => c.User)
                 .Include(o => o.Category)
                 .Include(o => o.Contributors)
                 .Include(o => o.Questions)
