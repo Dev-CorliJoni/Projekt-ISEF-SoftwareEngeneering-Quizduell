@@ -27,12 +27,6 @@ namespace Quixduell.Blazor.Shared.ControlComponents
             };
         }
 
-        private void Expand()
-        {
-            IsExpanded = true;
-        }
-
-
         private void Play()
         {
             if (Value is not null)
