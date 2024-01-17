@@ -94,6 +94,8 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
                 .Include(o => o.Creator)
                 .Include(o => o.Connections)
                     .ThenInclude(c => c.Rating)
+                .Include(o => o.Connections)
+                    .ThenInclude(c => c.User)
                 .Include(o => o.Category)
                 .Include(o => o.Contributors)
                 .Include(o => o.Questions)
