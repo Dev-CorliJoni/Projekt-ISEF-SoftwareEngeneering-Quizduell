@@ -20,7 +20,7 @@ namespace Quixduell.Blazor.Shared.ControlComponents
         private string GetStarColor()
         {
             // Golden Yellow || darkgray
-            return Connection.IsStored ? "#FFC000" : "darkgray";
+            return Connection != null && Connection.IsStored ? "#FFC000" : "darkgray";
         }
 
         private async Task StarFunction(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
