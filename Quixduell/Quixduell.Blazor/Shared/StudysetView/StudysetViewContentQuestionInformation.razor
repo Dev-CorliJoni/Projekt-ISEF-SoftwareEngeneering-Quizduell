@@ -6,11 +6,12 @@
     <div class="col div-container">
         <div class="container" style="padding: 0">
             <div class="row">
+
                 <div class="col col-sm-3 col-md-2" style="padding-right: 0;">
                     <PieChartComponent Parts="@(GetPieChartParts)" />
                 </div>
 
-                <div class="col" style="margin-left: 0.5rem; padding-right:0.125em; ">
+                <div class="col" style="margin-left: 0.5rem; @(IsUserAdmin() ? "padding-right: 0.125em" : "")">
                     <div class="container d-flex justify-content-center" style="height: 100%; flex-direction: column; padding: 0;">
                         @foreach (var questionData in _questionData)
                         {
@@ -27,9 +28,7 @@
                         }
                     </div>
                 </div>
-
-                @* <div class="col" /> *@
-                
+                                
 
                 @if (IsUserAdmin())
                 {
@@ -37,6 +36,7 @@
                         <AddButtonComponent OnClick="@OpenAddQuestion" />
                     </div>
                 }
+
             </div>
         </div>
 

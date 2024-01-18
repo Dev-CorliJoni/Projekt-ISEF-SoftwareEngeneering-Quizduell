@@ -35,7 +35,7 @@
                             {
                                 var connection = Connections.ElementAt(i);
 
-                                <div class="col">
+                                <div class="col" style="margin-right: 0.125rem;">
 
                                     @foreach (float mark in HighscoreMarks)
                                     {
@@ -59,7 +59,7 @@
                                     }
 
                                     <div class="row">
-                                        <div class="col" style="border: @(connection.User == User ? "solid red 1px;" : ""); border-radius: 0.5rem; margin-top: 1px">
+                                        <div class="col" style="border: solid @(connection.User == User ? "red " : "darkgray") 2px; border-radius: 1.25rem;">
                                             <div class="row d-flex justify-content-center">
                                                 @connection.Highscore
                                             </div>
