@@ -23,7 +23,7 @@ namespace Quixduell.Blazor.Shared.StudysetView
             {
                 _studyset = value;
                 Connection = Studyset.Connections.SingleOrDefault(c => c.User == User);
-                Connections = Studyset.Connections.Where(c => c != Connection).ToList();
+                Connections = Studyset.Connections.Where(c => c != Connection && c.Rating.IsEmpty == false).ToList();
 
                 if (Connection != null && Connection.Rating != null)
                 {

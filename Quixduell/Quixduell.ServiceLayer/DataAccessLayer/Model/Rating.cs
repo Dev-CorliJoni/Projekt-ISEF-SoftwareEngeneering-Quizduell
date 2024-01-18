@@ -8,6 +8,8 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
         public float Value { get; set; }
         public string Description { get; set; }
 
+        public bool IsEmpty { get => Value == 0 && Description == string.Empty; }
+
         public Rating() 
         {
             Value = 0;
