@@ -22,10 +22,12 @@ namespace Quixduell.ServiceLayer.ServiceLayer
             _categoryDataAccess = categoryDataAccess;
         }
 
-        public async Task StarStudysetAsync(Studyset studyset, UserStudysetConnection connection, User user)
+        public async Task StarStudysetAsync(Studyset studyset, UserStudysetConnection? connection, User user)
         {
             await Task.Run(() =>
             {
+                connection = connection == null ? studyset.Connections.Find((sc) => sc.User == user) : connection;
+
                 if (connection == null)
                 {
                     connection = new UserStudysetConnection(user, studyset, false);

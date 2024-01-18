@@ -26,6 +26,7 @@ namespace Quixduell.Blazor.Shared.ControlComponents
         private async Task StarFunction(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
         {            
             await StudysetView.StarStudysetAsync(Studyset, Connection, User);
+            StateHasChanged();
         }
     }
 }
