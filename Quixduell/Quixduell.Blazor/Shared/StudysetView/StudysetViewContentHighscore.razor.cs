@@ -14,7 +14,7 @@ namespace Quixduell.Blazor.Shared.StudysetView
         {
             get
             {
-                var top = Studyset.Connections.OrderByDescending(c => c.Highscore).Take(10);
+                var top = Studyset.Connections.Where(c => c.Highscore != 0).OrderByDescending(c => c.Highscore).Take(10);
 
                 if (top.Any(c => c.User == User) == false && Studyset.Connections.Any(c => c.User == User))
                 {
@@ -65,7 +65,7 @@ namespace Quixduell.Blazor.Shared.StudysetView
 
                 for (int i = 10; i > 0; i--)
                 {
-                    yield return lowest * i;
+                    yield return (float)Math.Round(lowest * i, 1);
                 }
             }
         }
