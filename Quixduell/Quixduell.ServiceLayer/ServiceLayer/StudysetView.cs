@@ -22,10 +22,16 @@ namespace Quixduell.ServiceLayer.ServiceLayer
             _categoryDataAccess = categoryDataAccess;
         }
 
-        public async Task StarStudysetAsync(Studyset studyset, UserStudysetConnection connection)
+        public async Task StarStudysetAsync(Studyset studyset, UserStudysetConnection connection, User user)
         {
             await Task.Run(() =>
             {
+                if (connection == null)
+                {
+                    connection = new UserStudysetConnection(user, studyset, false);
+                    studyset.Connections.Add(connection);
+                }
+
                 connection.IsStored = !connection.IsStored;
             });
 

@@ -10,6 +10,9 @@ namespace Quixduell.Blazor.Shared.ControlComponents
         private ServiceLayer.ServiceLayer.StudysetView StudysetView { get; set; } = default!;
 
         [Parameter]
+        public User User { get; set; } = default!;
+
+        [Parameter]
         public Studyset Studyset { get; set; } = default!;
         [Parameter]
         public UserStudysetConnection Connection { get; set; } = default!;
@@ -21,8 +24,8 @@ namespace Quixduell.Blazor.Shared.ControlComponents
         }
 
         private async Task StarFunction(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
-        {
-            await StudysetView.StarStudysetAsync(Studyset, Connection);
+        {            
+            await StudysetView.StarStudysetAsync(Studyset, Connection, User);
         }
     }
 }
