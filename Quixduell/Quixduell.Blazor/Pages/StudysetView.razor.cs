@@ -47,11 +47,8 @@ namespace Quixduell.Blazor.Pages
             if (Guid.TryParse(StudysetID, out var ParsedStudysetID))
             {
                 Studyset = await StudysetHandler.GetStudysetViaIdAsync(ParsedStudysetID);
+                await StudysetHandler.CreateConnection(Studyset, User);
             }
         }
-
-      
-        
-
     }
 }

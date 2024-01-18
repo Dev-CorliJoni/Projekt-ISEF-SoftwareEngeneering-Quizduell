@@ -53,5 +53,18 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
         {
             return (await _studysetDataAccess.LoadAsync(o => o.Id == id)).FirstOrDefault();
         }
+
+        public async Task CreateConnection(Studyset studyset, User user)
+        {
+            var connection = studyset.Connections.FirstOrDefault(c => c.User == user);
+
+            if(connection is null)
+            {
+                connection = new UserStudysetConnection(user, studyset, false);
+                studyset.Connections.Add(connection);
+            }
+
+            await _studysetDataAccess.UpdateAsync(studyset!);
+        }
     }
 }
