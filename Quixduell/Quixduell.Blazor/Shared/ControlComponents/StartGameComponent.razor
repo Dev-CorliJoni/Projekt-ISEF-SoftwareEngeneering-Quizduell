@@ -12,7 +12,7 @@
             {
                 @foreach (var gameMode in GameModes)
                 {
-                    <li class="option" @onmousedown="gameMode.Value">
+                    <li class="option" @onmousedown="gameMode.Value" @ontouchenter="gameMode.Value">
                         <span class="option-text">@gameMode.Key</span>
                     </li>
 
