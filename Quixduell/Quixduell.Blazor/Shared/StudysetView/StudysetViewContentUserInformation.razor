@@ -21,15 +21,21 @@
                             Contributors:
                         </div>
                         <div class="col w-100 justify-content-start" style="@(IsUserAdmin() ? "padding-right: 0" : "")">
-                            <div class="container" style="padding-left: 0.8em; height: 8rem;">
+                            <div class="container" style="padding-left: 0; height: 8rem;">
 
                                 <div class="row contributors-scroll-box" style="height: @(IsAddContributorActive() ? "5rem" : "100%");">
-                                    @foreach (var c in Studyset.Contributors)
-                                    {
-                                        <div class="row">
-                                            @c.UserName
+                                    <div class="col" style="padding: 0;">
+                                        <div class="container">
+                                            @foreach (var c in Studyset.Contributors)
+                                            {
+                                                <div class="row" style="height: fit-content;">
+                                                    <div class="col" style="padding: 0;">
+                                                        @c.UserName
+                                                    </div>
+                                                </div>
+                                            }
                                         </div>
-                                    }
+                                    </div>
                                 </div>
 
                                 @if (IsAddContributorActive())
