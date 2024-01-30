@@ -1,5 +1,6 @@
 ﻿@page "/singleplayer"
 @page "/singleplayer/{LobbyGuidParameter}"
+@using Quixduell.Blazor.Shared.QuestionComponent
 @using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions
 @using Quixduell.Blazor.Shared.GameComponent
 @*
@@ -14,8 +15,10 @@
 @if (Game is not null)
 {
     <div>
+
         @if (SelectedQuestion is not null)
         {
+            <ReportIssueComponent CurrentQuestion="SelectedQuestion" Studyset="Game.Studyset"></ReportIssueComponent>
             if (SelectedQuestion is OpenQuestion openQuestion)
             {
                 <AnswerOpenQuestionComponent @bind-Value=openQuestion QuestionAnswered="OnOpenQuestionAnswered"></AnswerOpenQuestionComponent>
