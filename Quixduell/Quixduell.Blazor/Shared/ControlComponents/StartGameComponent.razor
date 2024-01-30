@@ -1,7 +1,7 @@
 ﻿
 <div class="expandable-button-container" @onfocusout="() => IsExpanded = false">
     <div class="start-game-div">
-        <button class="btn start-game-button" style="padding-right: @(IsExpanded ? "0" : "0.125rem");" @onclick="() => IsExpanded = true">
+        <button class="btn start-game-button" style="padding-right: @(IsExpanded ? "0" : "0.125rem");" @onclick="Click">
             Learn @(IsExpanded ? new MarkupString("\u25BC") : new MarkupString("&#9654;"))
         </button>
     </div>

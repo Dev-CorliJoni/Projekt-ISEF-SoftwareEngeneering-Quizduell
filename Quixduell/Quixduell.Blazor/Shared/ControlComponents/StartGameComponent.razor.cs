@@ -18,6 +18,17 @@ namespace Quixduell.Blazor.Shared.ControlComponents
         [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
 
+        public void Click()
+        {
+            if (IsExpanded == false) 
+            { 
+                IsExpanded = true; 
+            } 
+            else 
+            { 
+                IsExpanded = false; 
+            }
+        }
 
         public bool IsExpanded { get; set; }
 
