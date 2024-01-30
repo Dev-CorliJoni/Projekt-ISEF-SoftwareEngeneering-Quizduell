@@ -64,7 +64,8 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
                 studyset.Connections.Add(connection);
             }
 
-            await _studysetDataAccess.UpdateAsync(studyset!);
+            //Warum Update ?
+           // await _studysetDataAccess.UpdateAsync(studyset!);
         }
     }
 }

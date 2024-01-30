@@ -80,10 +80,16 @@ internal class Program
 
         //Configure Entity Framework for Identity
         builder.Services.AddDbContext<AppDatabaseContext<User>>(options =>
-            options.UseSqlServer(connectionString,option =>
+        {
+            options.UseSqlServer(connectionString, option =>
             {
                 option.CommandTimeout((int)TimeSpan.FromSeconds(45).TotalSeconds);
-            }));
+            });
+            options.EnableSensitiveDataLogging();
+        });
+
+           
+
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
         //Configure Identity Provider

@@ -1,11 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.IdentityModel.Tokens;
-using Quixduell.ServiceLayer.DataAccessLayer.Model;
-using Quixduell.ServiceLayer.DataAccessLayer.Model.Answers;
+﻿using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Game;
-using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
 using Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation;
-using System.Transactions;
 
 namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
 {
@@ -78,7 +73,7 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
                 if (multiplayer.GameResult is not null)
                 {
                     await UpdateUserConnections(multiplayer.Players.Select(o => o.Player).ToList(), multiplayer.GameResult, multiplayer.Studyset);
-                    Games.Remove(multiplayer);
+                    //Games.Remove(multiplayer);
                     return true;
                 }
             }
@@ -123,8 +118,8 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
                     var newHighscore = GetHighscore(gameResult, currentPlayer);
                     if (newHighscore > connection.Highscore)
                     {
-                        connection.Highscore = newHighscore;
-                        await _studysetDataAccess.UpdateAsync(studyset);
+                       connection.Highscore = newHighscore;
+                       await _studysetDataAccess.UpdateAsync(studyset);
                     }
                 }
             }
