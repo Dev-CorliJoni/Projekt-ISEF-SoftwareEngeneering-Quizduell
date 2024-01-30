@@ -64,6 +64,7 @@ namespace Quixduell.ServiceLayer
             services.AddHostedService<DBStarter>();
             services.AddScoped<CategoryHandler>();
             services.AddScoped<StudysetHandler>();
+            services.AddScoped<IssueManager>();
             return services;
         }
 

@@ -1,5 +1,6 @@
 ﻿@page "/multiplayer"
 @page "/multiplayer/{LobbyGuidParameter}"
+@using Quixduell.Blazor.Shared.QuestionComponent
 @using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions
 @using Quixduell.Blazor.Shared.GameComponent
 @*
@@ -37,6 +38,7 @@
     <div>
         @if (SelectedQuestion is not null)
         {
+            <ReportIssueComponent CurrentQuestion="SelectedQuestion" Studyset="Game.Studyset"></ReportIssueComponent>
             if (SelectedQuestion is OpenQuestion openQuestion)
             {
                 <AnswerOpenQuestionComponent @bind-Value=openQuestion QuestionAnswered="OnOpenQuestionAnswered"></AnswerOpenQuestionComponent>

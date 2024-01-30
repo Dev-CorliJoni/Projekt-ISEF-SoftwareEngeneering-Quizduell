@@ -6,7 +6,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
     public abstract class Game
     {
         public Guid Id { get; set; }
-        internal Studyset Studyset { get; set; }
+        public Studyset Studyset { get; set; }
         internal List<AnsweredQuestionBase> AnsweredQuestions { get; set; } = new List<AnsweredQuestionBase>();
 
         public GameResult? GameResult { get; set; }

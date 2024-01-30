@@ -1,0 +1,13 @@
+﻿@if (Value is not null)
+{
+    <EditForm Model="Value" OnValidSubmit="OnValidSubmit">
+        <label>Create Issue for: @Value.ReportedQuestion.Text</label>
+        <InputTextArea @bind-Value=Value.Issue>
+
+        </InputTextArea>
+        <div>
+            <button type="submit" class="btn btn-primary">OK</button>
+            <button class="btn btn-danger" @onclick="OnAbort">Abort</button>
+        </div>
+    </EditForm>
+}
