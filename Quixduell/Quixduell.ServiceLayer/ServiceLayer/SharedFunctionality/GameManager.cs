@@ -104,14 +104,14 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
 
         private async Task UpdateUserConnections(List<User> players, GameResult gameResult, Studyset studyset)
         {
+            var NewStudyset = await _studysetDataAccess.GetAsync(studyset.Id);
             foreach (var currentPlayer in players)
             {
-                var connection = currentPlayer.StudysetConnections.FirstOrDefault(o => o.Studyset.Id == studyset.Id);
+                var connection = NewStudyset.Connections.FirstOrDefault(o => o.User.Id == currentPlayer.Id);
                 if (connection is null)
                 {
                     studyset.Connections.Add(
-                        new UserStudysetConnection(currentPlayer, studyset, false, new Rating(), GetHighscore(gameResult, currentPlayer)));
-                    await _studysetDataAccess.UpdateAsync(studyset);
+                        new UserStudysetConnection(currentPlayer, NewStudyset, false, new Rating(), GetHighscore(gameResult, currentPlayer)));
                 }
                 else
                 {
@@ -119,10 +119,10 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
                     if (newHighscore > connection.Highscore)
                     {
                        connection.Highscore = newHighscore;
-                       await _studysetDataAccess.UpdateAsync(studyset);
                     }
                 }
             }
+            await _studysetDataAccess.UpdateAsync(NewStudyset);
         }
 
 
