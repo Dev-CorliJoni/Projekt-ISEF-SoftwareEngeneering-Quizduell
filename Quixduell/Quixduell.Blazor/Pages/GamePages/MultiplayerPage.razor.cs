@@ -57,6 +57,7 @@ namespace Quixduell.Blazor.Pages.GamePages
 
                     if (multiplayer.IsGameStarted())
                     {
+                        _gameFinished = loadedGame.IsGameFinished();
                         if (multiplayer.Players.FirstOrDefault(o => o.Player.Id == CurrentPlayer.Id) == null)
                         {
                             Layout.Alert.AddAlert("Sorry Game is already running", TimeSpan.FromSeconds(30), Shared.AlertComponent.AlertMessageType.Error);
