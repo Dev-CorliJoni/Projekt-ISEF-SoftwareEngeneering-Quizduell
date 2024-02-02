@@ -95,6 +95,7 @@ namespace Quixduell.ServiceLayer
             services.AddScoped<InitSampleData>();
             services.AddScoped<GameManager>();
             services.AddScoped<StudysetView>();
+            services.AddScoped<ContributorRequest>();
 
 
             return services;

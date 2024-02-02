@@ -1,0 +1,37 @@
+﻿@page "/contributorrequest"
+<PageTitle>Contributor request</PageTitle>
+
+@if (RequestedUser != null && Studyset != null)
+{
+    @if (Answered)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    @RequestedUser.UserName has been informed about your answer
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    The User @RequestedUser.UserName has requested to become a contributor for the Studyset @Studyset.Name
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-primary" style="margin: 1rem" @onclick="AddContributor">
+                        Accept Request
+                    </button>
+                    <button class="btn btn-secondary" style="margin: 1rem" @onclick="RejectContributorRequest">
+                        Reject Request
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+}

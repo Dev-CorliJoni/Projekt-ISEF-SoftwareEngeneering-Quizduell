@@ -5,7 +5,7 @@
     <div class="col div-container">
         <div class="container" style="padding: 0">
             <div class="row">
-                <div class="col" style="padding-right:0.125em;">
+                <div class="col" style="padding-right:0;">
 
                     <div class="row">
                         <div class="col col-3 col-xl-2 col-sm-3 justify-content-start">
@@ -20,7 +20,7 @@
                         <div class="col col-3 col-xl-2 col-sm-3 justify-content-start" style="padding-right: 0;">
                             Contributors:
                         </div>
-                        <div class="col w-100 justify-content-start" style="@(IsUserAdmin() ? "padding-right: 0" : "")">
+                        <div class="col w-100 justify-content-start" style="padding-right: 0;">
                             <div class="container" style="padding-left: 0; height: 8rem;">
 
                                 <div class="row contributors-scroll-box" style="height: @(IsAddContributorActive() ? "5rem" : "100%");">
@@ -49,13 +49,18 @@
                     </div>
                 </div>
 
-                @if (IsUserAdmin())
-                {
-                    <div class="col col-auto d-flex justify-content-end align-items-center" style="padding-left:0.125em; padding-right:0.25em">
-                        <AddButtonComponent OnClick="@ActivateAddContributor" />
-                    </div>
-                }
+                <div class="col col-auto d-flex justify-content-end align-items-center" style="padding-left:0; padding-right:0.25em">
 
+                    @if (IsUserAdmin())
+                    {
+                        <AddButtonComponent OnClick="@ActivateAddContributor" />
+                    }
+                    else
+                    {
+                        <RequestContributorComponent Request="@RequestToBeAContributor" Requested="@(Studyset.UsersRequestedToBecomeContributor.Contains(User))" />
+                    }
+
+                </div>
             </div>
         </div>
     </div>

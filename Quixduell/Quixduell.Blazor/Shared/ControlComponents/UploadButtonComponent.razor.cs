@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Html;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using System.Drawing;
@@ -28,7 +29,7 @@ namespace Quixduell.Blazor.Shared.ControlComponents
         public EventCallback<bool> IsEditingChanged { get; set; }
 
         [Parameter]
-        public Func<Microsoft.AspNetCore.Components.Web.MouseEventArgs, Task<bool>> UploadFunction { get; set; } = default!;
+        public Func<MouseEventArgs, Task<bool>> UploadFunction { get; set; } = default!;
 
 
         public string GetDivCssClass()

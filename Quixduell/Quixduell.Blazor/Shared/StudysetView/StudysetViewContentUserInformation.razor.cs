@@ -41,5 +41,15 @@ namespace Quixduell.Blazor.Shared.StudysetView
             _isAddContributorActive = false;
             StateHasChanged();
         }
+
+        public async Task<bool> RequestToBeAContributor(MouseEventArgs e)
+        {
+            return await Task.Run(async () =>
+            {
+                await StudysetView.SendContributorRequest(Studyset, User);
+                return true;
+            });
+        }
+        
     }
 }

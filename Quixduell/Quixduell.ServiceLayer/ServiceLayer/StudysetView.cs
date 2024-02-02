@@ -8,18 +8,24 @@ using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.AspNetCore.Identity;
+using Quixduell.ServiceLayer.Services.MailSender;
+using Microsoft.AspNetCore.Components;
 
 namespace Quixduell.ServiceLayer.ServiceLayer
 {
     public class StudysetView
     {
+        private readonly IMailSender _mailSender;
         private readonly StudysetDataAccess _studysetDataAccess;
         private readonly CategoryDataAccess _categoryDataAccess;
+        public NavigationManager _navigationManager;
 
-        public StudysetView(StudysetDataAccess studysetDataAccess, CategoryDataAccess categoryDataAccess)
+        public StudysetView(StudysetDataAccess studysetDataAccess, CategoryDataAccess categoryDataAccess, IMailSender mailSender, NavigationManager navigationManager)
         {
             _studysetDataAccess = studysetDataAccess;
             _categoryDataAccess = categoryDataAccess;
+            _mailSender = mailSender;
+            _navigationManager = navigationManager;
         }
 
         public async Task StarStudysetAsync(Studyset studyset, UserStudysetConnection? connection, User user)
@@ -77,5 +83,19 @@ namespace Quixduell.ServiceLayer.ServiceLayer
             return result;
         }
 
+        public async Task SendContributorRequest(Studyset studyset, User user)
+        {
+            var sub = $"User {user.UserName} has requested to become a contributor for Studyset {studyset.Name}";
+            var body = $"If you want to process his request click link: {_navigationManager.BaseUri}contributorrequest?user={user.Id}&studyset={studyset.Id}";
+            await _mailSender.SendMailAsync(null, studyset.Creator.Email, sub, body);
+
+            foreach (var cont in studyset.Contributors)
+            {
+                await _mailSender.SendMailAsync(null, studyset.Creator.Email, sub, body);
+            }
+
+            studyset.UsersRequestedToBecomeContributor.Add(user);
+            await _studysetDataAccess.UpdateAsync(studyset);
+        }
     }
 }

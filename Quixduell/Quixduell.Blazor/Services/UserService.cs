@@ -22,14 +22,9 @@ namespace Quixduell.Blazor.Services
             _navigationManager = navigationManager;
         }
 
-        public async Task<User?> GetAuthenticatedUser(UserManager<User> userManager)
+        public IQueryable<User> GetUsers(UserManager<User> userManager)
         {
-            var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
-
-            if (user.Identity!.IsAuthenticated)
-            {
-                var userWithOutProps = await userManager.GetUserAsync(user);
-                return userManager.Users
+            return userManager.Users
                     .Include(o => o.StudysetConnections)
                         .ThenInclude(o => o.Studyset)
                             .ThenInclude(o => o.Creator)
@@ -41,12 +36,27 @@ namespace Quixduell.Blazor.Services
                             .ThenInclude(o => o.Contributors)
                     .Include(o => o.StudysetConnections)
                         .ThenInclude(o => o.Studyset)
-                            .ThenInclude(o => o.Category)
+                            .ThenInclude(o => o.Category);
+        }
+
+        public async Task<User?> GetAuthenticatedUser(UserManager<User> userManager)
+        {
+            var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+
+            if (user.Identity!.IsAuthenticated)
+            {
+                var userWithOutProps = await userManager.GetUserAsync(user);
+                return await GetUsers(userManager)
                     .Where(o => o.Id == userWithOutProps!.Id)
-                    .First();
+                    .FirstAsync();
             }
 
             return null;
+        }
+
+        public async Task<User?> GetUserViaIdAsync(UserManager<User> userManager, string id)
+        {
+            return await GetUsers(userManager).SingleAsync(u => u.Id == id);
         }
 
         public async Task<User?> GetAuthenticatedUserOrRedirect(UserManager<User> userManager)

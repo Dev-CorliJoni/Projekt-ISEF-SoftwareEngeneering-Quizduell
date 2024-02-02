@@ -98,6 +98,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
                     .ThenInclude(c => c.User)
                 .Include(o => o.Category)
                 .Include(o => o.Contributors)
+                .Include(o => o.UsersRequestedToBecomeContributor)
                 .Include(o => o.Questions)
                     .ThenInclude(o => ((MultipleChoiceQuestion)o).Answers)
                 .Include(o => o.Questions)
