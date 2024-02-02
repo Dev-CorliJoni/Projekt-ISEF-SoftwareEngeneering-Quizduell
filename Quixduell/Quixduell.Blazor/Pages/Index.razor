@@ -30,31 +30,34 @@
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <th scope="col"></th>
                     <th scope="col">Name</th>
                     <th scope="col">Kategorie</th>
-                    <th scope="col">Ersteller</th>
+                    <th scope="col" class="d-none d-sm-table-cell">Ersteller</th>
+                    <th scope="col" class="d-none d-sm-table-cell"></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <Virtualize Items="@_studysets" Context="Studyset" ItemSize="10" OverscanCount="5">
                     <tr style="cursor: pointer">
-                        <td scope="row" onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';"></td>
-                        <td onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';" >@Studyset.Name</td>
+                        <td onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';">@Studyset.Name</td>
                         <td onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';">@Studyset.Category.Name</td>
-                        <td onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';">@Studyset.Creator.Email</td>
+                        <td class="d-none d-sm-table-cell" onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';">@Studyset.Creator.Email</td>
                         @if (CheckIfCurrentUserStored(Studyset))
                         {
-                            <th scope="col" style="color: red;" @onclick="async (s) =>{await UnNoticeStudyset(Studyset);}">&#10084;</th>
+                            <th scope="col" class="d-none d-sm-table-cell" style="color: red;" @onclick="async (s) =>{await UnNoticeStudyset(Studyset);}">&#10084;</th>
                         }
                         else
                         {
-                            <th scope="col" style="color: grey;" @onclick="async (s) =>{await NoticeStudyset(Studyset);}">&#x1F44D;</th>
+                            <th scope="col" class="d-none d-sm-table-cell" style="color: grey;" @onclick="async (s) =>{await NoticeStudyset(Studyset);}">&#x1F44D;</th>
                         }
                         @if(CheckEditRights(Studyset))
                         {
                             <td><button class="btn btn-secondary" onclick="window.location.href='@PageUri.EditStudysetPage/@Studyset.Id';">Bearbeiten</button></td>
+                        }
+                        else
+                        {
+                            <td></td>
                         }
                     </tr>
                 </Virtualize>

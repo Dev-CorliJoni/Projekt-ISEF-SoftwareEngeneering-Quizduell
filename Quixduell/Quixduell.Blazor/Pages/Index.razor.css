@@ -1,0 +1,19 @@
+﻿table {
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; /* Adjust the max-width as needed */
+    font-size: 16px; /* Default font size */
+}
+
+@media (max-width: 576px) {
+    th, td {
+        font-size: 9px; /* Adjust font size for small screens */
+    }
+}
+
