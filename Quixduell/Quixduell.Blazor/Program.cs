@@ -10,6 +10,7 @@ using Quixduell.Blazor.Services;
 using Quixduell.ServiceLayer;
 using Quixduell.ServiceLayer.DataAccessLayer;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
+using Quixduell.ServiceLayer.Services.MailSender;
 using Quixduell.ServiceLayer.Services.MailSender.SendGrid;
 using Quixduell.ServiceLayer.Services.MailSender.SMTP;
 
@@ -47,6 +48,11 @@ internal class Program
         if (String.IsNullOrEmpty(emailConfigName))
         {
             logger.LogWarning("No Email Configuration found, you can set one with ENV EmailConfiguration = (SendGrid or SMTP)");
+
+            builder.Services.AddDummyEmailServices();
+            //For PW forget
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
+            logger.LogWarning("No Email Configuration found, you can set one with ENV EmailConfiguration = (SendGrid or SMTP)");
         }
         else
         {
@@ -70,7 +76,11 @@ internal class Program
             }
             else
             {
+                builder.Services.AddDummyEmailServices();
+                //For PW forget
+                builder.Services.AddTransient<IEmailSender, EmailSender>();
                 logger.LogWarning("No Email Configuration found, you can set one with ENV EmailConfiguration = (SendGrid or SMTP)");
+
             }
         }
 

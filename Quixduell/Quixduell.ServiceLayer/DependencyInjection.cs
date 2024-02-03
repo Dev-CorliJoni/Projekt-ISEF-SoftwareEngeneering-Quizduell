@@ -41,6 +41,12 @@ namespace Quixduell.ServiceLayer
             return services;
         }
 
+        public static IServiceCollection AddDummyEmailServices(this IServiceCollection services)
+        {
+            services.AddTransient<IMailSender, DummyMailSender>();
+            return services;
+        }
+
 
 
 
