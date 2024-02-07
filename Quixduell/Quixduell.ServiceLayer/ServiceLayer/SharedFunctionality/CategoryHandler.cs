@@ -39,9 +39,9 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
 
         public async Task<List<Category>> SearchCategoryAsync(string name)
         {
-            return await (await _categoryDataAccess.LoadByNameAsync(name)).ToListAsync();
+            return (await _categoryDataAccess.LoadByNameAsync(name)).ToList();
         }
-
+        
         
     }
 }
