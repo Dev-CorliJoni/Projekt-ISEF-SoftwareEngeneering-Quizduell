@@ -7,38 +7,60 @@
             @_answeredQuestion.Question.Text
         </div>
         <div class="card-body">
-            <div>
-                <InputTextArea @bind-Value=_answeredQuestion.CustomAnswer></InputTextArea>
-                <button class="btn btn-primary" type="button" @onclick="() => {_showOpenAnswer = !_showOpenAnswer;}">Antwort prüfen</button>
-                @if (_showOpenAnswer)
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Antwort</label>
+                <InputTextArea class="form-control" id="exampleFormControlTextarea1" @bind-Value=_answeredQuestion.CustomAnswer></InputTextArea>
+            </div>
+
+            <div class="mb-3">
+
+                <button class="btn btn-lg btn-primary m-3" type="button" @onclick="() => {_showOpenAnswer = !_showOpenAnswer;}">Antwort prüfen</button>
+                @if (_enableHintButton)
                 {
-                    <p class="card-text">
-                        @Value.Answer.Text
-                    </p>
+                    <button type="button" class="btn btn-lg btn-info" @onclick="() => {_showHint = !_showHint;}">Hilfe anzeigen</button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-lg btn-info" disabled @onclick="() => {_showHint = !_showHint;}">Hilfe anzeigen (Nach 10 Sekunden)</button>
+                }
+            </div>
+            @if (_showOpenAnswer)
+            {
+                <div class="card m-5">
+                    <div class="card-header">
+                        <p>Lösung</p>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">@Value.Answer.Text</p>
+                    </div>
                     <div>
                         <button class="btn btn-primary" type="button" @onclick="() => {_answeredQuestion.IsRightAnswer = true;_questionAnswered = true;}">Antwort richtig</button>
                         <button class="btn btn-danger" type="button" @onclick="() => {_answeredQuestion.IsRightAnswer = false;_questionAnswered = true;}">Antwort falsch</button>
                     </div>
-                }
+                </div>
+            }
 
 
 
-                <button class="btn" @onclick="() => {_showHint = !_showHint;}">Hilfe anzeigen</button>
-                @if (_showHint)
-                {
-                    <p class="card-text">
-                        @_answeredQuestion.Question.Hint
-                    </p>
-                }
-            </div>
-
-            @if (_questionAnswered)
+            @if (_showHint)
             {
-                <div>
-                    <button class="btn btn-success" @onclick="QuestionComplete">Senden</button>
+                <div class="card m-5">
+                    <div class="card-header">
+                        Hilfe
+                    </div>
+                    <div class="card-body">
+                        @_answeredQuestion.Question.Hint
+                    </div>
                 </div>
             }
         </div>
+
+        @if (_questionAnswered)
+        {
+            <div>
+                <button class="btn btn-success" @onclick="QuestionComplete">Senden</button>
+            </div>
+        }
     </div>
 
 }

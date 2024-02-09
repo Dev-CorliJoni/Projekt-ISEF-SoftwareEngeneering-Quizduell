@@ -29,10 +29,23 @@ namespace Quixduell.Blazor.Shared.GameComponent
         private bool _showHint = false;
         private bool _showOpenAnswer = false;
         private bool _questionAnswered = false;
+        private bool _enableHintButton = false;
         private User? _user;
+        private System.Timers.Timer _hintTimer;
 
 
 
+        public AnswerOpenQuestionComponent()
+        {
+            _hintTimer = new System.Timers.Timer(TimeSpan.FromSeconds(10).TotalMilliseconds);
+            _hintTimer.Elapsed += (sender, e) =>
+            {
+                _enableHintButton = true;
+                InvokeAsync(StateHasChanged);
+            };
+            _hintTimer.AutoReset = false;
+            _hintTimer.Start();
+        }
         protected override async Task OnInitializedAsync()
         {
             var user = await UserService.GetAuthenticatedUserOrRedirect(UserManager);

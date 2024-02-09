@@ -45,7 +45,7 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
 
         private void ReportIssue()
         {
-            Layout.Dialog.ShowDialog<ReportIssueDialogComponent, CreateIssueFormModel>("Report Issue", new ReportIssueDialogComponent(), new CreateIssueFormModel(CurrentQuestion!), async ( value) => {
+            Layout.Dialog.ShowDialog<ReportIssueDialogComponent, CreateIssueFormModel>("Fehler melden", new ReportIssueDialogComponent(), new CreateIssueFormModel(CurrentQuestion!), async ( value) => {
                 await IssueManager.ReportIssueAsync(Studyset, value.ReportedQuestion, _currentUser!, value.Issue);
                 Layout.Alert.AddAlert("Fehler wurde an die Ersteller gesendet");
             }, () => {

@@ -1,4 +1,8 @@
-﻿table {
+﻿html, body {
+    font-size: 3vw;
+}
+
+table {
     width: 100%;
 }
 
@@ -13,7 +17,7 @@ th, td {
 
 @media (max-width: 576px) {
     th, td {
-        font-size: 9px; /* Adjust font size for small screens */
+        font-size: 11px; /* Adjust font size for small screens */
     }
 }
 
