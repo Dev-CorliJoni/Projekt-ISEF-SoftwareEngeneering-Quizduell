@@ -87,7 +87,7 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
                     isValid = false;
                 }
 
-                if (formModel.QuestionType == QuestionType.MultipleChoise)
+                if (formModel.QuestionType == QuestionType.MultipleChoice)
                 {
                     if (formModel.AnswerFormModels.Where(o => o.IsTrue).Count() > 1)
                     {

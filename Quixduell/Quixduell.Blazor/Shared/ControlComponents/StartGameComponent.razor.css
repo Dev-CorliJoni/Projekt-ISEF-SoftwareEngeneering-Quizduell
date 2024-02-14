@@ -17,6 +17,13 @@
     min-width: 140px;
 }
 
+@media (max-width: 576px) {
+    .expandable-button-container .options {
+        top: 35px;
+        min-width: 90px;
+    }
+}
+
 .expandable-button-container .option {
     display: block;
     padding: 0.25rem;
@@ -26,6 +33,12 @@
 .expandable-button-container .option .option-text {
     padding: 0.25rem 0.5rem;
     color: whitesmoke;
+}
+
+@media (max-width: 576px) {
+    .expandable-button-container .option .option-text {
+        font-size: 1rem;
+    }
 }
 
 .expandable-button-container .option:hover {
@@ -44,13 +57,25 @@
     min-width: 140px;
 }
 
+@media (max-width: 576px) {
+    .start-game-div {
+        min-width: 120px;
+    }
+}
+
 .start-game-button {
     padding: 0;
-    font-size: x-large;
+    font-size: 1.5rem;
     color: whitesmoke;
     width: 100%;
 }
 
-.start-game-button:hover {
-    transition: all 0.8s ease-in-out;
+@media (max-width: 576px) {
+    .start-game-button {
+        font-size: 1rem;
+    }
 }
+
+/*.start-game-button:hover {
+    transition: all 0.8s ease-in-out;
+}*/

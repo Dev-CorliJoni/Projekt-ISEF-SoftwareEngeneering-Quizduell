@@ -62,8 +62,6 @@ namespace Quixduell.Blazor.Shared.GameComponent
                 return;
 
             _answeredQuestion = new AnsweredMultiQuestion(Value,_user,Value.Answers.First(o => o.IsTrue));
-
-           
         }
 
 
