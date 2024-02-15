@@ -85,17 +85,20 @@ namespace Quixduell.ServiceLayer.ServiceLayer
 
         public async Task SendContributorRequest(Studyset studyset, User user)
         {
-            var sub = $"User {user.UserName} has requested to become a contributor for Studyset {studyset.Name}";
-            var body = $"If you want to process his request click link: {_navigationManager.BaseUri}contributorrequest?user={user.Id}&studyset={studyset.Id}";
-            await _mailSender.SendMailAsync(null, studyset.Creator.Email, sub, body);
-
-            foreach (var cont in studyset.Contributors)
+            if (studyset.UsersRequestedToBecomeContributor.Contains(user) == false)
             {
+                var sub = $"User {user.UserName} has requested to become a contributor for Studyset {studyset.Name}";
+                var body = $"If you want to process his request click link: {_navigationManager.BaseUri}contributorrequest?user={user.Id}&studyset={studyset.Id}";
                 await _mailSender.SendMailAsync(null, studyset.Creator.Email, sub, body);
-            }
 
-            studyset.UsersRequestedToBecomeContributor.Add(user);
-            await _studysetDataAccess.UpdateAsync(studyset);
+                foreach (var cont in studyset.Contributors)
+                {
+                    await _mailSender.SendMailAsync(null, studyset.Creator.Email, sub, body);
+                }
+
+                studyset.UsersRequestedToBecomeContributor.Add(user);
+                await _studysetDataAccess.UpdateAsync(studyset);
+            }
         }
     }
 }

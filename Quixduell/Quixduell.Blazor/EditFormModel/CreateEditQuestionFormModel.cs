@@ -6,7 +6,7 @@ namespace Quixduell.Blazor.EditFormModel
 {
     public class CreateEditQuestionFormModel
     {
-        public QuestionType QuestionType { get; set; } = QuestionType.MultipleChoise;
+        public QuestionType QuestionType { get; set; } = QuestionType.MultipleChoice;
 
         [Required]
         [MinLength(1)]
@@ -27,7 +27,7 @@ namespace Quixduell.Blazor.EditFormModel
         {
             if (question is MultipleChoiceQuestion multipleChoiseQuestion)
             {
-                QuestionType = QuestionType.MultipleChoise;
+                QuestionType = QuestionType.MultipleChoice;
                 foreach (var answer in multipleChoiseQuestion.Answers)
                 {
                     AnswerFormModels.Add(new CreateEditAnswerFormModel(answer));
@@ -47,7 +47,7 @@ namespace Quixduell.Blazor.EditFormModel
         {
             switch (QuestionType)
             {
-                case QuestionType.MultipleChoise:
+                case QuestionType.MultipleChoice:
                     var multipList = new List<MultipleChoiceAnswer>();
                     foreach (var answer in AnswerFormModels)
                     {
@@ -68,12 +68,8 @@ namespace Quixduell.Blazor.EditFormModel
 
     }
 
-
-
-
-
     public enum QuestionType 
     {
-        MultipleChoise, OpenText
+        MultipleChoice, OpenText
     }
 }
