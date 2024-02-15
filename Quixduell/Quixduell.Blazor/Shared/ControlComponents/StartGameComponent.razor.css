@@ -2,11 +2,18 @@
     position: relative;
     padding: 0;
     margin: 0.25rem;
+    min-width: 140px;
+}
+
+@media (max-width: 576px) {
+    .expandable-button-container {
+        min-width: 105px;
+    }
 }
 
 .expandable-button-container .options {
     position: absolute;
-    top: 40px;
+    top: 42px;
     left: 0;
     background: green;
     padding: 0;
@@ -14,30 +21,38 @@
     border: 1px solid darkgray;
     border-radius: 0.5rem;
     box-shadow: 0 30px 25px 8px rgba(0, 0, 0, 0.1);
-    min-width: 140px;
+    width: 100%;
 }
 
 @media (max-width: 576px) {
     .expandable-button-container .options {
-        top: 35px;
-        min-width: 90px;
+        top: 32px;
     }
 }
 
 .expandable-button-container .option {
     display: block;
-    padding: 0.25rem;
+    padding: 0.25rem 0 0.25rem 0.3rem;
     border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 576px) {
+    .expandable-button-container .option {
+        padding: 0.25rem;
+    }
 }
 
 .expandable-button-container .option .option-text {
-    padding: 0.25rem 0.5rem;
+    padding: 0;
+    margin: 0;
     color: whitesmoke;
 }
 
 @media (max-width: 576px) {
     .expandable-button-container .option .option-text {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
 }
 
@@ -54,13 +69,7 @@
     padding: 0.125rem;
     padding-right: 0.25rem;
     padding-left: 0.25rem;
-    min-width: 140px;
-}
-
-@media (max-width: 576px) {
-    .start-game-div {
-        min-width: 120px;
-    }
+    width: 100%;
 }
 
 .start-game-button {

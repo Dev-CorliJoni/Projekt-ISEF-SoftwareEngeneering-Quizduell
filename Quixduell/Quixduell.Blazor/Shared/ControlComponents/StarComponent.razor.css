@@ -9,7 +9,19 @@
     padding-left: 0.25rem;
 }
 
+@media (max-width: 576px) {
+    .star-div {
+        padding: 0.125rem;
+    }
+}
+
 .star-button {
     padding: 0;
     font-size: x-large;
+}
+
+@media (max-width: 576px) {
+    .star-button {
+        font-size: large;
+    }
 }
