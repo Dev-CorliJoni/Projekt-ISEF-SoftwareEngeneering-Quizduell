@@ -1,4 +1,29 @@
-﻿.expandable-button-container {
+﻿svg {
+    flex-grow: 1;
+    max-height: 2rem;
+    max-width: 2rem;
+    padding: 0.3rem;
+    padding-left: 0.5rem;
+}
+
+@media (max-width: 576px) {
+    svg {
+        max-height: 1.5rem;
+        max-width: 1.5rem;
+    }
+}
+
+.triangle-expand {
+    transform: rotate(90deg);
+    transition: all 0.2s ease-in-out;
+}
+
+.triangle-collapse {
+    transform: rotate(0deg);
+    transition: all 0.1s ease-in-out;
+}
+
+.expandable-button-container {
     position: relative;
     padding: 0;
     margin: 0.25rem;
@@ -70,6 +95,11 @@
     padding-right: 0.25rem;
     padding-left: 0.25rem;
     width: 100%;
+}
+
+.start-game-div:hover {
+    background-color: darkgreen;
+    cursor: pointer;
 }
 
 .start-game-button {

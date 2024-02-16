@@ -7,5 +7,6 @@ namespace Quixduell.Blazor.Shared.ControlComponents
     {
         [Parameter] public Action<MouseEventArgs> OnClick { get; set; }
 
+        public bool OnHover { get; set; }
     }
 }

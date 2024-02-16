@@ -7,3 +7,35 @@
     margin-top: 0.25rem;
     margin-bottom: 0.25rem;
 }
+
+.pie-chart {
+    max-width: 15rem;
+}
+
+@media (max-width: 576px) {
+    .pie-chart {
+        max-width: 10rem;
+    }
+}
+
+.color-circle {
+    max-width: 2rem;
+    height: 2rem;
+}
+
+@media (max-width: 576px) {
+    .color-circle {
+        max-width: 1.5rem;
+        height: 1.5rem;
+    }
+}
+
+.question-text {
+    font-size: 1rem;
+}
+
+@media (max-width: 576px) {
+    .question-text {
+        font-size: 0.75rem;
+    }
+}
