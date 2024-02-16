@@ -18,6 +18,18 @@
     }
 }
 
+.color-circle {
+    max-width: 2rem;
+    height: 2rem;
+}
+
+@media (max-width: 576px) {
+    .color-circle {
+        max-width: 1.5rem;
+        height: 1.5rem;
+    }
+}
+
 .question-text {
     font-size: 1rem;
 }

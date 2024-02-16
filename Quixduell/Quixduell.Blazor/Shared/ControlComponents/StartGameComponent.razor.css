@@ -15,12 +15,12 @@
 
 .triangle-expand {
     transform: rotate(90deg);
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 
 .triangle-collapse {
     transform: rotate(0deg);
-    transition: all 0.3s ease-in-out;
+    transition: all 0.1s ease-in-out;
 }
 
 .expandable-button-container {
@@ -95,6 +95,11 @@
     padding-right: 0.25rem;
     padding-left: 0.25rem;
     width: 100%;
+}
+
+.start-game-div:hover {
+    background-color: darkgreen;
+    cursor: pointer;
 }
 
 .start-game-button {
