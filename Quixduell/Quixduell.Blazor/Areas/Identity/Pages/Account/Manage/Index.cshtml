@@ -1,0 +1,27 @@
+﻿@page
+@model IndexModel
+
+@if (Model.CurrentUser is not null)
+{
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Lernset</th>
+                <th scope="col">Kategorie</th>
+                <th scope="col">Highscore</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var connection in Model.CurrentUser.StudysetConnections.OrderByDescending(o => o.LastSeen).ToList())
+            {
+                <tr>
+                    <td>@connection.Studyset.Name</td>
+                    <td>@connection.Studyset.Category.Name</td>
+                    <td>@connection.Highscore</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}

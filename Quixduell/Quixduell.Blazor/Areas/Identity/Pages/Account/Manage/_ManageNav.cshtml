@@ -1,0 +1,8 @@
+﻿@using Quixduell.ServiceLayer.DataAccessLayer.Model
+@inject SignInManager<User> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+<ul class="nav nav-pills flex-column">
+  
+</ul>
