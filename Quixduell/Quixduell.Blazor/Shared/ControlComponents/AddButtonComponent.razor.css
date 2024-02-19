@@ -11,8 +11,6 @@
 .add-button {
     border: 0;
     padding: 0.75rem;
-    padding-right: 0.8rem;
-    padding-left: 0.8rem;
     color: #fff;
 }
 
@@ -23,6 +21,21 @@
     cursor: pointer;
     transition: background-color 0.3s;
     margin: 0.5rem;
+}
+
+@media (max-width: 576px) {
+    svg {
+        max-height: 1rem;
+        max-width: 1rem;
+    }
+
+    .add-button {
+        padding: 0.65rem;
+    }
+
+    .round-div {
+        margin: 0.25rem;
+    }
 }
 
 .color-blue-div {

@@ -12,30 +12,31 @@
     max-width: 15rem;
 }
 
-@media (max-width: 576px) {
-    .pie-chart {
-        max-width: 10rem;
-    }
-}
-
 .color-circle {
     max-width: 2rem;
     height: 2rem;
-}
-
-@media (max-width: 576px) {
-    .color-circle {
-        max-width: 1.5rem;
-        height: 1.5rem;
-    }
+    padding: 1rem;
+    border-radius: 50%;
 }
 
 .question-text {
     font-size: 1rem;
+    padding-top: 0.1rem;
 }
 
 @media (max-width: 576px) {
     .question-text {
         font-size: 0.75rem;
+        padding-left: 0.5rem;
+    }
+
+    .pie-chart {
+        max-width: 7rem;
+    }
+
+    .color-circle {
+        padding:0.5rem;
+        max-width: 1.5rem;
+        height: 1.5rem;
     }
 }

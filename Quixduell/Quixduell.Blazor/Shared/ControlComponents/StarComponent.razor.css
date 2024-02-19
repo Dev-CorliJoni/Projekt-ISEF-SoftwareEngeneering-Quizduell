@@ -4,6 +4,8 @@
     border-radius: 0.5rem;
     box-sizing: border-box;
     margin: 0.25rem;
+    margin-right: 0;
+    margin-left: 0;
     padding: 0.125rem;
     padding-right: 0.25rem;
     padding-left: 0.25rem;
@@ -12,16 +14,18 @@
 @media (max-width: 576px) {
     .star-div {
         padding: 0.125rem;
+        border-radius: 0.3rem;
     }
 }
 
 .star-button {
     padding: 0;
+    border:0;
     font-size: x-large;
 }
 
 @media (max-width: 576px) {
     .star-button {
-        font-size: large;
+        font-size: 0.9rem;
     }
 }
