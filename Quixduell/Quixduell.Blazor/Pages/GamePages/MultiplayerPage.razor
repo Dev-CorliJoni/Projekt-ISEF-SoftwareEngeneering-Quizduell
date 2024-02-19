@@ -41,11 +41,11 @@
             <ReportIssueComponent CurrentQuestion="SelectedQuestion" Studyset="Game.Studyset"></ReportIssueComponent>
             if (SelectedQuestion is OpenQuestion openQuestion)
             {
-                <AnswerOpenQuestionComponent @bind-Value=openQuestion QuestionAnswered="OnOpenQuestionAnswered"></AnswerOpenQuestionComponent>
+                <AnswerOpenQuestionComponent @bind-Value=openQuestion User="CurrentPlayer" QuestionAnswered="OnOpenQuestionAnswered"></AnswerOpenQuestionComponent>
             }
             else if (SelectedQuestion is MultipleChoiceQuestion multipleChoiceQuestion)
             {
-                <AnswerMultiQuestionComponent @bind-Value=multipleChoiceQuestion QuestionAnswered="OnMultiQuestionAnswered"></AnswerMultiQuestionComponent>
+                <AnswerMultiQuestionComponent @bind-Value=multipleChoiceQuestion User="CurrentPlayer" QuestionAnswered="OnMultiQuestionAnswered"></AnswerMultiQuestionComponent>
             }
         }
 

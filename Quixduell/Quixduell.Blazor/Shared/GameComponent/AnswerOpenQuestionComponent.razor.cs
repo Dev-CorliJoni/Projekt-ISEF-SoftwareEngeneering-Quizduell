@@ -18,8 +18,9 @@ namespace Quixduell.Blazor.Shared.GameComponent
         [Parameter]
         public EventCallback<AnsweredOpenQuestion> QuestionAnswered { get; set; }
 
-        [Inject]
-        public UserService UserService { get; set; } = default!;
+        [Parameter]
+        public User User { get; set; }
+
 
         [Inject]
         public UserManager<User> UserManager { get; set; } = default!;
@@ -30,7 +31,6 @@ namespace Quixduell.Blazor.Shared.GameComponent
         private bool _showOpenAnswer = false;
         private bool _questionAnswered = false;
         private bool _enableHintButton = false;
-        private User? _user;
         private System.Timers.Timer _hintTimer;
 
 
@@ -48,11 +48,8 @@ namespace Quixduell.Blazor.Shared.GameComponent
         }
         protected override async Task OnInitializedAsync()
         {
-            var user = await UserService.GetAuthenticatedUserOrRedirect(UserManager);
-            if (user is null)
+            if (User is null)
                 return;
-
-            _user = user;
         }
 
         protected override void OnParametersSet()
@@ -61,13 +58,13 @@ namespace Quixduell.Blazor.Shared.GameComponent
             _showOpenAnswer = false;
             _questionAnswered = false;
 
-            if (Value is null || _user is null)
+            if (Value is null || User is null)
                 return;
 
 
 
 
-            _answeredQuestion = new AnsweredOpenQuestion(Value, _user, Value.Answer);
+            _answeredQuestion = new AnsweredOpenQuestion(Value, User, Value.Answer);
 
 
         }
