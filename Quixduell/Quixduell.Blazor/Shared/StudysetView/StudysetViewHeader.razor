@@ -3,14 +3,14 @@
 @if (Studyset is not null)
 {
     <div class="container div-container">
-        <div class="row">
+        <div class="row" style="flex-wrap: nowrap;">
 
-            <div class="col form-group div-col d-flex justify-content-start">
+            <div class="col form-group div-col d-flex justify-content-start" style="padding-right:0; width: 60%">
                 <StudysetViewHeaderName Studyset="@Studyset"/>
                 <CategoryComponent Category="@Studyset.Category"/>
             </div>
 
-            <div class="col col-auto form-group div-col contributors-scroll-box justify-content-end">
+            <div class="col col-auto form-group div-col contributors-scroll-box justify-content-end" style="padding-left:0.5rem;">
                 <StartGameComponent @bind-Value="Studyset"/>
                 <StarComponent User="@User" Connection="@GetConnection()" Studyset="@Studyset" />
             </div>

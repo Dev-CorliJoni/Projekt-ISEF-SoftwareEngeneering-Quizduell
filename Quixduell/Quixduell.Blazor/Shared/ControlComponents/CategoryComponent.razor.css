@@ -2,22 +2,29 @@
     background-color: red;
     opacity: 0.6;
     margin: 0.25rem;
-    margin-bottom: 0.25rem;
     padding: 0.1rem;
     padding-right: 0.35rem;
     padding-left: 0.35rem;
     box-sizing: border-box;
-    color: white
-}
-
-div {
+    color: white;
     font-size: 1.2rem;
     border-radius: 0.7rem;
 }
 
+.scroll-div {
+
+}
+
 @media (max-width: 576px) {
-    div {
-        font-size: 1rem;
+    .category-div {
+        font-size: 0.75rem;
         border-radius: 0.5rem;
+        margin-right: 0;
+        max-width: 30%;
+    }
+
+    .scroll-div {
+        overflow-x: scroll;
+        text-wrap: nowrap;
     }
 }
