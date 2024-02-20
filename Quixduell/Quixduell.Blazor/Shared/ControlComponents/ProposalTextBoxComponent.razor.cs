@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Quixduell.Blazor.Services;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
+using System.Linq;
 
 namespace Quixduell.Blazor.Shared.ControlComponents
 {
@@ -14,12 +15,15 @@ namespace Quixduell.Blazor.Shared.ControlComponents
         [Inject]
         public UserManager<User> UserManager { get; set; } = default!;
 
-        private string _contributorName = "";
+        public string ContributorName { get; set; } = "";
 
         public ElementReference _textbox;
 
         [Parameter]
         public Func<User, Task> ContributorSelectedAsync { get; set; }
+
+        [Parameter]
+        public List<User> ExcludeUsers { get; set; }
 
         private List<User> ContributorProposal { get; set; }
 
@@ -31,7 +35,8 @@ namespace Quixduell.Blazor.Shared.ControlComponents
 
         public async Task OnKeyDownAsync(KeyboardEventArgs e)
         {
-            ContributorProposal = await UserService.LoadUserProposalAsync(UserManager, _contributorName, 10);
+            string key = e.Key.Length == 1 ? e.Key : "";
+            ContributorProposal = (await UserService.LoadUserProposalAsync(UserManager, $"{ContributorName}", 10)).Except(ExcludeUsers).ToList();
 
             if (new string[] {"NumpadEnter", "Enter"}.Contains(e.Key) && ContributorProposal.Count > 0)
             {
