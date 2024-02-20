@@ -13,7 +13,7 @@
         <div class="container mb-3">
             <div class="row">
                 <div class="col">
-                    <label for="inputSearch" class="form-label"></label>
+                    <label for="inputSearch" class="form-label">Name</label>
                     <input @bind=@SearchText @bind:after=@SearchForStudysets id="inputSearch" class="form-control" />
                 </div>
                 <div class="col">
@@ -22,7 +22,15 @@
                 <div class="col">
                     <div class="form-check form-switch">
                         <input @bind=@ShowConnected  @bind:after=@SearchForStudysets class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-                        <label class="form-check-label" for="flexSwitchCheckChecked">Zeige eigene und gemerkte Studysets</label>
+                        @if(ShowConnected)
+                        {
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Zeige eigene und gemerkte Studysets</label>
+                        }
+                        else
+                        {
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Zeige alle Studysets</label>
+                        }
+
                     </div>
                 </div>
             </div>

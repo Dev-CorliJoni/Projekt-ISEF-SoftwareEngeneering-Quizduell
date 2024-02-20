@@ -48,26 +48,21 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
             return await (await LoadQueryableAsync()).SingleAsync(o => o.Name == name);
         }
 
-        public async Task<IQueryable<Studyset>> LoadTopByParamsAsync(string? name = null, User? creatorOrContributor = null, User? userHasStored = null, string? categoryName = null, int amount = 50)
+        public async Task<IQueryable<Studyset>> LoadTopByParamsAsync(string? name = null, User? containsUser = null, string? categoryName = null, int amount = 50)
         {
             var result = await LoadQueryableAsync();
-            if (name is not null)
+            if (!String.IsNullOrWhiteSpace(name))
             {
                 result = result.Where((s) => EF.Functions.Like(s.Name, $"%{name}%"));
             }
-            if (creatorOrContributor is not null)
-            {
-                result = result.Where((s) => s.Creator == creatorOrContributor || s.Contributors.Contains(creatorOrContributor));
-            }
-            if (userHasStored is not null)
-            { 
-               result = result.Where((s) => s.Connections.Any(con => con.User.Id == userHasStored.Id && con.IsStored == true));
-            }
-            if (categoryName is not null)
+            if (!String.IsNullOrWhiteSpace(value: categoryName))
             {
                 result = result.Where((s) => EF.Functions.Like(s.Category.Name, $"%{categoryName}%"));
             }
-
+            if (containsUser is not null)
+            {
+                result.Where(o => o.Creator.Id == containsUser.Id || o.Contributors.Any(o => o.Id == containsUser.Id));
+            }
 
             return result.Take(amount);
         }
