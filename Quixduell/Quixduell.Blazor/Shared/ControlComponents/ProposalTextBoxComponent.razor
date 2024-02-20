@@ -1,5 +1,5 @@
 ﻿<div class="autocomplete">
-    <input type="text" @onkeydown="OnKeyDownAsync" @bind="_contributorName" @ref="_textbox" class="form-control filter">
+    <input type="text" @onkeydown="OnKeyDownAsync" @bind="ContributorName" @bind:event="oninput" @ref="_textbox" class="form-control filter">
 
     @if (ContributorProposal is not null)
     {

@@ -21,9 +21,9 @@
                             Contributors:
                         </div>
                         <div class="col w-100 justify-content-start" style="padding-right: 0;">
-                            <div class="container" style="padding-left: 0; height: 8rem;">
+                            <div class="container contributor-div" style="padding-left: 0;">
 
-                                <div class="row contributors-scroll-box" style="height: @(IsAddContributorActive() ? "5rem" : "100%");">
+                                <div class="row scroll-box @(IsAddContributorActive() ? "h-shrinked" : "h-100")">
                                     <div class="col" style="padding: 0;">
                                         <div class="container">
                                             @foreach (var c in Studyset.Contributors)
@@ -40,8 +40,10 @@
 
                                 @if (IsAddContributorActive())
                                 {
-                                    <div class="row">
-                                        <ProposalTextBoxComponent ContributorSelectedAsync="@AddContributorAsync" />
+                                    <div class="row proposal-box">
+                                        <div class="col" style="padding-right:0;">
+                                            <ProposalTextBoxComponent ContributorSelectedAsync="@AddContributorAsync" ExcludeUsers="new List<User>(Studyset.Contributors){ Studyset.Creator }" />
+                                        </div>
                                     </div>
                                 }
                             </div>

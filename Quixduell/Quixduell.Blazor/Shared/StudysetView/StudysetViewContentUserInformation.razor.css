@@ -8,6 +8,37 @@
     margin-bottom: 0.25rem;
 }
 
-.contributors-scroll-box {
+.scroll-box {
     overflow-y: scroll
+}
+
+.contributor-div{
+    height: 8rem;
+}
+
+.h-shrinked{
+    height: 60%;
+}
+
+.proposal-box {
+    height: 40%;
+}
+
+
+@media (max-width: 576px) {
+    div {
+        font-size: 0.75rem;
+    }
+
+    .contributor-div {
+        height: 5rem;
+    }
+
+    .h-shrinked {
+        height: 65%;
+    }
+
+    .proposal-box {
+        height: 35%;
+    }
 }
