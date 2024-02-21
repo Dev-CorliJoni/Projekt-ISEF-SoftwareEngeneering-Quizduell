@@ -55,13 +55,15 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
             {
                 result = result.Where((s) => EF.Functions.Like(s.Name, $"%{name}%"));
             }
-            if (!String.IsNullOrWhiteSpace(value: categoryName))
+            if (!String.IsNullOrWhiteSpace(categoryName))
             {
                 result = result.Where((s) => EF.Functions.Like(s.Category.Name, $"%{categoryName}%"));
             }
             if (containsUser is not null)
             {
-                result.Where(o => o.Creator.Id == containsUser.Id || o.Contributors.Any(o => o.Id == containsUser.Id));
+                result =  result.Where(o => o.Creator.Id == containsUser.Id || o.Contributors.Any(o => o.Id == containsUser.Id) ||
+                                        (o.Connections.Any(i => i.User.Id == containsUser.Id && i.IsStored)));
+
             }
 
             return result.Take(amount);
