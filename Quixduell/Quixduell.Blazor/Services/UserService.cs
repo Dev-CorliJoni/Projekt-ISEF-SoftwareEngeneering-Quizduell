@@ -46,9 +46,9 @@ namespace Quixduell.Blazor.Services
             if (user.Identity!.IsAuthenticated)
             {
                 var userWithOutProps = await userManager.GetUserAsync(user);
-                return await GetUsers(userManager)
+                return GetUsers(userManager)
                     .Where(o => o.Id == userWithOutProps!.Id)
-                    .FirstAsync();
+                    .First();
             }
 
             return null;
