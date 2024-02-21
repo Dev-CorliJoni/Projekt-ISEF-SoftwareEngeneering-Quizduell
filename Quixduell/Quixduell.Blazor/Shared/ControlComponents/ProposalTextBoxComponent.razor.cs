@@ -33,12 +33,14 @@ namespace Quixduell.Blazor.Shared.ControlComponents
             await base.OnAfterRenderAsync(firstRender);
         }
 
+        public async Task SetContributorProposalAsync()
+        {
+            ContributorProposal = (await UserService.LoadUserProposalAsync(UserManager, $"{ContributorName}", 10)).Except(ExcludeUsers).ToList();
+        }
+
         public async Task OnKeyDownAsync(KeyboardEventArgs e)
         {
-            string key = e.Key.Length == 1 ? e.Key : "";
-            ContributorProposal = (await UserService.LoadUserProposalAsync(UserManager, $"{ContributorName}", 10)).Except(ExcludeUsers).ToList();
-
-            if (new string[] {"NumpadEnter", "Enter"}.Contains(e.Key) && ContributorProposal.Count > 0)
+            if (new string[] { "NumpadEnter", "Enter" }.Contains(e.Key) && ContributorProposal.Count > 0)
             {
                 await ContributorSelectedAsync(ContributorProposal[0]);
             }
