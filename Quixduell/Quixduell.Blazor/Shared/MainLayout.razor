@@ -3,14 +3,28 @@
 <PageTitle>Quixduell.Blazor</PageTitle>
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
+    <div>
     </div>
 
     <main>
-        <div class="top-row auth">
-            <LoginDisplay />
+
+        <div class="top-container">
+            <div class="top-spacer">
+
+            </div>
+            <div class="top-row-left">
+                <a class="navbar-brand" href="#">&#8962; Quixduell</a>
+            </div>
+            <div class="top-row-right auth">
+                <LoginDisplay />
+            </div>
+            <div class="top-spacer">
+            </div>
+
+
         </div>
+        
+
 
         <article class="content px-2">
             <Quixduell.Blazor.Shared.DialogComponent.ShowDialogComponent @ref="Dialog"></Quixduell.Blazor.Shared.DialogComponent.ShowDialogComponent>
