@@ -25,7 +25,7 @@ namespace Quixduell.Blazor.Shared.StudysetView
                 return top;
             }
         }
-       
+
         // Defaults
         //public List<UserStudysetConnection> Connections
         //{

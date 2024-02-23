@@ -7,3 +7,29 @@
     margin-top: 0.25rem;
     margin-bottom: 0.25rem;
 }
+
+.medium-text {
+    font-size: medium;
+}
+
+.small-text{
+    font-size: smaller;
+}
+
+.highscore-scroll{
+}
+
+@media (max-width: 576px) {
+
+    .medium-text {
+        font-size: smaller;
+    }
+
+    .small-text {
+        font-size: small;
+    }
+
+    .highscore-scroll {
+        overflow-x: scroll;
+    }
+}

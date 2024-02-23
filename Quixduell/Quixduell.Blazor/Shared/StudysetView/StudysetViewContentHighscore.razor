@@ -3,14 +3,14 @@
 {
     <div class="col div-container">
         <div class="container">
-            <div class="row">
+            <div class="row" style="flex-wrap: nowrap;">
 
                 @if (Connections.Count() != 0)
                 {
                     <div class="col col-auto">                    
                         @foreach (float mark in HighscoreMarks)
                         {
-                            <div class="row justify-content-center">
+                            <div class="row justify-content-center medium-text">
                                 @mark
                             </div>
                         }
@@ -21,11 +21,11 @@
                 }
 
                 <div class="col">
-                    <div class="container">
-                        <div class="row">
+                    <div class="container highscore-scroll">
+                        <div class="row" style="flex-wrap: nowrap;">
                             @if (Connections.Count() == 0)
                             {
-                                <div class="col d-flex justify-content-center align-content-center">
+                                <div class="col d-flex justify-content-center align-content-center medium-text">
                                     No Highscores Available
                                 </div>
                             }
@@ -51,7 +51,7 @@
 
                                         <div class="row">
                                             <div class="col d-flex" style="margin-left: 0.25rem; margin-right: 0.25rem;">
-                                                <div style="background: @background; height: @height ; width: 100%; align-self: flex-end; border-radius: @(rounded ? "10px 10px 0 0": "0 0 0 0");">
+                                                <div class="medium-text" style="background: @background; height: @height ; width: 100%; align-self: flex-end; border-radius: @(rounded ? "10px 10px 0 0": "0 0 0 0");">
                                                     &nbsp; @* Empty Content *@
                                                 </div>
                                             </div>
@@ -60,10 +60,10 @@
 
                                     <div class="row">
                                         <div class="col" style="border: solid @(connection.User == User ? "red " : "darkgray") 2px; border-radius: 1.25rem;">
-                                            <div class="row d-flex justify-content-center">
+                                            <div class="row d-flex justify-content-center medium-text">
                                                 @connection.Highscore
                                             </div>
-                                            <div class="row d-flex justify-content-center" style="font-size: smaller">
+                                            <div class="row d-flex justify-content-center small-text" style="padding: inherit;">
                                                 @connection.User.UserName.Split('@')[0]
                                             </div>
                                         </div>
