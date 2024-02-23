@@ -77,7 +77,10 @@ namespace Quixduell.Blazor.Services
 
             await Task.Run(() =>
             {
-                users = userManager.Users.Where(u => u.UserName.Contains(name)).Take(amount).ToList();
+                if(string.IsNullOrEmpty(name) == false)
+                {
+                    users = userManager.Users.Where(u => u.UserName.Contains(name)).Take(amount).ToList();
+                }                
             });
 
             return users;

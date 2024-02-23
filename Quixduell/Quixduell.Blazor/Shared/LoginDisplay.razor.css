@@ -1,0 +1,29 @@
+﻿.name-col {
+    max-width: 80%;
+}
+
+.name-field {
+    overflow-x: scroll;
+    text-wrap: nowrap;
+}
+
+.login-text {
+    font-size: small;
+    text-decoration: underline;
+}
+
+@media (min-width: 641px) {
+
+    .login-text {
+        font-size: medium;
+    }
+
+    .name-col {
+        width: fit-content;
+    }
+
+    .name-field {
+        overflow-x: visible;
+        text-wrap: nowrap;
+    }
+}

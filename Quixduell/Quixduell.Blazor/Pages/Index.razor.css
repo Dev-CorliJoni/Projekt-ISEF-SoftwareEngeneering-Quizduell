@@ -2,6 +2,14 @@
     font-size: 3vw;
 }
 
+.container-div {
+    border: solid darkgray 1px;
+    background: whitesmoke;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+}
+
 table {
     width: 100%;
 }

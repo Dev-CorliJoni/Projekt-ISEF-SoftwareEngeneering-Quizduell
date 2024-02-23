@@ -13,26 +13,40 @@ main {
 }
 
 .top-container {
-    padding: 1rem;
+    padding: 0 1rem;
+
     display: flex;
     margin: auto;
     background-color: #f7f7f7;
     border-bottom: 1px solid #d6d5d5;
     height: 3.5rem;
 }
+
+.user-row{
+    width: 60%;
+}
+
 .top-spacer {
     flex:1;
 }
 .top-row-left {
-    flex:20;
+    flex: content;
 }
 
 .top-row-right {
-    flex: 9;
     display:flex;
     flex-direction:row;
+    margin-top: 0.25rem;
 }
 
+.headline {
+    font-size: large;
+    font-weight: bolder;
+    border: 1px solid darkgray;
+    border-radius: 0.75rem;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+}
 
 @media (min-width: 641px) {
     .page {
@@ -55,5 +69,25 @@ main {
     .top-row, article {
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
+    }
+
+
+    .headline {
+        font-size: larger;
+        margin-right: 1rem;
+    }
+
+    .user-row {
+        width: fit-content;
+    }
+
+    .top-row-right {
+        margin-top: 0.25rem;
+    }
+
+
+    .top-container {
+        padding-right: 1.5rem !important;
+        padding-left: 2rem !important;
     }
 }
