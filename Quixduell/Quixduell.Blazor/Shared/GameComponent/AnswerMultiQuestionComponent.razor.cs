@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.JSInterop;
 using Quixduell.Blazor.Services;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Game.AnsweredQuestion;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
+using System.Reflection.Metadata;
 
 namespace Quixduell.Blazor.Shared.GameComponent
 {
@@ -19,9 +21,10 @@ namespace Quixduell.Blazor.Shared.GameComponent
         public EventCallback<AnsweredMultiQuestion> QuestionAnswered { get; set; }
 
         [Parameter]
-        public User User { get; set; } 
+        public User User { get; set; }
 
-
+        [Inject]
+        private IJSRuntime JSRuntime { get; set; } = default!;
 
         private AnsweredMultiQuestion? _answeredQuestion;
         private bool _showHint = false;
@@ -39,30 +42,40 @@ namespace Quixduell.Blazor.Shared.GameComponent
                 InvokeAsync(StateHasChanged);
             };
             _hintTimer.AutoReset = false;
-            _hintTimer.Start();
+
+            ResetTimer();
         }
-        protected override async  Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             if (User is null)
                 return;
+
+            base.OnInitialized();
         }
 
         protected override void OnParametersSet()
         {
+            ResetTimer();
             _showHint = false;
             _questionAnswered = false;
 
             if (Value is null || User is null)
                 return;
 
-            _answeredQuestion = new AnsweredMultiQuestion(Value,User,Value.Answers.First(o => o.IsTrue));
+            _answeredQuestion = new AnsweredMultiQuestion(Value, User, Value.Answers.First(o => o.IsTrue));
         }
 
 
-        private async Task QuestionComplete ()
+        private async Task QuestionComplete()
         {
             await QuestionAnswered.InvokeAsync(_answeredQuestion);
+            await JSRuntime.InvokeVoidAsync("clearRadio");
         }
 
+    public void ResetTimer()
+        {
+            _hintTimer.Stop();
+            _hintTimer.Start();
+        }
     }
 }

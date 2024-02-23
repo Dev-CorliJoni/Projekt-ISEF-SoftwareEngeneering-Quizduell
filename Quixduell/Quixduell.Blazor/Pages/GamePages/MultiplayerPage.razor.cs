@@ -9,6 +9,7 @@ using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality;
 using Quixduell.Blazor.Shared;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.JSInterop;
 
 namespace Quixduell.Blazor.Pages.GamePages
 {
@@ -36,6 +37,8 @@ namespace Quixduell.Blazor.Pages.GamePages
         [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
 
+        [Inject]
+        private IJSRuntime JS { get; set; } = default!;
         private User? CurrentPlayer { get; set; }
         private Multiplayer? Game { get; set; }
         private BaseQuestion? SelectedQuestion { get; set; }
@@ -155,6 +158,11 @@ namespace Quixduell.Blazor.Pages.GamePages
         private void OnStartGame ()
         {
             Game!.StartGame();
+        }
+
+        private async Task CopytoClipboardAsync ()
+        {
+            await JS.InvokeVoidAsync("setLocationtoClipboard");
         }
 
     }
