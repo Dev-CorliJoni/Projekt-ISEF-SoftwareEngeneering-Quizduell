@@ -8,3 +8,10 @@
     flex-direction: column;
     align-items: center;
 }
+
+@media (max-width: 641px) {
+
+    .container-div {
+        margin: 0;
+    }
+}
