@@ -19,7 +19,7 @@ namespace Quixduell.Blazor.Shared.StudysetView
                 if (top.Any(c => c.User == User) == false && Studyset.Connections.Any(c => c.User == User))
                 {
                     top = top.Take(9);
-                    top.Append(Studyset.Connections.Single(c => c.User == User));
+                    top.Append(Studyset.Connections.First(c => c.User == User));
                 }
 
                 return top;
