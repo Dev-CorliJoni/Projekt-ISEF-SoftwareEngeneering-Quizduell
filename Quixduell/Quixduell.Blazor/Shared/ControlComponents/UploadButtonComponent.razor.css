@@ -1,10 +1,26 @@
-﻿.upload-button {
+﻿.color-blue-div {
+    background-color: #3498db;
+}
+
+.color-blue-div:hover {
+    background-color: #2980b9;
+}
+
+.color-green-div {
+    background-color: #1a9341;
+}
+
+.color-grren-div:hover {
+    background-color: #147c3d;
+}
+
+.upload-button {
     font-size: 1.5rem;
     font-weight: bolder;
     padding-bottom: 0.25em;
     padding-top: 0.25em;
     color: #fff;
-    /*margin-bottom: 0.25em;*/
+    border: 0;
 }
 
 .upload-button-edit {
@@ -26,18 +42,24 @@
     margin: 0.5rem;
 }
 
-.color-blue-div {
-    background-color: #3498db;
-}
+@media (max-width: 576px) {
+    .upload-button {
+        font-size: 1rem;
+        padding-bottom: 0.4em;
+        padding-top: 0.4em;
+    }
 
-.color-blue-div:hover {
-    background-color: #2980b9;
-}
+    .upload-button-edit {
+        padding-right: 0.65em;
+        padding-left: 0.65em;
+    }
 
-.color-green-div {
-    background-color: #1a9341;
-}
+    .upload-button-checkmark {
+        padding-right: 0.775em;
+        padding-left: 0.775em;
+    }
 
-.color-grren-div:hover {
-    background-color: #147c3d;
+    .round-div {
+        margin: 0.25rem;
+    }
 }
