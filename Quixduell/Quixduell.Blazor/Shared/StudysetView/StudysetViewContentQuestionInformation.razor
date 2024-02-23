@@ -11,14 +11,14 @@
                     <PieChartComponent Parts="@(GetPieChartParts)" />
                 </div>
 
-                <div class="col" style="margin-left: 0.5rem; @(IsUserAdmin() ? "padding-right: 0.125em" : "")">
+                <div class="col" style="margin-left: 0.4rem; @(IsUserAdmin() ? "padding-right: 0.125em" : "")">
                     <div class="container d-flex justify-content-center" style="height: 100%; flex-direction: column; padding: 0;">
                         @foreach (var questionData in _questionData)
                         {
                             <div class="row form-group d-flex justify-content-start align-items-center align-self-auto" style="margin-top: 0.25rem; margin-bottom: 0.25rem; ">
                                 <div class="col d-flex align-self-center color-circle" style="border: solid @(questionData.Color == "" ? "azure" :  "darkgray") 1px; background-color: @questionData.Color;">
                                 </div>
-                                <div class="col d-flex justify-content-start question-text" style="padding-right: 0;">
+                                <div class="col d-flex justify-content-start question-text" style="padding-right: 0;padding-left: 0.25rem;">
                                     @questionData.Title
                                 </div>
                                 <div class="col col-auto d-flex justify-content-end question-text" style="padding-left: 0;">
