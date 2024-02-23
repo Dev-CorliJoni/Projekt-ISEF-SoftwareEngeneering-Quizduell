@@ -14,49 +14,48 @@
 
 @if (Game is not null)
 {
-    @if(!Game.IsGameStarted())
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Spieler</th>
-                </tr>
-            </thead>
-            <tbody>
-                <Virtualize Items="Game.Players">
+    <div class="container container-div">
+        @if(!Game.IsGameStarted())
+        {
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>@context.Player.Email</td>
+                        <th scope="col">Spieler</th>
                     </tr>
-                </Virtualize>
-            </tbody>
-        </table>
-        <button class="btn" @onclick="OnStartGame">StartGame</button>
+                </thead>
+                <tbody>
+                    <Virtualize Items="Game.Players">
+                        <tr>
+                            <td>@context.Player.Email</td>
+                        </tr>
+                    </Virtualize>
+                </tbody>
+            </table>
+            <button class="btn" @onclick="OnStartGame">StartGame</button>
 
-    }
-    else
-    {
-    <div>
-        @if (SelectedQuestion is not null)
+        }
+        else
         {
-            <ReportIssueComponent CurrentQuestion="SelectedQuestion" Studyset="Game.Studyset"></ReportIssueComponent>
-            if (SelectedQuestion is OpenQuestion openQuestion)
+            @if (SelectedQuestion is not null)
             {
-                <AnswerOpenQuestionComponent @bind-Value=openQuestion User="CurrentPlayer" QuestionAnswered="OnOpenQuestionAnswered"></AnswerOpenQuestionComponent>
+                <ReportIssueComponent CurrentQuestion="SelectedQuestion" Studyset="Game.Studyset"></ReportIssueComponent>
+                if (SelectedQuestion is OpenQuestion openQuestion)
+                {
+                    <AnswerOpenQuestionComponent @bind-Value=openQuestion User="CurrentPlayer" QuestionAnswered="OnOpenQuestionAnswered"></AnswerOpenQuestionComponent>
+                }
+                else if (SelectedQuestion is MultipleChoiceQuestion multipleChoiceQuestion)
+                {
+                    <AnswerMultiQuestionComponent @bind-Value=multipleChoiceQuestion User="CurrentPlayer" QuestionAnswered="OnMultiQuestionAnswered"></AnswerMultiQuestionComponent>
+                }
             }
-            else if (SelectedQuestion is MultipleChoiceQuestion multipleChoiceQuestion)
+
+            @if (_gameFinished)
             {
-                <AnswerMultiQuestionComponent @bind-Value=multipleChoiceQuestion User="CurrentPlayer" QuestionAnswered="OnMultiQuestionAnswered"></AnswerMultiQuestionComponent>
+                <div>
+                    Alle Fragen beantwortet !
+                </div>
+                <GameResultComponent @bind-Value=Game.GameResult></GameResultComponent>
             }
         }
-
-        @if (_gameFinished)
-        {
-            <div>
-                Alle Fragen beantwortet !
-            </div>
-            <GameResultComponent @bind-Value=Game.GameResult></GameResultComponent>
-        }
-        
     </div>
-    }
 }
