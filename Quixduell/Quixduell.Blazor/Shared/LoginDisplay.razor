@@ -1,21 +1,22 @@
-﻿
-<AuthorizeView>
-    <Authorized>
-        <div class="col col-auto d-flex align-items-center name-col">
-            <a class="login-text name-field" href="Identity/Account/Manage">@context.User.Identity?.Name!</a>
-        </div>
-        <div class="col col-auto d-flex align-items-center" style="padding-left:0; padding-right:0.5rem;">
-            <form method="post" action="Identity/Account/LogOut">
-                <button type="submit" class="nav-link btn btn-link login-text p-0" style="border-width:0;">Log out</button>
-            </form>
-        </div>
-    </Authorized>
-    <NotAuthorized>
-        <div class="col col-auto d-flex align-items-center">
-            <a class="login-text" href="Identity/Account/Register">Register</a>
-        </div>
-        <div class="col col-auto d-flex align-items-center" style="padding-left:0; padding-right:0.5rem;">
-            <a class="login-text" href="Identity/Account/Login">Log in</a>
-        </div>
-    </NotAuthorized>
-</AuthorizeView>
+﻿<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            <div class="col col-auto d-flex align-items-center name-col">
+                <a class="login-text name-field" href="Identity/Account/Manage">@context.User.Identity?.Name!</a>
+            </div>
+            <div class="col col-auto d-flex align-items-center" style="padding-left:0; padding-right:0.5rem;">
+                <form method="post" action="Identity/Account/LogOut">
+                    <button type="submit" class="nav-link btn btn-link login-text p-0" style="border-width:0;">Log out</button>
+                </form>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <div class="col col-auto d-flex align-items-center">
+                <a class="login-text" href="Identity/Account/Register">Register</a>
+            </div>
+            <div class="col col-auto d-flex align-items-center" style="padding-left:0; padding-right:0.5rem;">
+                <a class="login-text" href="Identity/Account/Login">Log in</a>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
