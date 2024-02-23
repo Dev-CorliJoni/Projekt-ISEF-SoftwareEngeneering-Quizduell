@@ -1,10 +1,7 @@
 ﻿.upload-button {
-    padding-bottom: 0.7em;
-    padding-top: 0.7em;
-    padding-right: 0.75em;
-    padding-left: 0.75em;
+    border: 0;
+    padding: 0.75rem;
     color: #fff;
-    /*margin-bottom: 0.25em;*/
 }
 
 .round-div {
@@ -20,4 +17,24 @@
 
 .round-div:hover {
     background-color: #2980b9;
+}
+
+svg {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+@media (max-width: 576px) {
+    svg {
+        height: 1rem;
+        width: 1rem;
+    }
+
+    .upload-button {
+        padding: 0.65rem;
+    }
+
+    .round-div {
+        margin: 0.25rem;
+    }
 }

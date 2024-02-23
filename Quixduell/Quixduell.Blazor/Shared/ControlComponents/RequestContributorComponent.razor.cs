@@ -14,16 +14,6 @@ namespace Quixduell.Blazor.Shared.ControlComponents
         [Parameter]
         public Func<MouseEventArgs, Task<bool>> Request { get; set; } = default!;
 
-        public MarkupString GetIcon()
-        {
-            return Requested ? new MarkupString("&#10003;") : new MarkupString("&#xF7B9;");
-        }
-
-        private object GetButtonCssClass()
-        {
-            return Requested ? "upload-button-checkmark" : "upload-button-request";
-        }
-
         public async Task Click(MouseEventArgs e)
         {
             if (Requested == false)
