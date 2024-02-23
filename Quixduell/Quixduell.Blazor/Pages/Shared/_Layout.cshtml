@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@namespace Quixduell.Blazor.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="css/site.css" rel="stylesheet" />
+    <link href="Quixduell.Blazor.styles.css" rel="stylesheet" />
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+</head>
+<body>
+    <div class="page">
+        <main>
+            <div class="top-container">
+                <div class="container d-flex align-items-center" style="padding-right: 0.5rem;padding-left: 0.5rem; ">
+                    <div class="row d-flex align-items-center" style="flex-wrap: nowrap; width: 110%;">
+                        <div class="col col-auto d-flex align-items-center justify-content-start" style="padding-right: 0; padding-left:0.5rem;">
+                            <a class="navbar-brand headline" href="#">&#x1F3E0; Quixduell</a>
+                        </div>
+                        <div class="col user-row justify-content-end" style="margin-top: 0.2rem; padding-right: 0.5rem; padding-left:0;">
+                            <div class="container" style="padding:0;">
+                                <div class="row d-flex align-items-center justify-content-end" style="flex-wrap: nowrap; margin-right: auto">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <article class="content" style="padding: 1rem;">
+                <div class="container container-div">
+                    <div class="mb-5" style="width:contain;height:70vh;">
+                    @RenderBody()
+                    </div>
+                </div>
+            </article>
+        </main>
+    </div>
+   
+
+
+
+    @RenderSection("Scripts", required: false)
+    <script src="_framework/blazor.server.js"></script>
+</body>
+</html>
