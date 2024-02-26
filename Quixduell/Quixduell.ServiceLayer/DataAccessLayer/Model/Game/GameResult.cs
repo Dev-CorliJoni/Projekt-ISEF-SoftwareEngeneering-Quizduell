@@ -4,10 +4,13 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
 {
     public class GameResult
     {
+
+        public Studyset Studyset { get; set; }
         public List<AnsweredQuestionResult>  AnsweredQuestionResults { get; set; }
 
-        public GameResult(List<AnsweredQuestionBase> answeredQuestions)
+        public GameResult(Studyset studyset, List<AnsweredQuestionBase> answeredQuestions)
         {
+            Studyset = studyset;
             AnsweredQuestionResults = new List<AnsweredQuestionResult>();
             foreach (var answer in answeredQuestions) 
             {

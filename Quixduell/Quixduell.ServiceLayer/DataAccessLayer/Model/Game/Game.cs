@@ -72,7 +72,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model.Game
         {
             ThrowIfFinished();
 
-            GameResult = new GameResult(AnsweredQuestions);
+            GameResult = new GameResult(Studyset, AnsweredQuestions);
             GameState = GameState.Finished;
             
         }
