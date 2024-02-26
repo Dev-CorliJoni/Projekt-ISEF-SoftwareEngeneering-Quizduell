@@ -30,6 +30,8 @@ namespace Quixduell.Blazor.Shared.StudysetView
                     Rating = Connection.Rating.Value;
                     RatingText = Connection.Rating.Description;
                 }
+
+                UpdateAverageStars();
             }
         }
 
@@ -38,6 +40,8 @@ namespace Quixduell.Blazor.Shared.StudysetView
 
         public UserStudysetConnection Connection { get; set; }
         public List<UserStudysetConnection> Connections { get; set; }
+
+        public double AverageStars { get; set; }
 
         public float Rating { get; set; } = 0;
         public string RatingText { get; set; }
@@ -59,7 +63,13 @@ namespace Quixduell.Blazor.Shared.StudysetView
             }
 
             await StudysetView.RateAsync(Studyset, Connection, User, Rating, RatingText);
+            UpdateAverageStars();
             return true; 
+        }
+
+        private void UpdateAverageStars()
+        {            
+            AverageStars = Studyset.Connections.Where(c => c.Rating.IsEmpty == false).Average(c => c.Rating.Value);
         }
 
     }
