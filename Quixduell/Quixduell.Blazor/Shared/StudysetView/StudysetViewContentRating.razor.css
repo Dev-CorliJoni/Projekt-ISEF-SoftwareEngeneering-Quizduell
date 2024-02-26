@@ -24,9 +24,54 @@
     display: flex;
     justify-content: center;
     align-content: center;
-    padding-left: 0
 }
 
 .resize-none {
     resize: none
+}
+
+.headline {
+    font-size: large;
+    font-weight: bold;
+}
+
+.rating-header {
+    font-size: large;
+}
+
+.text-style {
+    font-size: medium;
+}
+
+.rating-box {
+    min-width: 30%;
+}
+
+.star {
+    width: 25px;
+    height: 25px;
+}
+
+@media (max-width: 576px) {
+    .headline {
+        font-size: medium;
+        font-weight: bold;
+    }
+
+    .rating-header {
+        font-size: medium;
+    }
+
+    .text-style {
+        font-size: smaller;
+    }
+
+    .rating-box {
+        min-width: 90%;
+    }
+
+    .star {
+        width: 22px;
+        height: 22px;
+    }
 }
