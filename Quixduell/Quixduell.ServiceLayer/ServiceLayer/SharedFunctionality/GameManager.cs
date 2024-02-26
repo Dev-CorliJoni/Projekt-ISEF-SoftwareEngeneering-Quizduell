@@ -84,7 +84,7 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
 
         private async Task UpdateUserConnection(SinglePlayer singlePlayer)
         {
-            var connection = singlePlayer.Studyset.Connections.Where(s => s.Studyset.Id == singlePlayer.Studyset.Id).FirstOrDefault();
+            var connection = singlePlayer.Studyset.Connections.FirstOrDefault(c => c.User == singlePlayer.PlayerState.Player);
             if (connection is null)
             {
                 singlePlayer.Studyset.Connections.Add(

@@ -97,6 +97,7 @@ namespace Quixduell.Blazor.Pages.GamePages
             Game.ReportMultiQuestion(answeredQuestion);
             await Next();
         }
+
         private async Task OnOpenQuestionAnswered(AnsweredOpenQuestion answeredQuestion)
         {
             Game!.ReportOpenAnsweredQuestion(answeredQuestion);
