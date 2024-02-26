@@ -12,7 +12,20 @@
                         Rating
                     </div>
                     <div class="col headline d-flex justify-content-end">
-                        @String.Format("{0:0.00}", AverageStars)
+                        @{
+                            var text = "";
+
+                            if (AverageStars > 0)
+                            {
+                                text = String.Format("{0:0.00}", AverageStars);
+                            }
+                            else
+                            {
+                                text = "-";
+                            }
+                        }
+
+                        @text
                         <svg class="star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path d="M12 2l2.4 7h7.6l-6 4.8 2.4 7-6-5.2-6 5.2 2.4-7-6-4.8h7.6z" fill="#FFD700" />
                         </svg>

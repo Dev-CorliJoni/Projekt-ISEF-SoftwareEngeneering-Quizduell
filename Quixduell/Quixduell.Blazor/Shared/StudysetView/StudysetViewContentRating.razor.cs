@@ -68,8 +68,17 @@ namespace Quixduell.Blazor.Shared.StudysetView
         }
 
         private void UpdateAverageStars()
-        {            
-            AverageStars = Studyset.Connections.Where(c => c.Rating.IsEmpty == false).Average(c => c.Rating.Value);
+        {
+            var connections = Studyset.Connections.Where(c => c.Rating.IsEmpty == false);
+
+            if (connections.Any())
+            {
+                AverageStars = connections.Average(c => c.Rating.Value);
+            }
+            else
+            {
+                AverageStars = 0;
+            }
         }
 
     }
