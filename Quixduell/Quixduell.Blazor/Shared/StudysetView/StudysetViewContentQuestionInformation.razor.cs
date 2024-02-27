@@ -5,11 +5,17 @@ using Quixduell.Blazor.Shared.ControlComponents;
 using Quixduell.Blazor.Shared.QuestionComponent;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
+using Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation;
+using Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality;
 
 namespace Quixduell.Blazor.Shared.StudysetView
 {
     public partial class StudysetViewContentQuestionInformation
     {
+
+        [Inject]
+        private StudysetDataAccess StudysetDataAccess { get; set; } = default!;
+
         [Parameter]
         public User User { get; set; }
         [Parameter]
@@ -43,12 +49,15 @@ namespace Quixduell.Blazor.Shared.StudysetView
             };
         }
 
-        public void OpenAddQuestion(MouseEventArgs e)
+        public async Task OpenAddQuestionAsync(MouseEventArgs e)
         {
-            var questionForm = new CreateEditQuestionFormModel();
-            Layout.Dialog.ShowDialog<EditQuestion, CreateEditQuestionFormModel>("Frage hinzufügen",new EditQuestion(), questionForm, (CreateEditQuestionFormModel form) =>
+            var success = false;
+            Layout.Dialog.ShowDialog("Frage hinzufügen", new EditQuestion(), new CreateEditQuestionFormModel(), async (CreateEditQuestionFormModel form) =>
             {
-                //Speichern direkt oder was soll passieren ? :D 
+                success = true;
+                Studyset.Questions.Add(form.ToBaseQuestion());
+                await StudysetDataAccess.UpdateAsync(Studyset);
+                StateHasChanged();
             },() => { });
         }
 

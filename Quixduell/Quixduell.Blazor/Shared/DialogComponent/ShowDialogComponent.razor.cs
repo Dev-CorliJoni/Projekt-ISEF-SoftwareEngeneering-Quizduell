@@ -22,8 +22,6 @@ namespace Quixduell.Blazor.Shared.DialogComponent
             Action oncancel = () => { ResetDialog(); };
             oncancel += onCancel;
 
-
-
             _componentBase = new RenderFragment(builder =>
             {
                 builder.OpenComponent<Dialog>(0);

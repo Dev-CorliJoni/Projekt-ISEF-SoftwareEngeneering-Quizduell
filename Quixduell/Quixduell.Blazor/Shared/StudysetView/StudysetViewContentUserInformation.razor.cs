@@ -24,9 +24,12 @@ namespace Quixduell.Blazor.Shared.StudysetView
         public bool IsAddContributorActive() => _isAddContributorActive;
         public bool IsUserAdmin() => Studyset.Creator == User || Studyset.Contributors.Contains(User);
 
-        public void ActivateAddContributor(MouseEventArgs e)
+        public async Task ActivateAddContributor(MouseEventArgs e)
         {
-            _isAddContributorActive = true;
+            await Task.Run(() =>
+            {
+                _isAddContributorActive = true;
+            });
         }
 
         public async Task AddContributorAsync(User u)
