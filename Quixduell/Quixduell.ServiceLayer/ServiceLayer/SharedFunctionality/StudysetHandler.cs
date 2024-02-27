@@ -62,10 +62,8 @@ namespace Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality
             {
                 connection = new UserStudysetConnection(user, studyset, false);
                 studyset.Connections.Add(connection);
+                await _studysetDataAccess.UpdateAsync(studyset!);
             }
-
-            //Warum Update ?
-           // await _studysetDataAccess.UpdateAsync(studyset!);
         }
     }
 }

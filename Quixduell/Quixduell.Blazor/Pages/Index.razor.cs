@@ -5,9 +5,6 @@ using Quixduell.Blazor.Services;
 using Quixduell.ServiceLayer.ServiceLayer.SharedFunctionality;
 using Microsoft.AspNetCore.Identity;
 using Quixduell.Blazor.Shared;
-using Quixduell.Blazor.Shared.QuestionComponent;
-using Quixduell.Blazor.EditFormModel;
-using Quixduell.Blazor.Shared.CategoryComponent;
 
 namespace Quixduell.Blazor.Pages
 {
@@ -111,36 +108,5 @@ namespace Quixduell.Blazor.Pages
                 _studysets = await GlobalSearch.Search(SearchText, null, SelectedCategory?.Name ?? "");
             }
         }
-
-
-
-        static Random _random = new Random();
-        static string GenerateRandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; // Zeichen, die im zufälligen String verwendet werden sollen
-            char[] stringChars = new char[length];
-
-            for (int i = 0; i < length; i++)
-            {
-                stringChars[i] = chars[_random.Next(chars.Length)];
-            }
-
-            return new string(stringChars);
-        }
-
-        private void ShowAlert()
-        {
-            Layout.Alert.AddAlert("Hallo Welt");
-        }
-
-        private void ShowDialog()
-        {
-            Layout.Dialog.ShowDialog<EditQuestion, CreateEditQuestionFormModel>("Hallo Welt", new EditQuestion(),
-                new CreateEditQuestionFormModel(), (CreateEditQuestionFormModel value) =>{
-                },() => {
-                });
-        }
-
-
     }
 }
