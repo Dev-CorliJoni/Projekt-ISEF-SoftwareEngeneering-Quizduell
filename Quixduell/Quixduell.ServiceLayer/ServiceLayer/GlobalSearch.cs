@@ -7,12 +7,10 @@ namespace Quixduell.ServiceLayer.ServiceLayer
     public class GlobalSearch
     {
         private readonly StudysetDataAccess _studysetDataAccess;
-        private readonly CategoryDataAccess _categoryDataAccess;
 
-        public GlobalSearch(StudysetDataAccess studysetDataAccess, CategoryDataAccess categoryDataAccess)
+        public GlobalSearch(StudysetDataAccess studysetDataAccess)
         {
             _studysetDataAccess = studysetDataAccess;
-            _categoryDataAccess = categoryDataAccess;
         }
 
         public async Task<List<Studyset>> Search(string? name = null, User? user = null, string? categoryName = null)

@@ -4,10 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Answers;
 using Quixduell.ServiceLayer.DataAccessLayer.Model.Questions;
+using System.Reflection.Emit;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer
 {
-    public class AppDatabaseContext<TUser> 
+    public class AppDatabaseContext<TUser>
         : IdentityDbContext<TUser, IdentityRole, string>
         where TUser : User
     {
@@ -29,7 +30,31 @@ namespace Quixduell.ServiceLayer.DataAccessLayer
 
             builder.Entity<User>()
                 .HasMany(u => u.StudysetConnections)
-                .WithOne(connection => connection.User);
+                .WithOne(connection => connection.User)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<User>()
+                .HasMany(u => u.CreatedStudysets)
+                .WithOne(study => study.Creator)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+
+            builder.Entity<User>()
+                .HasMany(u => u.ContributedStudysets)
+                .WithMany(study => study.Contributors)
+                 .UsingEntity<Dictionary<string, object>>(
+                    "StudysetContributors",
+                    u => u
+                    .HasOne<Studyset>()
+                    .WithMany()
+                    .OnDelete(DeleteBehavior.NoAction),
+                    u => u
+                    .HasOne<User>()
+                    .WithMany()
+                    .OnDelete(DeleteBehavior.NoAction)
+                );
+
 
             builder.Entity<Answer>()
                 .HasDiscriminator<string>("answer_type")
@@ -47,6 +72,27 @@ namespace Quixduell.ServiceLayer.DataAccessLayer
              .HasMany(st => st.Connections)
              .WithOne(usc => usc.Studyset)
              .OnDelete(DeleteBehavior.NoAction);
+             
+
+
+
+            builder.Entity<Studyset>()
+             .HasMany(st => st.UsersRequestedToBecomeContributor)
+             .WithMany(usc => usc.UsersRequestedToBecomeContributors)
+             .UsingEntity<Dictionary<string, object>>(
+                "UsersRequestedToBecomeContributor",
+                u => u
+                .HasOne<User>()
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction),
+                u => u
+                .HasOne<Studyset>()
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction)
+            );
+
+
+
 
 
             builder.Entity<Answer>();
