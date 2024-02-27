@@ -29,6 +29,12 @@ namespace Quixduell.ServiceLayer.Tests.ServiceLayer
 
         }
 
+        [TearDown]
+        public void Close()
+        {
+            _sutContext.Dispose();
+        }
+
         [SetUp]
         public async Task Setup()
         {

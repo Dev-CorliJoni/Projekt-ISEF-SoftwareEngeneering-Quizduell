@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Projekt-ISEF-SoftwareEngeneering-Quizduell\Quixduell\Quixduell.ServiceLayer\Quixduell.ServiceLayer.csproj" />
+    <ProjectReference Include="..\Quixduell.ServiceLayer\Quixduell.ServiceLayer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
