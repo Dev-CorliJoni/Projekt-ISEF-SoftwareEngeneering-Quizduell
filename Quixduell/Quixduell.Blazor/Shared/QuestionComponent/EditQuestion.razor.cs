@@ -83,7 +83,7 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
 
                 if (formModel.AnswerFormModels.Count() < 1)
                 {
-                    ValidationMessageStore.Add(() => formModel.AnswerFormModels, "One Answer has to be set!");
+                    ValidationMessageStore.Add(() => formModel.AnswerFormModels, "Es muss mindestens eine Antwort hinzugefügt werden!");
                     isValid = false;
                 }
 
@@ -91,25 +91,25 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
                 {
                     if (formModel.AnswerFormModels.Where(o => o.IsTrue).Count() > 1)
                     {
-                        ValidationMessageStore.Add(() => formModel.AnswerFormModels, "Only one Answer can be true");
+                        ValidationMessageStore.Add(() => formModel.AnswerFormModels, "Es kann maximal eine Antwort richtig sein!");
                         isValid = false;
                     }
                     if (formModel.AnswerFormModels.Where(o => o.IsTrue).Count() < 1)
                     {
-                        ValidationMessageStore.Add(() => formModel.AnswerFormModels, "One one Answer has to be true");
+                        ValidationMessageStore.Add(() => formModel.AnswerFormModels, "Es muss mindestens eine richtige Antwort hinzugefügt worden sein!");
                         isValid = false;
                     }
                 }
-                if (formModel.QuestionType == QuestionType.OpenText)
+                else if (formModel.QuestionType == QuestionType.OpenText)
                 {
                     if (formModel.AnswerFormModels.Count() > 1)
                     {
-                        ValidationMessageStore.Add(() => formModel.AnswerFormModels, "Only Answer has to be set!");
+                        ValidationMessageStore.Add(() => formModel.AnswerFormModels, "Bei offenen Fragen kann es maximal eine Antwort geben!");
                         isValid = false;
                     }
                 }
 
-                    if (isValid) 
+                if (isValid) 
                 {
                     OnSubmit.Invoke(Value);
                 }
