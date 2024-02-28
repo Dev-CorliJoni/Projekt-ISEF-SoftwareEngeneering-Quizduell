@@ -45,8 +45,7 @@ namespace Quixduell.ServiceLayer.Tests.ServiceLayer
             var options = new DbContextOptionsBuilder<AppDatabaseContext<User>>()//.UseSqlServer("Server=localhost,4500;Database=QuixDB;Persist Security Info=False;User ID=sa;Password=bZYu04XMuyMqXWAcq9;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;").Options;
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
 
-
-
+            
             using (var context = new AppDatabaseContext<User>(options))
             {
                 //context.Database.EnsureDeleted();
@@ -78,10 +77,8 @@ namespace Quixduell.ServiceLayer.Tests.ServiceLayer
                 await context.SaveChangesAsync();
             }
 
-
             _sutContext = new AppDatabaseContext<User>(options);
             _sut = new GlobalSearch(new StudysetDataAccess(new DBConnectionFactory(_sutContext)));
-
         }
 
         [Test]
@@ -105,7 +102,7 @@ namespace Quixduell.ServiceLayer.Tests.ServiceLayer
         }
 
         [Test]
-        public async Task GetAllForContributor1_WhenCalled_ReturnOneItem()
+        public async Task GetAllForContributor2_WhenCalled_ReturnOneItem()
         {
             //Act 
             var items = await _sut.Search(null, contributor2);
