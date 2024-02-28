@@ -1,13 +1,5 @@
 ﻿using Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Quixduell.ServiceLayer.DataAccessLayer.Model;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Microsoft.AspNetCore.Identity;
 using Quixduell.ServiceLayer.Services.MailSender;
 using Microsoft.AspNetCore.Components;
 
@@ -17,13 +9,12 @@ namespace Quixduell.ServiceLayer.ServiceLayer
     {
         private readonly IMailSender _mailSender;
         private readonly StudysetDataAccess _studysetDataAccess;
-        private readonly CategoryDataAccess _categoryDataAccess;
         public NavigationManager _navigationManager;
 
-        public StudysetView(StudysetDataAccess studysetDataAccess, CategoryDataAccess categoryDataAccess, IMailSender mailSender, NavigationManager navigationManager)
+
+        public StudysetView(StudysetDataAccess studysetDataAccess, IMailSender mailSender, NavigationManager navigationManager)
         {
             _studysetDataAccess = studysetDataAccess;
-            _categoryDataAccess = categoryDataAccess;
             _mailSender = mailSender;
             _navigationManager = navigationManager;
         }

@@ -10,10 +10,6 @@ namespace Quixduell.Blazor.Pages
 {
     public partial class Index
     {
-
-        [Inject]
-        private InitSampleData InitSampleData { get; set; } = default!;
-
         [Inject]
         private GlobalSearch GlobalSearch { get; set; } = default!;
 
@@ -89,12 +85,6 @@ namespace Quixduell.Blazor.Pages
         private async Task UnNoticeStudyset(Studyset studySet)
         {
             await GlobalSearch.UnNoticeStudyset(studySet, User);
-        }
-
-        private async Task InitSampleDataMethod()
-        {
-            await InitSampleData.GenerateSampleData(User);
-            await SearchForStudysets();
         }
 
         private async Task SearchForStudysets ()
