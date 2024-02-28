@@ -24,6 +24,10 @@ namespace Quixduell.ServiceLayer.Tests.ServiceLayer
         private Studyset Studyset2;
         private Studyset Studyset3;
 
+        private Category Category1;
+        private Category Category2;
+        private Category Category3;
+
         public Tests()
         {
 
@@ -38,15 +42,15 @@ namespace Quixduell.ServiceLayer.Tests.ServiceLayer
         [SetUp]
         public async Task Setup()
         {
-            var options = new DbContextOptionsBuilder<AppDatabaseContext<User>>().UseSqlServer("Server=localhost,4500;Database=QuixDB;Persist Security Info=False;User ID=sa;Password=bZYu04XMuyMqXWAcq9;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;").Options;
-            //UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
+            var options = new DbContextOptionsBuilder<AppDatabaseContext<User>>()//.UseSqlServer("Server=localhost,4500;Database=QuixDB;Persist Security Info=False;User ID=sa;Password=bZYu04XMuyMqXWAcq9;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;").Options;
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
 
-            
+
 
             using (var context = new AppDatabaseContext<User>(options))
             {
-                context.Database.EnsureDeleted();
-                context.Database.Migrate();
+                //context.Database.EnsureDeleted();
+                //context.Database.Migrate();
 
                 creator = new User() { Email = "test.creator@iu-study.com" };
                 contributor1 = new User() { Email = "test.contributor1@iu-study.com" };
@@ -58,10 +62,13 @@ namespace Quixduell.ServiceLayer.Tests.ServiceLayer
                 context.Users.Add(contributor2);
                 context.Users.Add(likeUser);
 
+                Category1 = new Category("Recht");
+                Category2 = new Category("Mathe");
+                Category3 = new Category("Java");
 
-                Studyset1 = new Studyset("IT- Recht", new Category("Recht"), creator, new List<User>() { contributor1, contributor2 }, new List<DataAccessLayer.Model.Questions.BaseQuestion>(), new List<UserStudysetConnection>());                
-                Studyset2 = new Studyset("Statistik", new Category("Mathe"), creator, new List<User>() { contributor1 }, new List<DataAccessLayer.Model.Questions.BaseQuestion>(), new List<UserStudysetConnection>());
-                Studyset3 = new Studyset("Programmierung mit Java EE", new Category("Java"), creator, new List<User>() { contributor1 }, new List<DataAccessLayer.Model.Questions.BaseQuestion>(), new List<UserStudysetConnection>());
+                Studyset1 = new Studyset("IT- Recht", Category1, creator, new List<User>() { contributor1, contributor2 }, new List<DataAccessLayer.Model.Questions.BaseQuestion>(), new List<UserStudysetConnection>());                
+                Studyset2 = new Studyset("Statistik", Category2, creator, new List<User>() { contributor1 }, new List<DataAccessLayer.Model.Questions.BaseQuestion>(), new List<UserStudysetConnection>());
+                Studyset3 = new Studyset("Programmierung mit Java EE", Category3, creator, new List<User>() { contributor1 }, new List<DataAccessLayer.Model.Questions.BaseQuestion>(), new List<UserStudysetConnection>());
                 
                 context.Studysets.Add(Studyset1);
                 context.Studysets.Add(Studyset2);
@@ -122,6 +129,44 @@ namespace Quixduell.ServiceLayer.Tests.ServiceLayer
 
             //Assert
             Assert.That(items, Has.Count.EqualTo(2));
+        }
+
+        [Test]
+        public async Task GetAll_WhenLikedUnliked_ReturnOneItem()
+        {
+            //Arrange
+            var user = _sutContext.Users.First(o => o.Email == likeUser.Email);
+            var study1 = _sutContext.Studysets.First(o => o.Name == Studyset1.Name);
+            var study2 = _sutContext.Studysets.First(o => o.Name == Studyset2.Name);
+            await _sut.NoticeStudyset(study1, user);
+            await _sut.NoticeStudyset(study2, user);
+            await _sut.UnNoticeStudyset(study2, user);
+
+            //Act 
+            var items = await _sut.Search(null, likeUser);
+
+            //Assert
+            Assert.That(items, Has.Count.EqualTo(1));
+        }
+
+        [Test]
+        public async Task GetStudyset1byName_WhenCalled_ReturnOneItem()
+        {
+            //Act 
+            var items = await _sut.Search(Studyset1.Name);
+
+            //Assert
+            Assert.That(items, Has.Count.EqualTo(1));
+        }
+
+        [Test]
+        public async Task GetStudyset1Category_WhenCalled_ReturnOneItem()
+        {
+            //Act 
+            var items = await _sut.Search(null,null,Category1.Name);
+
+            //Assert
+            Assert.That(items, Has.Count.EqualTo(1));
         }
     }
 }
