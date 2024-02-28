@@ -87,10 +87,6 @@ namespace Quixduell.ServiceLayer
                     option.UseSqlServer(bBOptions.Value.ConnectionString);
                 });
 
-                //services.AddDbContext<AppDatabaseContext<User>>(option =>
-                //{
-                //    option.UseSqlServer(bBOptions.Value.ConnectionString);
-                //}, ServiceLifetime.Transient);
             }
 
             services.AddScoped<DBConnectionFactory>();
@@ -98,7 +94,6 @@ namespace Quixduell.ServiceLayer
             services.AddScoped<StudysetDataAccess>();
             services.AddScoped<CategoryDataAccess>();
             services.AddScoped<GlobalSearch>();
-            services.AddScoped<InitSampleData>();
             services.AddScoped<GameManager>();
             services.AddScoped<StudysetView>();
             services.AddScoped<ContributorRequest>();

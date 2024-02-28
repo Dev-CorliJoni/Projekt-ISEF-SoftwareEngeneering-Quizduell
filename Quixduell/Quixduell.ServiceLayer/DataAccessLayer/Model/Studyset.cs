@@ -15,7 +15,7 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Model
         [Required]
         public User Creator { get; set; }
         public List<User> Contributors { get; set; }
-        public List<User> UsersRequestedToBecomeContributor { get; set; }
+        public List<User> UsersRequestedToBecomeContributor { get; set; } = new List<User>();
 
         [Required]
         public List<BaseQuestion> Questions { get; set; }
