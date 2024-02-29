@@ -6,12 +6,21 @@ using System.Diagnostics;
 
 namespace Quixduell.ServiceLayer.Services.MailSender.SendGrid
 {
+    /// <summary>
+    /// Represents a mail sender implementation using SendGrid.
+    /// </summary>
     public class MailSenderSendGrid : IMailSender
     {
         private ISendGridClient _client;
         private readonly SendGridEmailConfiguration _emailConfiguration;
         private readonly ILogger<MailSenderSendGrid> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MailSenderSendGrid"/> class.
+        /// </summary>
+        /// <param name="client">The SendGrid client.</param>
+        /// <param name="emailConfiguration">The email configuration options.</param>
+        /// <param name="logger">The logger.</param>
         public MailSenderSendGrid(ISendGridClient client, IOptions<SendGridEmailConfiguration> emailConfiguration, ILogger<MailSenderSendGrid> logger)
         {
             _client = client;
@@ -19,6 +28,15 @@ namespace Quixduell.ServiceLayer.Services.MailSender.SendGrid
             _logger = logger;
         }
 
+        /// <summary>
+        /// Sends an email asynchronously using SendGrid.
+        /// </summary>
+        /// <param name="FromMailAddress">The sender's email address.</param>
+        /// <param name="ToMailAddress">The recipient's email address.</param>
+        /// <param name="Subject">The subject of the email.</param>
+        /// <param name="Body">The body of the email.</param>
+        /// <param name="isHtml">Specifies whether the email body is HTML.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task SendMailAsync(string? FromMailAddress, string ToMailAddress, string Subject, string Body, bool isHtml = false)
         {
             if (!_emailConfiguration.CheckValues())
@@ -54,10 +72,6 @@ namespace Quixduell.ServiceLayer.Services.MailSender.SendGrid
             {
                 _logger.LogError("Error sending Mail with Send Grid: {error}", await response.DeserializeResponseBodyAsync());
             }
-
-
-
-
         }
     }
 }
