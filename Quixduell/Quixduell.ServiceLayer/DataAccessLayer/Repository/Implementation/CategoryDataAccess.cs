@@ -10,16 +10,17 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
     /// </summary>
     public class CategoryDataAccess : DataAccessBase<Category>
     {
-
-
-        public CategoryDataAccess(DBConnectionFactory connectionFactory) : base(connectionFactory)
-        {
-        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CategoryDataAccess"/> class.
+        /// </summary>
+        /// <param name="connectionFactory">The database connection factory.</param>
+        public CategoryDataAccess(DBConnectionFactory connectionFactory) : base(connectionFactory) { }
 
         /// <summary>
-        /// Creates a new category asynchronously in the database.
+        /// Adds a new category asynchronously to the database.
         /// </summary>
-        /// <param name="model">The category to create.</param>
+        /// <param name="model">The category to add.</param>
+        /// <returns>The added category.</returns>
         public override async Task<Category> AddAsync(Category model)
         {
             await dbContext.Categories.AddAsync(model);
@@ -36,51 +37,62 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
             return await dbContext.Categories.CountAsync();
         }
 
-        ///// <summary>
-        ///// Deletes a category by its ID asynchronously from the database.
-        ///// </summary>
-        ///// <param name="id">The ID of the category to delete.</param>
+        /// <summary>
+        /// Deletes a category asynchronously from the database.
+        /// </summary>
+        /// <param name="model">The category to delete.</param>
         public override async Task DeleteAsync(Category model)
         {
             dbContext.Categories.Remove(model);
             await dbContext.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Checks if a category exists in the database asynchronously.
+        /// </summary>
+        /// <param name="model">The category to check.</param>
+        /// <returns>True if the category exists, otherwise false.</returns>
         public override async Task<bool> ExistsAsync(Category model)
         {
             return await dbContext.Categories.ContainsAsync(model);
         }
 
+        /// <summary>
+        /// Checks if a category with the specified name exists in the database asynchronously.
+        /// </summary>
+        /// <param name="name">The name of the category to check.</param>
+        /// <returns>True if the category exists, otherwise false.</returns>
         public async Task<bool> ExistsAsync(string name)
         {
             return await dbContext.Categories.AnyAsync(s => s.Name == name);
         }
 
-        ///// <summary>
-        ///// Retrieves a category by its ID asynchronously.
-        ///// </summary>
-        ///// <param name="id">The ID of the category to retrieve.</param>
-        ///// <returns>The category if found, otherwise null.</returns>
+        /// <summary>
+        /// Retrieves a category by its ID asynchronously from the database.
+        /// </summary>
+        /// <param name="id">The ID of the category to retrieve.</param>
+        /// <returns>The retrieved category.</returns>
         public override async Task<Category?> GetAsync(Guid id)
         {
             return await dbContext.Categories.SingleAsync(o => o.Id == id);
         }
 
-        ///// <summary>
-        ///// Retrieves a category by its ID asynchronously.
-        ///// </summary>
-        ///// <param name="id">The ID of the category to retrieve.</param>
-        ///// <returns>The category if found, otherwise null.</returns>
+        /// <summary>
+        /// Retrieves a category by its name asynchronously from the database.
+        /// </summary>
+        /// <param name="name">The name of the category to retrieve.</param>
+        /// <returns>The retrieved category.</returns>
         public async Task<Category?> GetAsync(string name)
         {
             return await dbContext.Categories.SingleOrDefaultAsync(o => o.Name == name);
         }
 
         /// <summary>
-        /// Retrieves a set of categories from the database.
+        /// Retrieves categories from the database asynchronously.
         /// </summary>
-        /// <returns>An enumerable collection of categories.</returns>
-        public override async Task<IEnumerable<Category>> LoadAsync(Func<Category, bool> where = null)
+        /// <param name="where">The condition to filter categories.</param>
+        /// <returns>A collection of categories.</returns>
+        public override async Task<IEnumerable<Category>> LoadAsync(Func<Category, bool>? where = null)
         {
             var results = await LoadQueryableAsync();
             if (where is not null)
@@ -93,14 +105,19 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
         /// <summary>
         /// Retrieves a set of categories compare with LIKE on param
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">The name of the category to search.</param>
+        /// <param name="amount">The number of categories to retrieve.</param>
+        /// <returns>An IQueryable of categories.</returns>
         public async Task<IQueryable<Category>> LoadByNameAsync(string name, int amount = 50)
         {
             var results = await LoadQueryableAsync();
             return results.Where(c => EF.Functions.Like(c.Name, $"%{name}%")).Take(amount);
         }
 
+        /// <summary>
+        /// Retrieves an IQueryable of categories from the database asynchronously.
+        /// </summary>
+        /// <returns>An IQueryable of categories.</returns>
         public override async Task<IQueryable<Category>> LoadQueryableAsync()
         {
             return await Task.Run(() =>
@@ -109,18 +126,14 @@ namespace Quixduell.ServiceLayer.DataAccessLayer.Repository.Implementation
             });
         }
 
-
-
         /// <summary>
         /// Updates an existing category asynchronously in the database.
         /// </summary>
-        /// <param name="category">The updated category information.</param>
-        /// <exception cref="CategoryNotFoundException">Throws if Category not found</exception>
+        /// <param name="model">The updated category information.</param>
         public override async Task UpdateAsync(Category model)
         {
             dbContext.Update(model);
             await dbContext.SaveChangesAsync();
         }
-
     }
 }
