@@ -8,22 +8,47 @@ using System.Reflection.Emit;
 
 namespace Quixduell.ServiceLayer.DataAccessLayer
 {
+    /// <summary>
+    /// Represents the application database context.
+    /// </summary>
+    /// <typeparam name="TUser">The type of the user.</typeparam>
     public class AppDatabaseContext<TUser>
         : IdentityDbContext<TUser, IdentityRole, string>
         where TUser : User
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppDatabaseContext{TUser}"/> class.
+        /// </summary>
+        /// <param name="options">The database context options.</param>
         public AppDatabaseContext(DbContextOptions<AppDatabaseContext<User>> options)
             : base(options)
         {
         }
 
+        /// <summary>
+        /// Gets or sets the study sets DbSet.
+        /// </summary>
         public DbSet<Studyset> Studysets { get; set; }
+
+        /// <summary>
+        /// Gets or sets the categories DbSet.
+        /// </summary>
         public DbSet<Category> Categories { get; set; }
 
+        /// <summary>
+        /// Gets or sets the open questions DbSet.
+        /// </summary>
         public DbSet<OpenQuestion> OpenQuestions { get; set; }
 
+        /// <summary>
+        /// Gets or sets the multiple choice questions DbSet.
+        /// </summary>
         public DbSet<MultipleChoiceQuestion> MultipleChoiceQuestions { get; set; }
 
+        /// <summary>
+        /// Configures the database context with the specified model builder.
+        /// </summary>
+        /// <param name="builder">The model builder instance.</param>
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -100,8 +125,6 @@ namespace Quixduell.ServiceLayer.DataAccessLayer
 
             builder.Entity<MultipleChoiceQuestion>();
             builder.Entity<OpenQuestion>();
-
         }
-
     }
 }
