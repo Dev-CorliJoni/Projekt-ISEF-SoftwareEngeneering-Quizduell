@@ -7,7 +7,7 @@ namespace Quixduell.Blazor.EditFormModel
     public class CreateEditAnswerFormModel
     {
         public bool IsTrue { get; set; } = true;
-        [StringLength(150, MinimumLength =5)]
+        [StringLength(150, MinimumLength =2)]
         public string AnswerText { get; set; } = string.Empty;
 
         public CreateEditAnswerFormModel()
