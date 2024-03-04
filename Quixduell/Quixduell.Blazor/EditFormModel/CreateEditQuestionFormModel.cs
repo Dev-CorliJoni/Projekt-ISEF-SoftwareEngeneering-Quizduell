@@ -12,10 +12,10 @@ namespace Quixduell.Blazor.EditFormModel
         [MinLength(1)]
         public List<CreateEditAnswerFormModel> AnswerFormModels { get; set; } = new List<CreateEditAnswerFormModel>();
 
-        [StringLength(1000, MinimumLength = 5)]
+        [StringLength(1000, MinimumLength = 5, ErrorMessage = "Die Frage muss eine Länge zwischen {1} und {2} haben")]
         public string QuestionText { get; set; } = String.Empty;
 
-        [StringLength(1000, MinimumLength = 5)]
+        [StringLength(1000, MinimumLength = 5, ErrorMessage = "Der Tipp muss eine Länge zwischen {1} und {2} haben")]
         public string Hint { get; set; } = String.Empty;
 
         public CreateEditQuestionFormModel()
