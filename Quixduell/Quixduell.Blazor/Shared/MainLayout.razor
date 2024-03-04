@@ -1,5 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @using Shared.DialogComponent
+@using Shared.AlertComponent
+
+
 <PageTitle>Quixduell</PageTitle>
 
 <div class="page">
@@ -27,12 +30,12 @@
 
 
         <article class="content" style="padding: 1rem;">
-            <Quixduell.Blazor.Shared.DialogComponent.ShowDialogComponent @ref="Dialog"></Quixduell.Blazor.Shared.DialogComponent.ShowDialogComponent>
-            <Quixduell.Blazor.Shared.AlertComponent.AlertComponent @ref="Alert"></Quixduell.Blazor.Shared.AlertComponent.AlertComponent>
+            <ShowDialogComponent @ref="Dialog"></ShowDialogComponent>
+            <AlertComponent @ref="Alert"></AlertComponent>
 
             <CascadingValue Value="this">
-                @Body
-            </CascadingValue>
+                @BodyValue>
+            </CascadingVa
 
         </article>
     </main>

@@ -94,25 +94,25 @@ namespace Quixduell.Blazor.Pages.StudysetPages
 
                 if (model.Creator is null)
                 {
-                    ValidationMessage.Add(() => model.Creator, "Please login");
+                    ValidationMessage.Add(() => model.Creator, "Melde dich an");
                     isValid = false;
                 }
 
                 if (String.IsNullOrWhiteSpace(model.Name))
                 {
-                    ValidationMessage.Add(() => model.Name, "Name has to be set");
+                    ValidationMessage.Add(() => model.Name, "Bitte setzte einen Namen");
                     isValid = false;
                 }
 
                 if (model.Category is null)
                 {
-                    ValidationMessage.Add(() => model.Category, "Category has to be set");
+                    ValidationMessage.Add(() => model.Category, "Die Kategorie muss gesetzt werden");
                     isValid = false;
                 }
 
                 if (model.QuestionFormModels.Count == 0)
                 {
-                    ValidationMessage.Add(() => model.QuestionFormModels, "One Question has to be set");
+                    ValidationMessage.Add(() => model.QuestionFormModels, "Mindestens eine Frage muss eingetragen werden");
                     isValid = false;
                 }
 
