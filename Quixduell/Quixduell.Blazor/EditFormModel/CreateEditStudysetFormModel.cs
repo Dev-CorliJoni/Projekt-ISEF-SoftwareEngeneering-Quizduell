@@ -7,7 +7,7 @@ namespace Quixduell.Blazor.EditFormModel
     {
         public Guid ID { get; set; }
 
-        [StringLength(150, MinimumLength = 5)]
+        [StringLength(150, MinimumLength = 5, ErrorMessage = "Der Name muss eine Länge zwischen {1} und {2} haben")]
         public string Name { get; set; } = String.Empty;
         [Required]
         public Category? Category { get; set; }
