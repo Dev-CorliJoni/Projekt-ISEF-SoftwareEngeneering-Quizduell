@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
-@using Shared.DialogComponent
-@using Shared.AlertComponent
+@using Quixduell.Blazor.Shared.DialogComponent
+@using Quixduell.Blazor.Shared.AlertComponent
 
 
 <PageTitle>Quixduell</PageTitle>
@@ -34,8 +34,8 @@
             <AlertComponent @ref="Alert"></AlertComponent>
 
             <CascadingValue Value="this">
-                @BodyValue>
-            </CascadingVa
+                @Body
+            </CascadingValue>
 
         </article>
     </main>
