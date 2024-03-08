@@ -5,14 +5,15 @@
     ViewData["Title"] = "Bestätigungslink erneut senden";
 }
 
-<h1>@ViewData["Title"]</h1>
-<h2>Trage deine E-Mail ein.</h2>
-<hr />
-<div class="row">
+<h1 class="d-flex justify-content-center">@ViewData["Title"]</h1>
+
+<div class="row d-flex justify-content-center">
     <div class="col-md-4">
         <form method="post">
+            <h2 class="row d-flex justify-content-center">Trage deine E-Mail ein.</h2>
+            <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-floating">
+            <div class="form-floating mb-2">
                 <input asp-for="Input.Email" class="form-control" aria-required="true" />
                 <label asp-for="Input.Email" class="form-label"></label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
