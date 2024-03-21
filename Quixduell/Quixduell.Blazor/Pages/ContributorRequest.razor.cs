@@ -31,6 +31,7 @@ namespace Quixduell.Blazor.Pages
         [SupplyParameterFromQuery(Name = "studyset")]
         public string StudysetGuid { get; set; } = string.Empty;
 
+        public User User { get; set; }
         public User RequestedUser { get; set; }
         public Studyset Studyset { get; set; }
 
@@ -44,15 +45,15 @@ namespace Quixduell.Blazor.Pages
             }
 
             RequestedUser = await UserService.GetUserViaIdAsync(UserManager, UserGUID);
-            var user = await UserService.GetAuthenticatedUser(UserManager);
 
             var redirect = false;
 
-            if (Studyset == null || RequestedUser == null || user == null)
+            if (Studyset == null || RequestedUser == null)
             {
                 redirect = true;
             }
-            else if ((Studyset.Creator == user || Studyset.Contributors.Contains(user)) == false)
+            else
+            if (User != null && (Studyset.Creator == User || Studyset.Contributors.Contains(User)) == false)
             {
                 redirect = true;
             }
@@ -63,6 +64,18 @@ namespace Quixduell.Blazor.Pages
             }
 
             await base.OnParametersSetAsync();
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await base.OnInitializedAsync();
+
+            User = await UserService.GetAuthenticatedUser(UserManager);
+            if (User is null)
+            {
+                
+                NavigationManager.NavigateTo($"Identity/Account/Login?returnUrl=/{Uri.EscapeDataString(NavigationManager.Uri.Replace(NavigationManager.BaseUri, ""))}");
+            }
         }
 
         private async Task RejectContributorRequest(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)

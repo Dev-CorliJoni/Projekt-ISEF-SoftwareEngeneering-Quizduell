@@ -98,5 +98,11 @@ namespace Quixduell.Blazor.Pages
                 _studysets = await GlobalSearch.Search(SearchText, null, SelectedCategory?.Name ?? "");
             }
         }
+
+
+        private UserStudysetConnection GetConnection(Studyset studyset)
+        {
+            return studyset?.Connections.Find((sc) => sc.User == User)!;
+        }
     }
 }
