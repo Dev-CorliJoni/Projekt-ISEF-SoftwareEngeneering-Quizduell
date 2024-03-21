@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using Quixduell.Blazor.Shared.CategoryComponent
 @using Quixduell.Blazor.Helpers;
+@using Quixduell.Blazor.Shared.ControlComponents;
 <PageTitle>Index</PageTitle>
 
 
@@ -49,25 +50,20 @@
                 <tbody>
                     <Virtualize Items="@_studysets" Context="Studyset" ItemSize="10" OverscanCount="5">
                         <tr style="cursor: pointer">
-                            <td onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';">@Studyset.Name</td>
-                            <td onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';">@Studyset.Category.Name</td>
-                            <td class="d-none d-sm-table-cell" onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';">@Studyset.Creator.Email</td>
-                            @if (CheckIfCurrentUserStored(Studyset))
-                            {
-                                <th scope="col" class="d-none d-sm-table-cell" style="color: red;" @onclick="async (s) =>{await UnNoticeStudyset(Studyset);}">&#10084;</th>
-                            }
-                            else
-                            {
-                                <th scope="col" class="d-none d-sm-table-cell" style="color: grey;" @onclick="async (s) =>{await NoticeStudyset(Studyset);}">&#x1F44D;</th>
-                            }
-                            @if (CheckEditRights(Studyset))
-                            {
-                                <td><button class="btn btn-secondary" onclick="window.location.href='@PageUri.EditStudysetPage/@Studyset.Id';">Bearbeiten</button></td>
-                            }
-                            else
-                            {
-                                <td></td>
-                            }
+                            <td style="vertical-align: middle;" onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';">@Studyset.Name</td>
+                            <td style="vertical-align: middle;" onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';">@Studyset.Category.Name</td>
+                            <td style="vertical-align: middle;" class="d-none d-sm-table-cell" onclick="window.location.href='@PageUri.ViewStudysetPage/@Studyset.Id';">@Studyset.Creator.Email</td>
+
+                            <td style="vertical-align: middle;">
+                                <StarComponent User="@User" Connection="@GetConnection(Studyset)" Studyset="@Studyset" />
+
+                            </td>
+                            <td style="vertical-align: middle;">
+                                @if (CheckEditRights(Studyset))
+                                {
+                                    <button class="btn btn-secondary" onclick="window.location.href='@PageUri.EditStudysetPage/@Studyset.Id';">Bearbeiten</button>
+                                }
+                            </td>
                         </tr>
                     </Virtualize>
                 </tbody>
