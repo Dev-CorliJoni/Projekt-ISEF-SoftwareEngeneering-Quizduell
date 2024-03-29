@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var connection in Model.CurrentUser.StudysetConnections.OrderByDescending(o => o.LastSeen).ToList())
+            @foreach (var connection in Model.CurrentUser.StudysetConnections.Where(sc => sc.Highscore > 0).OrderByDescending(o => o.LastSeen).ToList())
             {
                 <tr>
                     <td>@connection.Studyset.Name</td>
