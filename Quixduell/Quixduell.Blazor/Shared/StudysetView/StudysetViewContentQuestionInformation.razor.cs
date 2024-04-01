@@ -43,9 +43,9 @@ namespace Quixduell.Blazor.Shared.StudysetView
 
             _questionData = new List<QuestionData>
             {
-                new("Questions", "", questionCount, questionCount),
-                new("Open Questions", "#5F0F40", openQuestionCount, questionCount),
-                new("Multiple Choice Questions", "#9A031E", multipleChoiceQuestionCount, questionCount)
+                new("Fragen", "", questionCount, questionCount),
+                new("Offene Fragen", "#5F0F40", openQuestionCount, questionCount),
+                new("Multiple Choice Fragen", "#9A031E", multipleChoiceQuestionCount, questionCount)
             };
         }
 

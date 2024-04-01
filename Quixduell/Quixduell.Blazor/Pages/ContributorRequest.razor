@@ -8,7 +8,7 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    @RequestedUser.UserName has been informed about your answer
+                    @RequestedUser.UserName wurde über Ihre Antwort informiert
                 </div>
             </div>
         </div>
@@ -18,17 +18,17 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    The User @RequestedUser.UserName has requested to become a contributor for the Studyset @Studyset.Name
+                    Der Benutzer @RequestedUser.UserName hat angefragt Mitwirkender für das Lernset @Studyset.Name zu werden
                 </div>
             </div>
         
             <div class="row">
                 <div class="col">
                     <button class="btn btn-primary" style="margin: 1rem" @onclick="AddContributor">
-                        Accept Request
+                        Anfrage annehmen
                     </button>
                     <button class="btn btn-secondary" style="margin: 1rem" @onclick="RejectContributorRequest">
-                        Reject Request
+                        Anfrage ablehnen
                     </button>
                 </div>
             </div>

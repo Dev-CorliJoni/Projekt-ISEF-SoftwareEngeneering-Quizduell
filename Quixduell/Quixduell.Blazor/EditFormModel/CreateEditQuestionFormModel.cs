@@ -9,13 +9,13 @@ namespace Quixduell.Blazor.EditFormModel
         public QuestionType QuestionType { get; set; } = QuestionType.MultipleChoice;
 
         [Required]
-        [MinLength(1)]
+        [MinLength(1, ErrorMessage ="Es muss eine Antwort vorhanden sein.")]
         public List<CreateEditAnswerFormModel> AnswerFormModels { get; set; } = new List<CreateEditAnswerFormModel>();
 
-        [StringLength(1000, MinimumLength = 5, ErrorMessage = "Die Frage muss eine Länge zwischen {1} und {2} haben")]
+        [StringLength(1000, MinimumLength = 5, ErrorMessage = "Die Frage muss eine Länge zwischen {2} und {1} haben.")]
         public string QuestionText { get; set; } = String.Empty;
 
-        [StringLength(1000, MinimumLength = 5, ErrorMessage = "Der Tipp muss eine Länge zwischen {1} und {2} haben")]
+        [StringLength(1000, MinimumLength = 5, ErrorMessage = "Der Tipp muss eine Länge zwischen {2} und {1} haben.")]
         public string Hint { get; set; } = String.Empty;
 
         public CreateEditQuestionFormModel()
@@ -54,6 +54,7 @@ namespace Quixduell.Blazor.EditFormModel
                         multipList.Add(answer.ToMultipleChoiceAnswer());
                     }
                     return new MultipleChoiceQuestion(QuestionText, Hint, multipList);
+
                 case QuestionType.OpenText:
                     var answerList = new List<Answer>();
                     foreach (var answer in AnswerFormModels)

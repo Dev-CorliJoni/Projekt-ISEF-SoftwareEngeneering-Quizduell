@@ -22,6 +22,11 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
         [Parameter]
         public Action OnCancel { get; set; }
 
+        private Dictionary<QuestionType, string> _questionTypeText = new Dictionary<QuestionType, string>
+        {
+            {QuestionType.OpenText, "Offene Frage" },
+            {QuestionType.MultipleChoice, "Multiple choice Frage" }
+        };
 
         private CreateEditAnswerFormModel? _selectedAnswer;
 
@@ -43,8 +48,6 @@ namespace Quixduell.Blazor.Shared.QuestionComponent
                 _originalFormModelData = JsonSerializer.Serialize(Value);
             }
 
-
-          
             base.OnParametersSet();
         }
 

@@ -33,8 +33,8 @@ namespace Quixduell.Blazor.Shared.ControlComponents
         public bool IsExpanded { get; set; }
 
         public Dictionary<MarkupString, Action> GameModes { get => new Dictionary<MarkupString, Action> {
-                {new MarkupString("&#x1F464; Singleplayer"), Play},
-                {new MarkupString("&#x1F465; Multiplayer"), PlayMulti}
+                {new MarkupString("&#x1F464; Einzelspieler"), Play},
+                {new MarkupString("&#x1F465; Mehrspieler"), PlayMulti}
             };
         }
 

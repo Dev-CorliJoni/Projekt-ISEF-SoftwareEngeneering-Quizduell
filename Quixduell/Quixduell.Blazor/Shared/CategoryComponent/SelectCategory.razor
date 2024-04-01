@@ -1,13 +1,16 @@
 ﻿@if (_categories is not null)
 {
     <div class="form-group">
-        <label class="form-label" for="cat_cat">Kategorie</label>
+        <label class="form-label" for="cat_cat">Kategorie:</label>
+
         <InputSelect id="cat_cat" class="form-select" @bind-Value=SelectedId>
-        <option value="@Guid.Empty"></option>
-        @foreach (var cat in _categories)
-        {
-            <option value="@cat.Id">@cat.Name</option>
-        }
-    </InputSelect>
+            <option value="@Guid.Empty"></option>
+
+            @foreach (var cat in _categories)
+            {
+                <option value="@cat.Id">@cat.Name</option>
+            }
+        </InputSelect>
+
     </div>
 }
