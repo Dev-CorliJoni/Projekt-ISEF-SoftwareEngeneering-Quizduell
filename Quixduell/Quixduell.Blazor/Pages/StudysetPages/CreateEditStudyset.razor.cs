@@ -142,12 +142,11 @@ namespace Quixduell.Blazor.Pages.StudysetPages
 
         private void ShowQuestionDialog (CreateEditQuestionFormModel formModel)
         {
-            Layout.Dialog.ShowDialog<EditQuestion, CreateEditQuestionFormModel>("Frage bearbeiten",new EditQuestion(), formModel, (CreateEditQuestionFormModel o) =>
+            Layout.Dialog.ShowDialog("Frage bearbeiten",new EditQuestion(), formModel, (CreateEditQuestionFormModel o) =>
             {
-
+                StateHasChanged();
             }, () => 
             {
-
             });
         }
 
