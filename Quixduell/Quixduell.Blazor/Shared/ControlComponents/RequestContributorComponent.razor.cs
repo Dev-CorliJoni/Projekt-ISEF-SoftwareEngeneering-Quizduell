@@ -25,11 +25,11 @@ namespace Quixduell.Blazor.Shared.ControlComponents
                 }
 
                 this.Requested = true;
-                Layout.Alert.AddAlert("The request to become a contributor has been sent!", new TimeSpan(0, 0, 5), AlertComponent.AlertMessageType.Success);
+                Layout.Alert.AddAlert("Ihre Anfrage Mitwirkender zu werden wurde versendet!", new TimeSpan(0, 0, 5), AlertComponent.AlertMessageType.Success);
             }
             else
             {
-                Layout.Alert.AddAlert("You have already applied to become a contributor!", new TimeSpan(0, 0, 5), AlertComponent.AlertMessageType.Information);
+                Layout.Alert.AddAlert("Sie haben bereits angefragt Mitwirkender zu werden!", new TimeSpan(0, 0, 5), AlertComponent.AlertMessageType.Information);
             }
         }
     }
