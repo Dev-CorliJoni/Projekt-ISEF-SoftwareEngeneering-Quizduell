@@ -46,7 +46,7 @@ namespace Quixduell.Blazor.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Es muss eine Email angegeben werden.")]
             [EmailAddress]
             public string Email { get; set; }
         }
@@ -65,7 +65,7 @@ namespace Quixduell.Blazor.Areas.Identity.Pages.Account
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+                ModelState.AddModelError(string.Empty, "Ihnen wurde eine Email gesendet.");
                 return Page();
             }
 
@@ -82,7 +82,7 @@ namespace Quixduell.Blazor.Areas.Identity.Pages.Account
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-            ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+            ModelState.AddModelError(string.Empty, "Ihnen wurde eine Email gesendet.");
             return Page();
         }
     }

@@ -2,7 +2,7 @@
 @using Quixduell.Blazor.Areas.Identity.Pages.Account
 @model RegisterConfirmationModel
 @{
-    ViewData["Title"] = "Register confirmation";
+    ViewData["Title"] = "Registrierungsbestätigung";
 }
 
 <h1 class="d-flex justify-content-center">@ViewData["Title"]</h1>
@@ -10,8 +10,8 @@
     @if (@Model.DisplayConfirmAccountLink)
     {
         <p>
-            This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
-            Normally this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a>
+            Diese Applikation hat noch keinen Email Sender registriert.
+            Normalerweise würde dieser Link per Email gesendet werden: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Klicke hier um deinen Account zu bestätigen!</a>
         </p>
     }
     else
