@@ -123,7 +123,7 @@ namespace Quixduell.Blazor.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "´Login fehlgeschlagen.");
+                    ModelState.AddModelError(string.Empty, "Login fehlgeschlagen.");
                     return Page();
                 }
             }
