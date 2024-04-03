@@ -41,7 +41,7 @@ namespace Quixduell.Blazor.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Es muss eine Email angegeben werden.")]
             [EmailAddress]
             public string Email { get; set; }
 
@@ -49,9 +49,10 @@ namespace Quixduell.Blazor.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Es muss ein Passwort angegeben werden.")]
+            [StringLength(100, ErrorMessage = "Das {0} muss zwischen {2} und {1} Zeichen lang sein.", MinimumLength = 6)]
             [DataType(DataType.Password)]
+            [Display(Name = "Passwort")]
             public string Password { get; set; }
 
             /// <summary>
@@ -59,8 +60,8 @@ namespace Quixduell.Blazor.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Passwort bestätigen")]
+            [Compare("Password", ErrorMessage = "Der Text aus dem 'Passwort' Feld und dem 'Passwort bestägigen' Feld stimmt nicht überein.")]
             public string ConfirmPassword { get; set; }
 
             /// <summary>
