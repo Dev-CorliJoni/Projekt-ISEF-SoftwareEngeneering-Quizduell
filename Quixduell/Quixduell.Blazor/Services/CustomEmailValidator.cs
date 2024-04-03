@@ -15,7 +15,7 @@ namespace Quixduell.Blazor.Services
             if (!allowedDomains.Contains(userEmailDomain, StringComparer.OrdinalIgnoreCase))
             {
                 return Task.FromResult(IdentityResult.Failed(
-                    new IdentityError { Description = $"Email domain is not allowed for registration." }));
+                    new IdentityError { Description = $"Die angegebene Email domain ist nicht erlaubt." }));
             }
 
             return Task.FromResult(IdentityResult.Success);
